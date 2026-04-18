@@ -39,16 +39,15 @@ export interface SocialLink {
 }
 
 /**
- * Primary navigation — 5 items displayed in the top nav bar.
- * Order: Research → Writing → CV → Podcast → About
+ * Primary navigation — 4 items displayed in the top nav bar.
+ * Order: Research → Writing → Podcast → About
  * Research credibility leads. Writing shows intellectual range.
- * CV carries credentials. Podcast is subordinate but first-class.
- * About holds the narrative (including ventures and contact).
+ * Podcast is subordinate but first-class. About holds the narrative.
+ * CV is a PDF download link in the homepage hero, not a nav destination.
  */
 export const primaryNav: NavItem[] = [
   { label: "Research", href: "/projects/", activeMatch: "/projects|/publications" },
   { label: "Writing", href: "/blog/", activeMatch: "/blog" },
-  { label: "CV", href: "/documents/gallegos-cv.pdf" },
   { label: "Podcast", href: "/podcast/", activeMatch: "/podcast" },
   { label: "About", href: "/about/", activeMatch: "/about" },
 ];
