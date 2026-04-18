@@ -15,12 +15,12 @@
 #     - Add base_url to the backend config below
 #     - Users see a "Login with GitHub" button
 #
-# ⚠️  Repo is configured below as itgall/advanced-site.
+# ⚠️  Repo is configured below as itgall/My-Personal-Website.
 # ═══════════════════════════════════════════════════════════════════════════════
 
 backend:
   name: github
-  repo: itgall/advanced-site
+  repo: itgall/My-Personal-Website
   branch: main
   # Uncomment and set if using Sveltia CMS Authenticator for OAuth:
   # base_url: https://your-auth-worker.workers.dev
@@ -596,7 +596,7 @@ collections:
                   - { label: "Cherenkov (luminous blue)", value: "cherenkov" }
                   - { label: "Blackbody (copper)", value: "blackbody" }
                   - { label: "Second Harmonic (532nm green)", value: "second-harmonic" }
-                default: "sodium-arc"
+                default: "rayleigh"
                 hint: "Accent color preset derived from optical/physical phenomena. Applied site-wide."
               - { label: "Backlinks", name: backlinks, widget: boolean, default: true, hint: "Show bidirectional backlink panels on content pages." }
               - { label: "Table of Contents", name: tableOfContents, widget: boolean, default: true, hint: "Show table of contents on blog posts." }
