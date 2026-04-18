@@ -48,7 +48,7 @@ export interface SocialLink {
 export const primaryNav: NavItem[] = [
   { label: "Research", href: "/projects/", activeMatch: "/projects|/publications" },
   { label: "Writing", href: "/blog/", activeMatch: "/blog" },
-  { label: "CV", href: "/cv/", activeMatch: "/cv" },
+  { label: "CV", href: "/documents/gallegos-cv.pdf" },
   { label: "Podcast", href: "/podcast/", activeMatch: "/podcast" },
   { label: "About", href: "/about/", activeMatch: "/about" },
 ];
@@ -76,7 +76,7 @@ export const footerNav: NavItem[] = [
   { label: "Speaking", href: "/speaking/" },
   { label: "Notes", href: "/notes/" },
   { label: "Teaching", href: "/teaching/" },
-  { label: "CV", href: "/cv/" },
+  { label: "CV", href: "/documents/gallegos-cv.pdf" },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
   { label: "Now", href: "/now/" },
