@@ -1,0 +1,54 @@
+---
+/**
+ * NoteCard.astro — Digital garden note card (outlined compact).
+ *
+ * Visual identity: Thin 1px border, no shadow, compact padding.
+ * Shows emoji growth-stage indicator, title, maturity label, and topic tags.
+ * Matches the digital garden aesthetic from Maggie Appleton's garden.
+ *
+ * Card variant: Outlined (thin border, transparent background)
+ * Layout: Used in 3-column compact grid on notes index.
+ * Hover: Background shifts subtly.
+ */
+import type { CollectionEntry } from "astro:content";
+import { maturityConfig, type MaturityLevel } from "@utils/contentMaturity";
+
+interface Props {
+  note: CollectionEntry<"notes">;
+}
+
+const { note } = Astro.props;
+const { title, maturity, description } = note.data;
+const tags: string[] = note.data.tags;
+const config = maturityConfig[maturity as MaturityLevel];
+---
+
+<article
+  class:list={[
+    "note-card rounded-lg border border-[var(--color-border)] px-4 py-3 transition-all duration-200",
+    config.hoverBorderColor,
+  ]}
+  data-pagefind-filter={`maturity:${maturity}`}
+>
+  <a href={`/notes/${note.id}/`} class="block no-underline">
+    {/* Title */}
+    <h3 class="text-sm font-medium leading-snug text-[var(--color-text)]">{title}</h3>
+
+    {/* Growth stage with emoji */}
+    <div class="mt-1.5 flex items-center gap-1.5">
+      <span class="text-sm" title={config.description} aria-label={config.label}>
+        {config.emoji}
+      </span>
+      <span class:list={["font-mono text-[11px]", config.textColor]}>
+        {config.label}
+      </span>
+    </div>
+
+    {/* Topic tags — inline text with middot separators (garden-like, informal) */}
+    {tags.length > 0 && (
+      <p class="mt-2.5 font-mono text-[10px] text-[var(--color-muted)] leading-relaxed">
+        {tags.join(" · ")}
+      </p>
+    )}
+  </a>
+</article>

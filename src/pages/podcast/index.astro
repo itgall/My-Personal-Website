@@ -1,0 +1,354 @@
+---
+/**
+ * podcast/index.astro — Podcast show hub with filtered archive.
+ *
+ * Structure:
+ *   - Header with show description and subscribe buttons
+ *   - Featured/latest episode with embedded video
+ *   - Episode archive with type/tag filtering, sorting, result count
+ *   - About the show section
+ *
+ * Filter dimensions:
+ *   - Episode type: solo / interview / panel / journal-club / ama / case-study
+ *   - Tags: all unique tags across published episodes
+ *
+ * All filtering is client-side via data attributes.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Episode = CollectionEntry<"podcast">;
+
+const allEpisodes: Episode[] = (await getCollection("podcast", ({ data }: Episode) => data.published))
+  .sort((a: Episode, b: Episode) => b.data.date.getTime() - a.data.date.getTime());
+
+const featured = allEpisodes.filter((e) => e.data.featured);
+const latest = allEpisodes.slice(0, 1)[0];
+const archive = allEpisodes.slice(featured.length > 0 ? 0 : 1);
+
+const allTypes = [...new Set(allEpisodes.map((e) => e.data.episodeType))].sort();
+const allTags = [...new Set(allEpisodes.flatMap((e) => e.data.tags))].sort();
+
+const typeLabels: Record<string, string> = {
+  solo: "Solo",
+  interview: "Interview",
+  panel: "Panel",
+  "journal-club": "Journal Club",
+  ama: "AMA",
+  "case-study": "Case Study",
+};
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+}
+
+function toEmbedUrl(url: string): string {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes("youtu.be")) {
+      return `https://www.youtube-nocookie.com/embed${parsed.pathname}`;
+    }
+    const videoId = parsed.searchParams.get("v");
+    if (videoId) {
+      return `https://www.youtube-nocookie.com/embed/${videoId}`;
+    }
+  } catch {
+    // Not a valid URL
+  }
+  return url;
+}
+---
+
+<BaseLayout title="Podcast" activeNav="podcast">
+  <div class="full-container py-16">
+
+    {/* ─── Show header ─────────────────────────────────────────────── */}
+    <header class="mb-12 border-b border-[var(--color-border)] pb-8">
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        Podcast
+      </h1>
+      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed max-w-2xl">
+        How fundamental science innovation will solve grand challenges. Conversations with researchers,
+        founders, and engineers at the frontier of physics, photonics, and deep-tech translation.
+      </p>
+
+      {/* Subscribe links */}
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <span class="font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Subscribe</span>
+        <a href="#" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          YouTube
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          Spotify
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          Apple Podcasts
+        </a>
+        <a href="/rss.xml" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          RSS
+        </a>
+        <a href="/podcast/subscribe/"
+          class="inline-flex items-center gap-1.5 font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline">
+          All platforms →
+        </a>
+      </div>
+    </header>
+
+    {allEpisodes.length === 0 ? (
+      <div class="py-12">
+        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
+          A science podcast exploring how fundamental physics innovation translates into
+          technologies that solve grand challenges in health, energy, and information.
+          Episodes will appear here as they are published.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/blog/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Read essays →</a>
+          <a href="/publications/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">View publications →</a>
+        </div>
+      </div>
+    ) : (
+      <div>
+        {/* ─── Featured / latest episode with video ─────────────────── */}
+        {(featured.length > 0 ? featured[0] : latest) && (() => {
+          const ep = featured.length > 0 ? featured[0] : latest;
+          return (
+            <section class="mb-14">
+              <h2 class="mb-6 text-base font-medium text-[var(--color-text)]">Latest episode</h2>
+              <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
+                {ep.data.youtubeUrl && (
+                  <div class="aspect-video bg-[var(--color-bg-off)]">
+                    <iframe
+                      src={toEmbedUrl(ep.data.youtubeUrl)}
+                      class="w-full h-full"
+                      allowfullscreen
+                      loading="lazy"
+                      title={ep.data.title}
+                    ></iframe>
+                  </div>
+                )}
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    {ep.data.episodeNumber && (
+                      <span class="font-mono text-[10px] tracking-wider text-[var(--color-accent)]">
+                        Ep. {ep.data.episodeNumber}
+                      </span>
+                    )}
+                    <span class="font-mono text-[10px] tracking-wider text-[var(--color-muted)]">
+                      {typeLabels[ep.data.episodeType] ?? ep.data.episodeType}
+                    </span>
+                    {ep.data.duration && (
+                      <>
+                        <span class="text-[var(--color-border)]">·</span>
+                        <span class="font-mono text-[11px] text-[var(--color-muted)]">{ep.data.duration}</span>
+                      </>
+                    )}
+                    <span class="text-[var(--color-border)]">·</span>
+                    <span class="font-mono text-[11px] text-[var(--color-muted)]">{formatDate(ep.data.date)}</span>
+                  </div>
+                  <a href={`/podcast/${ep.id}/`} class="no-underline">
+                    <h3 class="text-lg font-medium text-[var(--color-text)] hover:text-[var(--color-link)] transition-colors">
+                      {ep.data.title}
+                    </h3>
+                  </a>
+                  {ep.data.guests.length > 0 && (
+                    <p class="mt-1 text-sm text-[var(--color-muted)]">
+                      with {ep.data.guests.map(g => g.name).join(", ")}
+                    </p>
+                  )}
+                  <p class="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">{ep.data.description}</p>
+                  <a href={`/podcast/${ep.id}/`} class="mt-3 inline-block font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline">
+                    Show notes & transcript →
+                  </a>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* ─── Episode archive with filtering ───────────────────────── */}
+        {archive.length > 0 && (
+          <section>
+            <h2 class="mb-6 text-base font-medium text-[var(--color-text)]">All episodes</h2>
+
+            {/* Filter bar */}
+            <div id="podcast-filters" class="mb-6 space-y-3">
+              {/* Episode type filter */}
+              {allTypes.length > 1 && (
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Type</span>
+                  <button class="filter-btn active" data-filter="type" data-value="all">All</button>
+                  {allTypes.map((t) => (
+                    <button class="filter-btn" data-filter="type" data-value={t}>
+                      {typeLabels[t] ?? t}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Tag filter */}
+              {allTags.length > 0 && (
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Topic</span>
+                  <button class="filter-btn active" data-filter="tag" data-value="all">All</button>
+                  {allTags.map((tag) => (
+                    <button class="filter-btn" data-filter="tag" data-value={tag}>{tag}</button>
+                  ))}
+                </div>
+              )}
+
+              {/* Result count */}
+              <div class="flex items-center pt-1">
+                <span id="podcast-count" class="font-mono text-[11px] text-[var(--color-muted)]">
+                  {archive.length} episode{archive.length === 1 ? "" : "s"}
+                </span>
+              </div>
+            </div>
+
+            {/* No results */}
+            <p id="podcast-no-results" class="hidden text-sm text-[var(--color-muted)] py-8 text-center">
+              No episodes match the selected filters.
+            </p>
+
+            {/* Episode list */}
+            <div id="podcast-archive" class="space-y-1">
+              {archive.map((ep) => (
+                <a
+                  href={`/podcast/${ep.id}/`}
+                  class="episode-item flex items-baseline gap-4 py-3 border-b border-[var(--color-border-subtle)] no-underline group"
+                  data-type={ep.data.episodeType}
+                  data-tags={ep.data.tags.join(",")}
+                >
+                  <span class="font-mono text-[11px] text-[var(--color-muted)] w-12 shrink-0">
+                    {ep.data.episodeNumber ? `#${ep.data.episodeNumber}` : ""}
+                  </span>
+                  <span class="font-mono text-[11px] text-[var(--color-muted)] w-24 shrink-0">
+                    {formatDate(ep.data.date)}
+                  </span>
+                  <div class="flex-1 min-w-0">
+                    <span class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                      {ep.data.title}
+                    </span>
+                    {ep.data.guests.length > 0 && (
+                      <span class="text-sm text-[var(--color-muted)]">
+                        {" "}— {ep.data.guests.map(g => g.name).join(", ")}
+                      </span>
+                    )}
+                  </div>
+                  <span class="font-mono text-[9px] tracking-wider text-[var(--color-muted)] shrink-0 uppercase hidden sm:inline">
+                    {typeLabels[ep.data.episodeType] ?? ep.data.episodeType}
+                  </span>
+                  {ep.data.duration && (
+                    <span class="font-mono text-[10px] text-[var(--color-muted)] shrink-0">{ep.data.duration}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    )}
+
+    {/* ─── About the show ──────────────────────────────────────────── */}
+    <section class="mt-14 pt-8 border-t border-[var(--color-border)]">
+      <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">About the show</h2>
+      <div class="max-w-2xl space-y-4 text-[15px] text-[var(--color-text-secondary)] leading-[1.78]">
+        <p>
+          The most important advances in human history emerged when deep understanding of natural phenomena
+          met the ambition to solve real problems. This podcast explores that intersection — examining how
+          fundamental science in photonics, quantum systems, computation, and beyond is being translated into
+          technologies that address grand challenges in health, energy, and information.
+        </p>
+        <p>
+          Each episode features researchers, founders, and engineers working at the frontier. The conversations
+          go deep on the science without dumbing it down, and connect lab discoveries to the problems that matter most.
+        </p>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent-border);
+    color: var(--color-accent);
+  }
+
+  .filter-btn.active {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+  }
+
+  .episode-item.filtered-out {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+(function(){
+  var bar = document.getElementById('podcast-filters');
+  var list = document.getElementById('podcast-archive');
+  var countEl = document.getElementById('podcast-count');
+  var noResults = document.getElementById('podcast-no-results');
+  if (!bar || !list) return;
+
+  var filters = { type: 'all', tag: 'all' };
+
+  function applyFilters() {
+    var items = list.querySelectorAll('.episode-item');
+    var visible = 0;
+
+    items.forEach(function(item) {
+      var typeMatch = filters.type === 'all' || item.dataset.type === filters.type;
+      var tagMatch = filters.tag === 'all' || (item.dataset.tags || '').split(',').indexOf(filters.tag) !== -1;
+      var show = typeMatch && tagMatch;
+      item.classList.toggle('filtered-out', !show);
+      if (show) visible++;
+    });
+
+    if (countEl) {
+      countEl.textContent = visible + ' episode' + (visible === 1 ? '' : 's');
+    }
+    if (noResults) {
+      noResults.classList.toggle('hidden', visible > 0);
+    }
+  }
+
+  bar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    var type = btn.dataset.filter;
+    var val = btn.dataset.value;
+    filters[type] = val;
+
+    var row = btn.parentElement;
+    row.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.value === val);
+    });
+
+    applyFilters();
+  });
+})();
+</script>

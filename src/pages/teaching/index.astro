@@ -1,0 +1,71 @@
+---
+/**
+ * teaching/index.astro — Teaching listing as vertical timeline.
+ *
+ * Visual identity: Chronological timeline with terracotta dots for most
+ * recent entries and slate dots for earlier ones. Semester labels,
+ * course titles, role, and institution metadata flow cleanly.
+ *
+ * Layout: Single-column timeline with vertical connector line.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Course = CollectionEntry<"teaching">;
+
+const allCourses: Course[] = await getCollection("teaching");
+const courses = allCourses
+  .filter((c: Course) => c.data.published)
+  .sort((a: Course, b: Course) => b.data.year - a.data.year || b.data.semester.localeCompare(a.data.semester));
+
+const roleLabels: Record<string, string> = {
+  instructor: "Instructor",
+  ta: "Teaching Assistant",
+  "guest-lecturer": "Guest Lecturer",
+};
+---
+
+<PageLayout title="Teaching" subtitle="Courses and educational activities." activeNav="teaching">
+  {courses.length === 0 ? (
+    <p class="text-sm text-[var(--color-muted)]">No courses listed yet.</p>
+  ) : (
+    <div class="teaching-timeline relative ml-2 pl-6">
+      {/* Vertical connector line */}
+      <div class="absolute left-[7px] top-2 bottom-2 w-[2px] bg-[var(--color-border)]"></div>
+
+      {courses.map((course, i) => (
+        <a
+          href={`/teaching/${course.id}/`}
+          class="teaching-entry group relative block pb-8 no-underline last:pb-0"
+        >
+          {/* Timeline dot — terracotta for most recent, slate for rest */}
+          <div
+            class:list={[
+              "absolute -left-6 top-[6px] h-[10px] w-[10px] rounded-full border-2 border-[var(--color-surface)] transition-colors",
+              i === 0
+                ? "bg-[var(--color-accent)]"
+                : "bg-[var(--color-muted)]",
+            ]}
+          ></div>
+
+          {/* Semester label */}
+          <span class="block font-mono text-[11px] text-[var(--color-muted)] mb-1">
+            {course.data.semester}
+          </span>
+
+          {/* Course title */}
+          <h3 class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+            {course.data.title}
+          </h3>
+
+          {/* Role + institution */}
+          <p class="mt-1 text-xs text-[var(--color-muted)]">
+            {roleLabels[course.data.role] ?? course.data.role}
+            {" · "}
+            {course.data.institution}
+          </p>
+        </a>
+      ))}
+    </div>
+  )}
+</PageLayout>

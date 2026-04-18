@@ -1,0 +1,38 @@
+---
+/**
+ * 404.astro — Not found page.
+ *
+ * Warm, minimal design with a subtle optics reference.
+ * Maintains the full site shell (nav, footer, typography, palette).
+ * Provides a clear path back to the homepage.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page Not Found">
+  <div class="prose-container flex min-h-[55vh] flex-col items-center justify-center text-center">
+
+    <h1 class="text-6xl font-bold tracking-tight">
+      404
+    </h1>
+
+    <p class="mt-4 max-w-sm text-base text-[var(--color-muted)] leading-relaxed">
+      This page seems to have diffracted away. It may have been moved or removed.
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/"
+        class="inline-flex items-center gap-1.5 rounded-md bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:opacity-90 no-underline"
+      >
+        Back to homepage
+      </a>
+      <a
+        href="/search/"
+        class="text-sm font-medium text-[var(--color-link)] hover:underline hover:underline-offset-2 transition-colors no-underline"
+      >
+        Search the site
+      </a>
+    </div>
+  </div>
+</BaseLayout>

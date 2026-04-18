@@ -1,0 +1,315 @@
+---
+/**
+ * podcast/[...slug].astro — Individual podcast episode page.
+ *
+ * Structure (top to bottom):
+ *   1. Back link
+ *   2. Header (episode number, type, date, duration, guest)
+ *   3. Embedded YouTube video
+ *   4. Listen on platform links
+ *   5. Chapter markers (timestamped navigation)
+ *   6. Show notes (always visible)
+ *   7. Transcript (collapsible when hasTranscript is true)
+ *   8. Guest bios
+ *   9. Related content (projects, publications, essays)
+ *  10. Tags
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { parseBibliography } from "@utils/bibtex";
+import PubCard from "@components/PubCard.astro";
+import SEO from "@components/SEO.astro";
+
+type Episode = CollectionEntry<"podcast">;
+
+export async function getStaticPaths() {
+  const episodes = await getCollection("podcast", ({ data }) => data.published);
+  return episodes.map((episode) => ({
+    params: { slug: episode.id },
+    props: { episode },
+  }));
+}
+
+const { episode } = Astro.props;
+const { Content } = await render(episode);
+
+const typeLabels: Record<string, string> = {
+  solo: "Solo",
+  interview: "Interview",
+  panel: "Panel",
+  "journal-club": "Journal Club",
+  ama: "AMA",
+  "case-study": "Case Study",
+};
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+function toEmbedUrl(url: string): string {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes("youtu.be")) {
+      return `https://www.youtube-nocookie.com/embed${parsed.pathname}`;
+    }
+    const videoId = parsed.searchParams.get("v");
+    if (videoId) {
+      return `https://www.youtube-nocookie.com/embed/${videoId}`;
+    }
+  } catch {}
+  return url;
+}
+
+/* ── Resolve cross-references ──────────────────────────────────────── */
+const relProjectSlugs = episode.data.relatedProjects ?? [];
+const relPubKeys = episode.data.relatedPublications ?? [];
+const relPostSlugs = episode.data.relatedPosts ?? [];
+
+const linkedProjects = relProjectSlugs.length > 0
+  ? (await getCollection("projects")).filter((p) => relProjectSlugs.includes(p.id))
+  : [];
+
+const linkedPubs = relPubKeys.length > 0
+  ? (await parseBibliography()).filter((p) => relPubKeys.includes(p.key))
+  : [];
+
+const linkedPosts = relPostSlugs.length > 0
+  ? (await getCollection("posts")).filter((p) => relPostSlugs.includes(p.id) && p.data.published)
+  : [];
+
+const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedPosts.length > 0;
+---
+
+<BaseLayout title={`${episode.data.title} — Podcast`} activeNav="podcast" ogImage={`/og/podcast/${episode.id}.png`}>
+  <SEO
+    slot="head"
+    pageType="podcast"
+    title={episode.data.title}
+    description={episode.data.description}
+    url={`/podcast/${episode.id}/`}
+    datePublished={episode.data.date.toISOString()}
+    tags={episode.data.tags}
+    episodeNumber={episode.data.episodeNumber}
+    duration={episode.data.duration}
+    guests={episode.data.guests.map((g: { name: string }) => g.name)}
+    youtubeUrl={episode.data.youtubeUrl || undefined}
+  />
+  <div class="full-container py-16" data-pagefind-body>
+
+    {/* ─── Breadcrumb navigation ─────────────────────────────────── */}
+    <Breadcrumbs items={[
+      { label: "Podcast", href: "/podcast/" },
+      { label: episode.data.title }
+    ]} />
+
+    {/* ─── Episode header ──────────────────────────────────────────── */}
+    <header class="mb-8 border-b border-[var(--color-border)] pb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        {episode.data.episodeNumber && (
+          <span class="font-mono text-[10px] tracking-wider text-[var(--color-accent)]">
+            Episode {episode.data.episodeNumber}
+          </span>
+        )}
+        <span class="font-mono text-[10px] tracking-wider text-[var(--color-muted)]">
+          {typeLabels[episode.data.episodeType] ?? episode.data.episodeType}
+        </span>
+        {episode.data.duration && (
+          <>
+            <span class="text-[var(--color-border)]">·</span>
+            <span class="font-mono text-[11px] text-[var(--color-muted)]">{episode.data.duration}</span>
+          </>
+        )}
+        <span class="text-[var(--color-border)]">·</span>
+        <span class="font-mono text-[11px] text-[var(--color-muted)]">{formatDate(episode.data.date)}</span>
+      </div>
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        {episode.data.title}
+      </h1>
+      {episode.data.guests.length > 0 && (
+        <p class="mt-3 text-base text-[var(--color-muted)]">
+          with {episode.data.guests.map(g => {
+            if (g.url) return <a href={g.url} target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors">{g.name}</a>;
+            return g.name;
+          })}
+        </p>
+      )}
+      <p class="mt-3 text-[15px] text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+        {episode.data.description}
+      </p>
+    </header>
+
+    {/* ─── Video embed ─────────────────────────────────────────────── */}
+    {episode.data.youtubeUrl && (
+      <div class="mb-8 aspect-video rounded-lg overflow-hidden bg-[var(--color-bg-off)] border border-[var(--color-border)]">
+        <iframe
+          src={toEmbedUrl(episode.data.youtubeUrl)}
+          class="w-full h-full"
+          allowfullscreen
+          loading="lazy"
+          title={episode.data.title}
+        ></iframe>
+      </div>
+    )}
+
+    {/* ─── Listen on other platforms ───────────────────────────────── */}
+    <div class="mb-10 flex flex-wrap items-center gap-3">
+      <span class="font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Listen on</span>
+      {episode.data.youtubeUrl && (
+        <a href={episode.data.youtubeUrl} target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          YouTube
+        </a>
+      )}
+      {episode.data.spotifyUrl && (
+        <a href={episode.data.spotifyUrl} target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          Spotify
+        </a>
+      )}
+      {episode.data.appleUrl && (
+        <a href={episode.data.appleUrl} target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
+          Apple Podcasts
+        </a>
+      )}
+    </div>
+
+    {/* ─── Chapter markers ─────────────────────────────────────────── */}
+    {episode.data.chapters.length > 0 && (
+      <section class="mb-10">
+        <h2 class="mb-3 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+          Chapters
+        </h2>
+        <div class="space-y-1">
+          {episode.data.chapters.map((ch) => (
+            <div class="flex items-baseline gap-3 py-1.5">
+              <span class="font-mono text-[11px] text-[var(--color-accent)] w-16 shrink-0">{ch.time}</span>
+              <span class="text-sm text-[var(--color-text)]">{ch.title}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* ─── Show notes (always visible) ─────────────────────────────── */}
+    <section class="mb-10">
+      <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">Show notes</h2>
+      {episode.data.hasTranscript ? (
+        <div class="prose">
+          <Content />
+        </div>
+      ) : (
+        <div class="prose">
+          <Content />
+        </div>
+      )}
+    </section>
+
+    {/* ─── Transcript link ──────────────────────────────────────────── */}
+    {episode.data.hasTranscript && (
+      <section class="mb-10">
+        <a
+          href={`/podcast/transcripts/${episode.id}/`}
+          class="flex items-center justify-between rounded-lg border border-[var(--color-border)] px-5 py-4 no-underline hover:border-[var(--color-accent-border)] transition-colors group"
+        >
+          <div>
+            <span class="block text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+              Full transcript
+            </span>
+            <span class="block mt-1 text-xs text-[var(--color-muted)]">
+              Searchable, citable, full-text transcript of this episode.
+            </span>
+          </div>
+          <span class="font-mono text-[12px] text-[var(--color-link)] shrink-0 ml-4">
+            Read →
+          </span>
+        </a>
+      </section>
+    )}
+
+    {/* ─── Guest bios ──────────────────────────────────────────────── */}
+    {episode.data.guests.length > 0 && (
+      <section class="mb-10 pt-8 border-t border-[var(--color-border)]">
+        <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">
+          {episode.data.guests.length === 1 ? "About the guest" : "About the guests"}
+        </h2>
+        <div class="space-y-4">
+          {episode.data.guests.map((guest) => (
+            <div>
+              <span class="text-[15px] font-medium text-[var(--color-text)]">{guest.name}</span>
+              {guest.title && (
+                <span class="text-[15px] text-[var(--color-text-secondary)]"> — {guest.title}</span>
+              )}
+              {guest.url && (
+                <a href={guest.url} target="_blank" rel="noopener noreferrer"
+                  class="ml-2 font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline">
+                  Website →
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* ─── Related content ─────────────────────────────────────────── */}
+    {hasRelated && (
+      <section class="mb-10 pt-8 border-t border-[var(--color-border)]">
+        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+          Related content
+        </h2>
+        <div class="space-y-6">
+          {linkedProjects.length > 0 && (
+            <div>
+              <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Research projects</h3>
+              <div class="space-y-2">
+                {linkedProjects.map((proj) => (
+                  <a href={`/projects/${proj.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                    {proj.data.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          {linkedPubs.length > 0 && (
+            <div>
+              <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Publications</h3>
+              <div class="space-y-3">
+                {linkedPubs.map((pub) => (
+                  <PubCard pub={pub} />
+                ))}
+              </div>
+            </div>
+          )}
+          {linkedPosts.length > 0 && (
+            <div>
+              <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Essays</h3>
+              <div class="space-y-2">
+                {linkedPosts.map((post) => (
+                  <a href={`/blog/${post.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                    {post.data.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    {/* ─── Tags ────────────────────────────────────────────────────── */}
+    {episode.data.tags.length > 0 && (
+      <div class="pt-6 border-t border-[var(--color-border)] flex flex-wrap gap-2">
+        {episode.data.tags.map((tag) => (
+          <span class="rounded-full border border-[var(--color-border)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+  </div>
+</BaseLayout>

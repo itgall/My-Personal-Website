@@ -1,0 +1,183 @@
+---
+/**
+ * index.astro — Homepage (content-forward layout).
+ *
+ * Design philosophy: engineer-like restraint. Modeled after Geoffrey Litt,
+ * Andrej Karpathy, and Patrick Collison — content is the feature, decoration
+ * is limited to horizontal rules and blue links.
+ *
+ * Structure:
+ *   1. Hero: headshot + name + subtitle + intro paragraph + links
+ *   2. Selected Work: project list with descriptions
+ *   3. Recent Writing: date-aligned list
+ *   4. Research Interests: prose paragraph
+ *
+ * Content-structure separation: this file contains ONLY rendering logic.
+ * All content lives in content collections (projects, posts, podcast)
+ * and data files (bibliography.bib, cv.yaml). A complete visual redesign
+ * of this page touches zero content files.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { siteMetadata } from "@data/meta";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Post = CollectionEntry<"posts">;
+type Project = CollectionEntry<"projects">;
+
+const recentPosts: Post[] = (await getCollection("posts", ({ data }: Post) => data.published))
+  .sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+
+const projects: Project[] = (await getCollection("projects", ({ data }: Project) => data.published))
+  .sort((a: Project, b: Project) => a.data.number.localeCompare(b.data.number));
+
+function formatShortDate(d: Date): string {
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+const categoryLabels: Record<string, string> = {
+  technical: "Technical note",
+  thesis: "Thesis",
+  essay: "Essay",
+  dispatch: "Dispatch",
+  "build-log": "Build log",
+};
+---
+
+<BaseLayout activeNav="home" pageType="home" ogImage="/og/index.png">
+  <div class="wide-container py-16 md:py-24">
+
+    {/* ─── Hero ─────────────────────────────────────────────────── */}
+    <section class="mb-12">
+      <div class="flex items-start gap-5 mb-6">
+        <img
+          src="/images/profile-v2.jpg"
+          alt="Isaac Gallegos"
+          loading="eager"
+          decoding="async"
+          class="w-16 h-16 rounded-full object-cover shrink-0"
+        />
+        <div>
+          <h1 class="vt-page-title text-3xl font-bold tracking-tight leading-tight">
+            {siteMetadata.name}
+          </h1>
+          <p class="mt-1 text-[var(--color-text-secondary)]">
+            Research Engineer · Harvard Medical School
+          </p>
+        </div>
+      </div>
+
+      <p class="text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+        I build optical systems and computational methods that extract diagnostic
+        information from light–tissue interactions at the Wellman Center for
+        Photomedicine. My work spans spectroscopic intravascular OCT, NIR-II
+        photoacoustic imaging, and inverse algorithms — grounded in physics-first
+        principles and aimed at clinically translatable tools.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+        <a href="mailto:itgall@mit.edu" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">itgall@mit.edu</a>
+        <span class="text-[var(--color-border)]">&middot;</span>
+        <a href="https://linkedin.com/in/isaactgallegos" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">LinkedIn</a>
+        <span class="text-[var(--color-border)]">&middot;</span>
+        <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">GitHub</a>
+        <span class="text-[var(--color-border)]">&middot;</span>
+        <a href="https://orcid.org/0009-0007-9290-6289" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">ORCID</a>
+        <span class="text-[var(--color-border)]">&middot;</span>
+        <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Google Scholar</a>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-[var(--color-muted)] font-mono">
+        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Harvard Medical School</span>
+        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Wellman Center for Photomedicine</span>
+        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">MIT</span>
+      </div>
+    </section>
+
+    <hr class="border-t border-[var(--color-border)]" />
+
+    {/* ─── Selected Work ────────────────────────────────────────── */}
+    <section class="py-12">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-xl font-bold tracking-tight">Selected work</h2>
+        <a href="/projects/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All projects &rarr;</a>
+      </div>
+      {projects.length > 0 ? (
+        <div class="space-y-1">
+          {projects.map((project) => (
+            <a
+              href={`/projects/${project.id}/`}
+              class="group block py-3 border-b border-[var(--color-border)] no-underline hover:bg-[var(--color-bg-off)] -mx-3 px-3 rounded transition-colors"
+            >
+              <span class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                {project.data.title}
+              </span>
+              <p class="mt-1 text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2">
+                {project.data.summary}
+              </p>
+              <span class="mt-1 text-xs text-[var(--color-muted)] font-mono">{project.data.institution}</span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-sm text-[var(--color-muted)] italic">No projects published yet.</p>
+      )}
+    </section>
+
+    {/* ─── Recent Writing ───────────────────────────────────────── */}
+    {recentPosts.length > 0 && (
+      <>
+        <hr class="border-t border-[var(--color-border)]" />
+        <section class="py-12">
+          <div class="flex items-baseline justify-between mb-6">
+            <h2 class="text-xl font-bold tracking-tight">Recent writing</h2>
+            <a href="/blog/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All writing &rarr;</a>
+          </div>
+          <div class="space-y-1">
+            {recentPosts.map((post) => {
+              const cat = categoryLabels[post.data.category] ?? post.data.category;
+              return (
+                <a
+                  href={`/blog/${post.id}/`}
+                  class="group flex items-baseline gap-4 py-3 border-b border-[var(--color-border)] no-underline hover:bg-[var(--color-bg-off)] -mx-3 px-3 rounded transition-colors"
+                >
+                  <span class="font-mono text-xs text-[var(--color-muted)] shrink-0 w-20">
+                    {formatShortDate(post.data.date)}
+                  </span>
+                  <span class="flex-1 min-w-0 text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                    {post.data.title}
+                  </span>
+                  <span class="shrink-0 text-xs text-[var(--color-muted)] font-mono hidden sm:inline">
+                    {cat}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      </>
+    )}
+
+    <hr class="border-t border-[var(--color-border)]" />
+
+    {/* ─── Research Interests ───────────────────────────────────── */}
+    <section class="py-12">
+      <div class="max-w-2xl">
+        <h2 class="text-xl font-bold tracking-tight mb-4">Research interests</h2>
+        <p class="text-[var(--color-text-secondary)] leading-relaxed">
+          I develop computational and optical methods for biological tissue characterization,
+          working at the intersection of biophotonics, inverse problems, and quantum sensing.
+          My current work focuses on extracting molecular composition from OCT interferograms
+          and developing multi-spectral photoacoustic systems for label-free molecular imaging.
+          I am interested in how physics-informed computational methods — from inverse design
+          to differentiable simulation — can push the fundamental limits of what optical
+          instruments can measure.
+        </p>
+        <a href="/projects/" class="inline-block mt-4 text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">
+          View publications &rarr;
+        </a>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

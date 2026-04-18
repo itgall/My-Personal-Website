@@ -1,0 +1,86 @@
+---
+/**
+ * ventures/index.astro — Ventures portfolio listing.
+ *
+ * Deep-tech ventures translating research breakthroughs into real-world impact.
+ * Each venture is framed as a thesis proven by research.
+ * Uses full-container (1200px) for card grid layout.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Venture = CollectionEntry<"ventures">;
+
+const ventures: Venture[] = (await getCollection("ventures", ({ data }: Venture) => data.published))
+  .sort((a: Venture, b: Venture) => b.data.date.getTime() - a.data.date.getTime());
+
+const statusConfig: Record<string, { label: string; dotColor: string; textColor: string }> = {
+  "active":         { label: "Active",          dotColor: "bg-[var(--color-success)]", textColor: "text-[var(--color-success)]" },
+  "in-development": { label: "In Development",  dotColor: "bg-[var(--color-accent)]",  textColor: "text-[var(--color-accent)]" },
+  "stealth":        { label: "Stealth",         dotColor: "bg-[var(--color-muted)]",   textColor: "text-[var(--color-muted)]" },
+};
+---
+
+<BaseLayout title="Ventures" activeNav="ventures">
+  <div class="full-container py-16">
+    <header class="mb-12 border-b border-[var(--color-border)] pb-8">
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        Ventures
+      </h1>
+      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed max-w-2xl">
+        Deep-tech ventures translating research breakthroughs into real-world impact.
+        Each venture is grounded in fundamental science — born from insights discovered
+        in the lab and built to reach patients, clinicians, and communities.
+      </p>
+    </header>
+
+    {ventures.length === 0 ? (
+      <div class="py-12">
+        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
+          Deep-tech ventures translating photonic sensing and computational imaging
+          research into accessible clinical diagnostics. Venture details will appear
+          here as they are announced.
+        </p>
+        <div class="mt-6">
+          <a href="/projects/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">View research projects →</a>
+        </div>
+      </div>
+    ) : (
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {ventures.map((venture) => {
+          const config = statusConfig[venture.data.status] || statusConfig["in-development"];
+          return (
+            <a
+              href={`/ventures/${venture.id}/`}
+              class="group block rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5 transition-all hover:border-[var(--color-accent-border)] hover:shadow-md no-underline"
+            >
+              <div class="mb-3 flex items-center gap-2">
+                <span class={`inline-block h-2 w-2 rounded-full ${config.dotColor}`}></span>
+                <span class={`font-mono text-[10px] tracking-wider ${config.textColor}`}>
+                  {config.label}
+                </span>
+              </div>
+              <h2 class="text-base font-medium text-[var(--color-text)] mb-2 group-hover:text-[var(--color-link)] transition-colors">
+                {venture.data.title}
+              </h2>
+              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
+                {venture.data.tagline}
+              </p>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[11px] text-[var(--color-muted)]">{venture.data.role}</span>
+                <span class="font-mono text-[11px] text-[var(--color-link)] opacity-0 transition-opacity group-hover:opacity-100">Learn more →</span>
+              </div>
+              {venture.data.techStack.length > 0 && (
+                <div class="mt-3 flex flex-wrap gap-1.5 border-t border-[var(--color-border-subtle)] pt-3">
+                  {venture.data.techStack.slice(0, 4).map((tech) => (
+                    <span class="rounded-sm bg-[var(--color-surface-raised)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-muted)]">{tech}</span>
+                  ))}
+                </div>
+              )}
+            </a>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</BaseLayout>

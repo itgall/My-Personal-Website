@@ -1,0 +1,182 @@
+---
+/**
+ * podcast/guests/[guest].astro — Guest profile pages.
+ *
+ * Generates a static page for each unique podcast guest, aggregating
+ * all episodes they appeared on. Guest identity is derived from the
+ * guests array in podcast episode frontmatter.
+ *
+ * Slug generation: guest name → lowercase, spaces → hyphens, strip
+ * non-alphanumeric characters. Collision-safe because guest names are
+ * unique identifiers in the frontmatter.
+ *
+ * Each page shows:
+ *   - Guest name, title, and website link (from first appearance)
+ *   - Total episode count
+ *   - Chronological list of episodes with dates and descriptions
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Episode = CollectionEntry<"podcast">;
+
+interface GuestInfo {
+  name: string;
+  title?: string;
+  url?: string;
+}
+
+interface GuestEpisode {
+  id: string;
+  title: string;
+  date: Date;
+  description: string;
+  episodeNumber?: number;
+  duration?: string;
+}
+
+interface GuestProfile {
+  guest: GuestInfo;
+  slug: string;
+  episodes: GuestEpisode[];
+}
+
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+export async function getStaticPaths() {
+  const episodes: Episode[] = (
+    await getCollection("podcast", ({ data }: Episode) => data.published)
+  ).sort(
+    (a: Episode, b: Episode) =>
+      b.data.date.getTime() - a.data.date.getTime(),
+  );
+
+  /* Build guest profiles by aggregating across all episodes */
+  const guestMap = new Map<string, GuestProfile>();
+
+  for (const ep of episodes) {
+    for (const guest of ep.data.guests) {
+      const slug = slugify(guest.name);
+      if (!guestMap.has(slug)) {
+        guestMap.set(slug, {
+          guest: {
+            name: guest.name,
+            title: guest.title,
+            url: guest.url,
+          },
+          slug,
+          episodes: [],
+        });
+      }
+
+      const profile = guestMap.get(slug)!;
+
+      /* Update guest info if this episode has more detail */
+      if (!profile.guest.title && guest.title) {
+        profile.guest.title = guest.title;
+      }
+      if (!profile.guest.url && guest.url) {
+        profile.guest.url = guest.url;
+      }
+
+      profile.episodes.push({
+        id: ep.id,
+        title: ep.data.title,
+        date: ep.data.date,
+        description: ep.data.description,
+        episodeNumber: ep.data.episodeNumber,
+        duration: ep.data.duration,
+      });
+    }
+  }
+
+  return [...guestMap.values()].map((profile) => ({
+    params: { guest: profile.slug },
+    props: { profile },
+  }));
+}
+
+const { profile } = Astro.props as { profile: GuestProfile };
+const { guest, episodes } = profile;
+---
+
+<PageLayout
+  title={guest.name}
+  subtitle={`${episodes.length} episode${episodes.length === 1 ? "" : "s"}`}
+  activeNav="podcast"
+>
+  {/* ── Guest info ───────────────────────────────────────────────── */}
+  <div class="mb-8">
+    <a
+      href="/podcast/"
+      class="mb-4 inline-block font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+    >
+      ← Back to Podcast
+    </a>
+    {guest.title && (
+      <p class="text-[15px] text-[var(--color-text-secondary)] leading-relaxed">
+        {guest.title}
+      </p>
+    )}
+    {guest.url && (
+      <a
+        href={guest.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-2 inline-flex items-center font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline"
+      >
+        Website →
+      </a>
+    )}
+  </div>
+
+  {/* ── Episode appearances ──────────────────────────────────────── */}
+  <section>
+    <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+      Episodes
+    </h2>
+    <div class="space-y-1">
+      {episodes.map((ep) => (
+        <a
+          href={`/podcast/${ep.id}/`}
+          class="flex items-baseline gap-4 py-3 border-b border-[var(--color-border-subtle)] no-underline group"
+        >
+          <span class="font-mono text-[11px] text-[var(--color-muted)] w-12 shrink-0">
+            {ep.episodeNumber ? `#${ep.episodeNumber}` : ""}
+          </span>
+          <span class="font-mono text-[11px] text-[var(--color-muted)] w-24 shrink-0">
+            {formatDate(ep.date)}
+          </span>
+          <div class="flex-1 min-w-0">
+            <span class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+              {ep.title}
+            </span>
+            <p class="mt-1 text-xs text-[var(--color-muted)] line-clamp-1">
+              {ep.description}
+            </p>
+          </div>
+          {ep.duration && (
+            <span class="font-mono text-[10px] text-[var(--color-muted)] shrink-0">
+              {ep.duration}
+            </span>
+          )}
+        </a>
+      ))}
+    </div>
+  </section>
+</PageLayout>

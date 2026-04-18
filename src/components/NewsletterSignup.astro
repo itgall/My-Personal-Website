@@ -1,0 +1,158 @@
+---
+/**
+ * NewsletterSignup.astro — Email capture component.
+ *
+ * A reusable newsletter signup form that can be placed on any page.
+ * Designed to work with any email provider by using a configurable
+ * form action URL. Default is Buttondown (privacy-respecting, free tier).
+ *
+ * Audience value:
+ *   - Podcast: highest-converting listener acquisition channel
+ *   - Research collaborators: stay updated on new publications
+ *   - Investors: venture and lab-to-market updates
+ *   - KHS: signals thought leadership and audience building
+ *
+ * Placement: homepage contact CTA section, /podcast/ page, footer.
+ *
+ * Configuration: Set the form action URL in src/data/settings.json
+ * under newsletter.formAction. Until configured, the form shows a
+ * "coming soon" state.
+ */
+
+interface Props {
+  /** Heading text */
+  heading?: string;
+  /** Description text */
+  description?: string;
+  /** Visual variant: 'inline' (compact) or 'card' (bordered box) */
+  variant?: "inline" | "card";
+}
+
+const {
+  heading = "Stay in the loop",
+  description = "Research updates, podcast episodes, and the occasional deep-tech dispatch. No spam, unsubscribe anytime.",
+  variant = "card",
+} = Astro.props;
+
+/**
+ * Form action URL for the email provider.
+ * Replace with your actual provider URL:
+ *   Buttondown:  https://buttondown.com/api/emails/subscribe
+ *   ConvertKit:  https://app.convertkit.com/forms/{form_id}/subscriptions
+ *   Mailchimp:   https://{dc}.list-manage.com/subscribe/post?u={u}&id={id}
+ *
+ * Set to empty string to show "coming soon" state.
+ */
+const formAction = "";
+const isConfigured = formAction.length > 0;
+---
+
+{variant === "card" ? (
+  <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+    <h3 class="mb-2 text-base font-medium text-[var(--color-text)]">
+      {heading}
+    </h3>
+    <p class="mb-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+      {description}
+    </p>
+
+    {isConfigured ? (
+      <div class="flex gap-2">
+        <input
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+          class="flex-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent-border)] focus:outline-none transition-colors"
+          id="newsletter-email"
+        />
+        <button
+          type="button"
+          class="rounded-md border border-[var(--color-accent-border)] bg-[var(--color-accent-bg)] px-4 py-2 font-mono text-[12px] font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors cursor-pointer"
+          id="newsletter-submit"
+        >
+          Subscribe
+        </button>
+      </div>
+      <p id="newsletter-status" class="mt-2 text-xs text-[var(--color-muted)] hidden"></p>
+    ) : (
+      <p class="text-sm text-[var(--color-muted)] italic">
+        Newsletter launching soon. Check back for updates.
+      </p>
+    )}
+  </div>
+) : (
+  /* Inline variant — compact, no border */
+  <div>
+    <p class="mb-3 text-sm text-[var(--color-text-secondary)]">
+      {description}
+    </p>
+    {isConfigured ? (
+      <div class="flex gap-2">
+        <input
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+          class="flex-1 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent-border)] focus:outline-none transition-colors"
+        />
+        <button
+          type="button"
+          class="rounded-md border border-[var(--color-accent-border)] bg-[var(--color-accent-bg)] px-4 py-2 font-mono text-[12px] font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors cursor-pointer"
+        >
+          Subscribe
+        </button>
+      </div>
+    ) : (
+      <p class="text-sm text-[var(--color-muted)] italic">
+        Newsletter launching soon.
+      </p>
+    )}
+  </div>
+)}
+
+{isConfigured && (
+  <script is:inline define:vars={{ formAction }}>
+  (function() {
+    var btn = document.getElementById('newsletter-submit');
+    var input = document.getElementById('newsletter-email');
+    var status = document.getElementById('newsletter-status');
+    if (!btn || !input || !status) return;
+
+    btn.addEventListener('click', async function() {
+      var email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        status.textContent = 'Please enter a valid email address.';
+        status.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Subscribing...';
+
+      try {
+        var response = await fetch(formAction, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email }),
+        });
+
+        if (response.ok) {
+          status.textContent = 'Subscribed! Check your email to confirm.';
+          status.classList.remove('hidden');
+          input.value = '';
+        } else {
+          status.textContent = 'Something went wrong. Please try again.';
+          status.classList.remove('hidden');
+        }
+      } catch (e) {
+        status.textContent = 'Network error. Please try again.';
+        status.classList.remove('hidden');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    });
+  })();
+  </script>
+)}

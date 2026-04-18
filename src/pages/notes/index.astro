@@ -1,0 +1,226 @@
+---
+/**
+ * notes/index.astro — Digital garden listing with filtering and sorting.
+ *
+ * Filter dimensions:
+ *   - Maturity: seedling / budding / evergreen
+ *   - Tags: all unique tags across published notes
+ *
+ * Sort options:
+ *   - Date (newest first) — default
+ *   - Date (oldest first)
+ *   - Title (A → Z)
+ *
+ * All filtering is client-side via data attributes. Progressive enhancement:
+ * without JS, all notes are visible in default sort order.
+ *
+ * Result count updates live as filters change.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import NoteCard from "@components/NoteCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Note = CollectionEntry<"notes">;
+
+const notes: Note[] = (await getCollection("notes", ({ data }: Note) => data.published))
+  .sort((a: Note, b: Note) => b.data.date.getTime() - a.data.date.getTime());
+
+const allTags = [...new Set(notes.flatMap((n: Note) => n.data.tags))].sort();
+const allMaturities = [...new Set(notes.map((n: Note) => n.data.maturity))].sort();
+
+const maturityLabels: Record<string, string> = {
+  seedling: "🌱 Seedling",
+  budding: "🌿 Budding",
+  evergreen: "🌳 Evergreen",
+};
+---
+
+<PageLayout
+  title="Notes"
+  subtitle="A digital garden of ideas at various stages of development."
+  activeNav="notes"
+>
+  {/* ── Filter bar ──────────────────────────────────────────────── */}
+  <div id="notes-filters" class="mb-8 space-y-3">
+    {/* Maturity filter */}
+    <div class="flex flex-wrap items-center gap-1.5">
+      <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Maturity</span>
+      <button class="filter-btn active" data-filter="maturity" data-value="all">All</button>
+      {allMaturities.map((m) => (
+        <button class="filter-btn" data-filter="maturity" data-value={m}>
+          {maturityLabels[m] ?? m}
+        </button>
+      ))}
+    </div>
+
+    {/* Tag filter */}
+    {allTags.length > 0 && (
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Topic</span>
+        <button class="filter-btn active" data-filter="tag" data-value="all">All</button>
+        {allTags.map((tag) => (
+          <button class="filter-btn" data-filter="tag" data-value={tag}>{tag}</button>
+        ))}
+      </div>
+    )}
+
+    {/* Sort + result count */}
+    <div class="flex items-center justify-between pt-2">
+      <span id="notes-count" class="font-mono text-[11px] text-[var(--color-muted)]">
+        {notes.length} note{notes.length === 1 ? "" : "s"}
+      </span>
+      <select id="notes-sort" class="sort-select">
+        <option value="date-desc">Newest first</option>
+        <option value="date-asc">Oldest first</option>
+        <option value="title-asc">Title A → Z</option>
+      </select>
+    </div>
+  </div>
+
+  {/* ── No results message ──────────────────────────────────────── */}
+  <p id="notes-no-results" class="hidden text-sm text-[var(--color-muted)] py-8 text-center">
+    No notes match the selected filters.
+  </p>
+
+  {/* ── Note grid ───────────────────────────────────────────────── */}
+  {notes.length === 0 ? (
+    <p class="text-sm text-[var(--color-muted)]">No notes published yet.</p>
+  ) : (
+    <div id="notes-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {notes.map((note) => (
+        <div
+          class="note-item"
+          data-maturity={note.data.maturity}
+          data-tags={note.data.tags.join(",")}
+          data-date={note.data.date.toISOString()}
+          data-title={note.data.title.toLowerCase()}
+        >
+          <NoteCard note={note} />
+        </div>
+      ))}
+    </div>
+  )}
+</PageLayout>
+
+<style>
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent-border);
+    color: var(--color-accent);
+  }
+
+  .filter-btn.active {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+  }
+
+  .sort-select {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 28px 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-muted);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.15s ease;
+  }
+
+  .sort-select:hover,
+  .sort-select:focus {
+    border-color: var(--color-accent-border);
+    outline: none;
+  }
+
+  .note-item.filtered-out {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+(function(){
+  var bar = document.getElementById('notes-filters');
+  var grid = document.getElementById('notes-grid');
+  var countEl = document.getElementById('notes-count');
+  var noResults = document.getElementById('notes-no-results');
+  var sortSelect = document.getElementById('notes-sort');
+  if (!bar || !grid) return;
+
+  var filters = { maturity: 'all', tag: 'all' };
+
+  function applyFilters() {
+    var items = grid.querySelectorAll('.note-item');
+    var visible = 0;
+
+    items.forEach(function(item) {
+      var matMatch = filters.maturity === 'all' || item.dataset.maturity === filters.maturity;
+      var tagMatch = filters.tag === 'all' || (item.dataset.tags || '').split(',').indexOf(filters.tag) !== -1;
+      var show = matMatch && tagMatch;
+      item.classList.toggle('filtered-out', !show);
+      if (show) visible++;
+    });
+
+    if (countEl) {
+      countEl.textContent = visible + ' note' + (visible === 1 ? '' : 's');
+    }
+    if (noResults) {
+      noResults.classList.toggle('hidden', visible > 0);
+    }
+  }
+
+  function applySort() {
+    var value = sortSelect ? sortSelect.value : 'date-desc';
+    var items = Array.from(grid.querySelectorAll('.note-item'));
+
+    items.sort(function(a, b) {
+      if (value === 'date-desc') return new Date(b.dataset.date) - new Date(a.dataset.date);
+      if (value === 'date-asc') return new Date(a.dataset.date) - new Date(b.dataset.date);
+      if (value === 'title-asc') return a.dataset.title.localeCompare(b.dataset.title);
+      return 0;
+    });
+
+    items.forEach(function(item) { grid.appendChild(item); });
+  }
+
+  bar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    var type = btn.dataset.filter;
+    var val = btn.dataset.value;
+    filters[type] = val;
+
+    var row = btn.parentElement;
+    row.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.value === val);
+    });
+
+    applyFilters();
+  });
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      applySort();
+    });
+  }
+})();
+</script>

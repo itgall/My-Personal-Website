@@ -1,0 +1,78 @@
+---
+/**
+ * CiteBlock.astro — Copy-pasteable citation block for blog posts.
+ *
+ * Renders a "Cite this" section at the bottom of every essay with
+ * pre-formatted APA and BibTeX citations. Inspired by Lilian Weng's
+ * lilianweng.github.io citation blocks — the gold standard for
+ * academic blog citation.
+ *
+ * The BibTeX key is generated from the author's last name and the
+ * publication year (e.g., gallegos2026inverse).
+ */
+import { siteMetadata } from "@data/meta";
+import CopyButton from "@islands/CopyButton.tsx";
+
+interface Props {
+  title: string;
+  /** Slug used to construct the canonical URL */
+  slug: string;
+  date: Date;
+  /** Author name — defaults to site owner */
+  author?: string;
+}
+
+const { title, slug, date, author = siteMetadata.name } = Astro.props;
+
+const year = date.getFullYear();
+const month = date.toLocaleDateString("en-US", { month: "long" });
+const day = date.getDate();
+const canonicalUrl = new URL(`/blog/${slug}/`, siteMetadata.siteUrl).href;
+
+/** Generate a BibTeX key: lastname + year + first significant word of title */
+const lastName = author.split(" ").pop()?.toLowerCase() ?? "author";
+const firstWord = title
+  .toLowerCase()
+  .replace(/[^a-z\s]/g, "")
+  .split(/\s+/)
+  .find((w) => w.length > 3 && !["the", "for", "and", "with", "from"].includes(w)) ?? "post";
+const bibtexKey = `${lastName}${year}${firstWord}`;
+
+const apaCitation = `${author}. (${year}, ${month} ${day}). ${title}. ${siteMetadata.title}. ${canonicalUrl}`;
+
+const bibtexCitation = `@article{${bibtexKey},
+  title     = {${title}},
+  author    = {${author}},
+  year      = {${year}},
+  month     = {${month.toLowerCase().slice(0, 3)}},
+  url       = {${canonicalUrl}},
+  journal   = {${siteMetadata.title}},
+  note      = {Blog post}
+}`;
+---
+
+<section class="mt-12 border-t border-[var(--color-border)] pt-8" data-pagefind-ignore>
+  <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+    Cite this
+  </h2>
+
+  {/* APA citation */}
+  <div class="mb-4">
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="font-mono text-[10px] text-[var(--color-muted)] uppercase tracking-wider">APA</span>
+      <CopyButton client:idle text={apaCitation} label="Copy" />
+    </div>
+    <div class="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-off)] px-4 py-3 text-xs text-[var(--color-text-secondary)] leading-relaxed font-mono break-words">
+      {apaCitation}
+    </div>
+  </div>
+
+  {/* BibTeX citation */}
+  <div>
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="font-mono text-[10px] text-[var(--color-muted)] uppercase tracking-wider">BibTeX</span>
+      <CopyButton client:idle text={bibtexCitation} label="Copy" />
+    </div>
+    <pre class="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-off)] px-4 py-3 text-xs text-[var(--color-text-secondary)] leading-relaxed font-mono overflow-x-auto whitespace-pre-wrap">{bibtexCitation}</pre>
+  </div>
+</section>

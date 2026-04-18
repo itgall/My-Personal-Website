@@ -1,0 +1,71 @@
+---
+/**
+ * uses.astro — Tools, software, and equipment I use.
+ *
+ * Serves research collaborators (what tools does this lab use?),
+ * the web development community (what's this site built with?),
+ * and KHS reviewers (demonstrates technical breadth and intellectual curiosity).
+ *
+ * Organized by domain: research, computation, development, and daily workflow.
+ * Deliberately not in the primary nav — discoverable through footer and /about.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Uses"
+  subtitle="Tools, software, and equipment I use for research, development, and daily work."
+  activeNav=""
+>
+  <div class="prose max-w-none">
+    <h2>Research & lab</h2>
+    <p>
+      <strong>COMSOL Multiphysics</strong> for computational optical modeling — finite element simulations
+      of light–tissue interactions, waveguide design, and photoacoustic wave propagation.
+      <strong>Zemax OpticStudio</strong> for optical system design, ray tracing, and tolerance analysis
+      of OCT catheter optics. <strong>MATLAB</strong> for inverse algorithm development, signal processing,
+      spectral analysis, and Jones matrix polarization simulations. <strong>SolidWorks</strong> for
+      mechanical design of optical assemblies and catheter components.
+    </p>
+
+    <h2>Computation & ML</h2>
+    <p>
+      <strong>Python</strong> as the primary language for research computing, with <strong>PyTorch</strong>
+      and <strong>JAX</strong> for physics-informed neural networks and differentiable forward models.
+      <strong>NumPy</strong>, <strong>SciPy</strong>, and <strong>scikit-learn</strong> for numerical
+      methods and data analysis. <strong>Jupyter</strong> for exploratory analysis and
+      <strong>LaTeX</strong> for manuscripts and technical documentation.
+    </p>
+
+    <h2>Development</h2>
+    <p>
+      <strong>VS Code</strong> as the primary editor, with Vim keybindings. <strong>Git</strong> and
+      <strong>GitHub</strong> for version control. This site is built with <strong>Astro 6</strong>,
+      <strong>Tailwind CSS v4</strong>, and <strong>TypeScript</strong>, hosted on <strong>Netlify</strong>.
+      <strong>Claude Code</strong> for AI-assisted development.
+      See the <a href="/colophon/">colophon</a> for full site architecture details.
+    </p>
+
+    <h2>Productivity</h2>
+    <p>
+      <strong>Obsidian</strong> for research notes, literature reviews, and the digital garden that
+      feeds this site's notes section. <strong>Superhuman</strong> for email.
+      <strong>Reclaim.ai</strong> for calendar management and time blocking.
+      <strong>Fathom</strong> for meeting transcription and action items.
+    </p>
+
+    <h2>Hardware</h2>
+    <p>
+      Research workstation with NVIDIA GPU for COMSOL and ML training.
+      Lab equipment includes swept-source lasers, fiber optic test benches,
+      optical spectrum analyzers, and custom catheter assembly fixtures.
+    </p>
+  </div>
+
+  <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
+    <p class="text-xs text-[var(--color-muted)]">
+      This page is inspired by <a href="https://uses.tech" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] no-underline hover:underline">uses.tech</a>.
+      Last updated April 2026.
+    </p>
+  </div>
+</PageLayout>

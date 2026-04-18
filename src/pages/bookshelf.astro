@@ -1,0 +1,88 @@
+---
+/**
+ * bookshelf.astro — Curated reading list.
+ *
+ * Inspired by Patrick Collison's /bookshelf. Signals intellectual breadth
+ * beyond core research — important for KHS reviewers who evaluate
+ * "seeking new knowledge and cross-cultural perspectives."
+ *
+ * Books are organized by domain, not by date read, to emphasize
+ * the breadth of intellectual interests. Each book has a brief
+ * annotation explaining why it matters.
+ *
+ * Discoverable through footer and /about, not primary nav.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+
+const sections = [
+  {
+    label: "Physics & foundations",
+    books: [
+      { title: "The Principles of Quantum Mechanics", author: "P.A.M. Dirac", note: "The original formulation — still the clearest statement of the mathematical structure." },
+      { title: "Optics", author: "Eugene Hecht", note: "The reference text I return to most for Fourier optics and interferometry." },
+      { title: "Biomedical Optics", author: "Lihong V. Wang & Hsin-i Wu", note: "Foundational for tissue optics, light transport theory, and photoacoustic imaging." },
+    ],
+  },
+  {
+    label: "Technology & building",
+    books: [
+      { title: "The Hard Thing About Hard Things", author: "Ben Horowitz", note: "The most honest book about what building a company actually feels like." },
+      { title: "Zero to One", author: "Peter Thiel", note: "The contrarian question as a framework for identifying truly important problems." },
+      { title: "The Innovator's Dilemma", author: "Clayton Christensen", note: "Why incumbents fail — essential reading for anyone translating research into products." },
+    ],
+  },
+  {
+    label: "Science & systems",
+    books: [
+      { title: "The Structure of Scientific Revolutions", author: "Thomas S. Kuhn", note: "How paradigm shifts actually happen — and why normal science resists them." },
+      { title: "Gödel, Escher, Bach", author: "Douglas Hofstadter", note: "Self-reference, recursion, and the nature of cognition. Changed how I think about formal systems." },
+      { title: "The Emperor's New Mind", author: "Roger Penrose", note: "Consciousness, computation, and the limits of algorithmic reasoning." },
+    ],
+  },
+  {
+    label: "History & biography",
+    books: [
+      { title: "Surely You're Joking, Mr. Feynman!", author: "Richard Feynman", note: "The physicist's approach to curiosity — playful, relentless, and unafraid of looking foolish." },
+      { title: "The Making of the Atomic Bomb", author: "Richard Rhodes", note: "How fundamental physics became the most consequential technology in history." },
+      { title: "Elon Musk", author: "Walter Isaacson", note: "The case study for deep-tech company building at civilization scale." },
+    ],
+  },
+];
+---
+
+<PageLayout
+  title="Bookshelf"
+  subtitle="Books that have shaped how I think about physics, technology, and building."
+  activeNav=""
+>
+  <div class="space-y-10">
+    {sections.map((section) => (
+      <section>
+        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+          {section.label}
+        </h2>
+        <div class="space-y-4">
+          {section.books.map((book) => (
+            <div class="border-b border-[var(--color-border-subtle)] pb-4 last:border-0 last:pb-0">
+              <p class="text-[15px] font-medium text-[var(--color-text)]">
+                {book.title}
+              </p>
+              <p class="mt-0.5 text-xs text-[var(--color-muted)]">
+                {book.author}
+              </p>
+              <p class="mt-1.5 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                {book.note}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
+    <p class="text-xs text-[var(--color-muted)]">
+      This is a living list. Updated as I read.
+    </p>
+  </div>
+</PageLayout>

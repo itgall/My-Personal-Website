@@ -1,0 +1,88 @@
+---
+/**
+ * Breadcrumbs.astro — BreadcrumbList JSON-LD + optional visible breadcrumb trail.
+ *
+ * Generates schema.org BreadcrumbList structured data for every page,
+ * improving Google search appearance with rich breadcrumb snippets.
+ * Also renders a visible breadcrumb trail for navigation context.
+ *
+ * Usage:
+ *   <Breadcrumbs items={[
+ *     { label: "Essays", href: "/blog/" },
+ *     { label: "Inverse Methods for Spectroscopic OCT" }
+ *   ]} />
+ *
+ * The homepage is always prepended as the first breadcrumb item.
+ * The last item has no href (current page).
+ */
+import { siteMetadata } from "@data/meta";
+
+interface BreadcrumbItem {
+  label: string;
+  /** URL — omit for the current (last) page */
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  /** Hide the visible breadcrumb trail (still emits JSON-LD) */
+  hideVisual?: boolean;
+}
+
+const { items, hideVisual = false } = Astro.props;
+
+/** Build the full breadcrumb chain: Home → ... → current page */
+const fullItems: BreadcrumbItem[] = [
+  { label: "Home", href: "/" },
+  ...items,
+];
+
+/** Generate JSON-LD BreadcrumbList */
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: fullItems.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.label,
+    ...(item.href && {
+      item: new URL(item.href, siteMetadata.siteUrl).href,
+    }),
+  })),
+};
+---
+
+{/* JSON-LD — always emitted for SEO */}
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(breadcrumbLd)}
+/>
+
+{/* Visible breadcrumb trail — hidden when hideVisual is true */}
+{!hideVisual && (
+  <nav
+    aria-label="Breadcrumb"
+    class="mb-4 font-mono text-[11px] text-[var(--color-muted)]"
+    data-pagefind-ignore
+  >
+    <ol class="flex flex-wrap items-center gap-1 list-none p-0 m-0">
+      {fullItems.map((item, index) => (
+        <li class="flex items-center gap-1">
+          {index > 0 && (
+            <span class="text-[var(--color-border)]" aria-hidden="true">/</span>
+          )}
+          {item.href ? (
+            <a
+              href={item.href}
+              class="text-[var(--color-muted)] no-underline hover:text-[var(--color-link)] transition-colors"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <span class="text-[var(--color-text)]">{item.label}</span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

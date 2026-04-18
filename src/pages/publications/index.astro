@@ -1,0 +1,354 @@
+---
+/**
+ * publications/index.astro — Publications index (Direction D: framed archive).
+ *
+ * Architecture:
+ *   1. Scope statement — brief framing of what this page contains,
+ *      with prominent external links to Google Scholar, ORCID, and
+ *      a BibTeX download of the full bibliography.
+ *   2. Selected works — 2–4 publications marked `featured = {true}` in
+ *      their BibTeX entry, rendered with richer context (FeaturedPubCard).
+ *      Section is omitted entirely if no publications are marked featured.
+ *   3. Full archive — complete chronological listing grouped by year,
+ *      using the existing PubList/PubCard components.
+ *   4. Type filter — CSS-only radio buttons that narrow the archive
+ *      by publication type (Journal Article, Conference Paper, Preprint,
+ *      Poster, Talk, etc.).
+ *
+ * Data source:
+ *   src/data/bibliography.bib is parsed at build time. Conference
+ *   presentations use `@inproceedings` for papers and `@misc` with
+ *   `type = {poster|talk|invited-talk}` for posters and talks.
+ *   The Selected Works feature is controlled by `featured = {true}`
+ *   on any BibTeX entry; optional `featurednote = {...}` provides
+ *   2–3 sentences of context.
+ *
+ * Single source of truth: everything renders from the one .bib file.
+ * Featured works are not duplicated — they are flagged within the
+ * bibliography and filtered into the top section at build time while
+ * remaining in the full archive below.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import PubList from "@components/PubList.astro";
+import FeaturedPubCard from "@components/FeaturedPubCard.astro";
+import { parseBibliography, splitFeatured, pubTypeLabel } from "@utils/bibtex";
+import type { PubType, Publication } from "@utils/bibtex";
+
+/* ── Load publications ─────────────────────────────────────────── */
+const publications = await parseBibliography();
+const { featured, all } = splitFeatured(publications);
+
+/* ── Filter options: distinct types present in the bibliography ─ */
+const types = [...new Set(publications.map((p) => p.type))].sort() as PubType[];
+
+const count = publications.length;
+
+/* ── Build human-readable type labels for filter chips ─────────── */
+interface FilterOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+const filterOptions: FilterOption[] = types.map((type) => ({
+  value: type,
+  label: pubTypeLabel(type),
+  count: publications.filter((p) => p.type === type).length,
+}));
+---
+
+<PageLayout
+  title="Publications"
+  subtitle={count === 0
+    ? "Research output, preprints, and presentations."
+    : `${count} ${count === 1 ? "publication" : "publications"} — research output, preprints, and presentations.`}
+  activeNav="publications"
+>
+  {/* ═══════ 1. SCOPE + EXTERNAL LINKS ═══════════════════════════ */}
+  <section class="pubs-scope">
+    <p class="pubs-scope-prose">
+      Peer-reviewed papers, preprints, conference presentations, and selected
+      working papers in spectroscopic biomedical optics, inverse algorithms,
+      and computational imaging. The canonical publication record — with
+      citation counts and continuous indexing — lives at Google Scholar
+      and ORCID.
+    </p>
+
+    <div class="pubs-external-links">
+      <a
+        href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="pubs-external-link"
+      >
+        Google Scholar →
+      </a>
+      <a
+        href="https://orcid.org/0009-0007-9290-6289"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="pubs-external-link"
+      >
+        ORCID: 0009-0007-9290-6289 →
+      </a>
+    </div>
+  </section>
+
+  {/* ═══════ 2. SELECTED WORKS (conditional) ═══════════════════════ */}
+  {featured.length > 0 && (
+    <section class="pubs-section">
+      <h2 class="pubs-heading">Selected works</h2>
+      <div class="pubs-featured-list">
+        {featured.map((pub) => (
+          <FeaturedPubCard pub={pub} />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* ═══════ 3. FULL ARCHIVE WITH TYPE FILTER ═══════════════════════ */}
+  <section class="pubs-section">
+    <h2 class="pubs-heading">
+      {featured.length > 0 ? "All publications" : "Publications"}
+    </h2>
+
+    {/* ── Filter UI — CSS-only radio buttons ──────────────────────── */}
+    {count > 0 && types.length > 1 && (
+      <div class="pubs-filter">
+        <fieldset class="pubs-filter-fieldset">
+          <legend class="sr-only">Filter by publication type</legend>
+
+          {/* "All" — checked by default */}
+          <input
+            type="radio"
+            name="pub-type"
+            id="filter-all"
+            value="all"
+            checked
+            class="sr-only"
+          />
+          <label for="filter-all" class="pubs-filter-chip">
+            All ({count})
+          </label>
+
+          {filterOptions.map((opt) => (
+            <>
+              <input
+                type="radio"
+                name="pub-type"
+                id={`filter-${opt.value}`}
+                value={opt.value}
+                class="sr-only"
+              />
+              <label for={`filter-${opt.value}`} class="pubs-filter-chip">
+                {opt.label} ({opt.count})
+              </label>
+            </>
+          ))}
+        </fieldset>
+      </div>
+    )}
+
+    {/* ── Empty state if bibliography has no entries ──────────────── */}
+    {count === 0 ? (
+      <div class="pubs-empty">
+        <p>
+          Publications will appear here once added to the bibliography.
+          In the meantime, see my <a href="/research/" class="pubs-inline-link">research page</a>
+          {" "}for current projects and <a href="/blog/" class="pubs-inline-link">essays</a>
+          {" "}for technical writing.
+        </p>
+      </div>
+    ) : (
+      /* ── Full chronological archive ───────────────────────────── */
+      <PubList publications={all} />
+    )}
+  </section>
+</PageLayout>
+
+<style>
+  /*
+   * ═══════════════════════════════════════════════════════════════
+   * PUBLICATIONS INDEX PAGE
+   *
+   * Structure:
+   *   .pubs-scope       — Top scope paragraph + external links row
+   *   .pubs-section     — Section wrapper (Selected works, Archive)
+   *   .pubs-heading     — Section heading (mono uppercase tracking)
+   *   .pubs-filter      — Type filter chip row
+   *   .pubs-featured    — Container for featured pub cards
+   *
+   * The page inherits the wide-container layout from PageLayout but
+   * constrains content to a narrower column so the citation list
+   * stays scannable (long lines of bibliographic text are unreadable).
+   * ═══════════════════════════════════════════════════════════════
+   */
+
+  /* ─── Constrain content width for readability ─────────────────── */
+  .pubs-scope,
+  .pubs-section {
+    max-width: 820px;
+  }
+
+  /* ─── Scope section ───────────────────────────────────────────── */
+  .pubs-scope {
+    margin-bottom: 3rem;
+  }
+
+  .pubs-scope-prose {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.25rem;
+  }
+
+  .pubs-external-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .pubs-external-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--radius-md, 0.375rem);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .pubs-external-link:hover {
+    border-color: var(--color-accent-border);
+    color: var(--color-accent);
+  }
+
+  /* ─── Section layout ──────────────────────────────────────────── */
+  .pubs-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .pubs-section:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .pubs-heading {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .pubs-featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* ─── Filter chip row ─────────────────────────────────────────── */
+  .pubs-filter {
+    margin-bottom: 1.75rem;
+  }
+
+  .pubs-filter-fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pubs-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+    user-select: none;
+  }
+
+  .pubs-filter-chip:hover {
+    border-color: var(--color-accent-border);
+    color: var(--color-text);
+  }
+
+  input[type="radio"]:checked + .pubs-filter-chip {
+    color: var(--color-accent);
+    border-color: var(--color-accent-border);
+    background-color: var(--color-accent-bg);
+  }
+
+  /*
+   * CSS-only type filtering via :has().
+   * Each .pub-card has data-pagefind-meta="type:xxx".
+   * When a specific type filter is checked, hide non-matching cards.
+   * The "All" option (checked by default) matches every card.
+   *
+   * Progressive enhancement: old browsers without :has() support see
+   * all publications — graceful degradation, no filtering, never broken.
+   */
+  .pubs-filter-fieldset:has(#filter-article:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:article"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-inproceedings:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:inproceedings"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-book:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:book"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-phdthesis:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:phdthesis"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-mastersthesis:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:mastersthesis"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-misc:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:misc"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-incollection:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:incollection"])) {
+    display: none;
+  }
+  .pubs-filter-fieldset:has(#filter-techreport:checked) ~ :global(.pub-list .pub-card:not([data-pagefind-meta*="type:techreport"])) {
+    display: none;
+  }
+
+  /* ─── Empty state (no publications in bibliography.bib) ──────── */
+  .pubs-empty {
+    padding: 2rem 1.25rem;
+    background: var(--color-bg-off);
+    border-radius: var(--radius-md, 0.375rem);
+    font-size: 14px;
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .pubs-empty p {
+    margin: 0;
+  }
+
+  .pubs-inline-link {
+    color: var(--color-link);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .pubs-inline-link:hover {
+    border-bottom-color: var(--color-link);
+  }
+</style>

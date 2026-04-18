@@ -1,0 +1,234 @@
+---
+/**
+ * projects/index.astro — Research project listing with filtering and sorting.
+ *
+ * Filter dimensions:
+ *   - Status: active / completed / archived
+ *   - Tags: all unique tags across published projects
+ *
+ * Sort options:
+ *   - Number (project order) — default
+ *   - Date (newest first)
+ *   - Title (A → Z)
+ *
+ * All filtering is client-side via data attributes.
+ * Uses full-container (1200px) for wider card grid.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ProjectCard from "@components/ProjectCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Project = CollectionEntry<"projects">;
+
+const projects: Project[] = (await getCollection("projects", ({ data }: Project) => data.published))
+  .sort((a: Project, b: Project) => a.data.number.localeCompare(b.data.number));
+
+const allTags = [...new Set(projects.flatMap((p: Project) => p.data.tags))].sort();
+const allStatuses = [...new Set(projects.map((p: Project) => p.data.status))];
+
+const statusLabels: Record<string, string> = {
+  active: "Active",
+  completed: "Completed",
+  archived: "Archived",
+};
+---
+
+<BaseLayout title="Research" activeNav="projects">
+  <div class="full-container py-16">
+    <header class="mb-12 border-b border-[var(--color-border)] pb-8">
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        Research
+      </h1>
+      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed">
+        Research projects and technical work.
+      </p>
+    </header>
+
+    {/* ── Filter bar ──────────────────────────────────────────── */}
+    <div id="project-filters" class="mb-8 space-y-3">
+      {/* Status filter */}
+      {allStatuses.length > 1 && (
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Status</span>
+          <button class="filter-btn active" data-filter="status" data-value="all">All</button>
+          {allStatuses.map((s) => (
+            <button class="filter-btn" data-filter="status" data-value={s}>
+              {statusLabels[s] ?? s}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Tag filter */}
+      {allTags.length > 0 && (
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Topic</span>
+          <button class="filter-btn active" data-filter="tag" data-value="all">All</button>
+          {allTags.map((tag) => (
+            <button class="filter-btn" data-filter="tag" data-value={tag}>{tag}</button>
+          ))}
+        </div>
+      )}
+
+      {/* Sort + result count */}
+      <div class="flex items-center justify-between pt-2">
+        <span id="project-count" class="font-mono text-[11px] text-[var(--color-muted)]">
+          {projects.length} project{projects.length === 1 ? "" : "s"}
+        </span>
+        <select id="project-sort" class="sort-select">
+          <option value="number">Project order</option>
+          <option value="date-desc">Newest first</option>
+          <option value="title-asc">Title A → Z</option>
+        </select>
+      </div>
+    </div>
+
+    {/* ── No results message ────────────────────────────────── */}
+    <p id="project-no-results" class="hidden text-sm text-[var(--color-muted)] py-8 text-center">
+      No projects match the selected filters.
+    </p>
+
+    {/* ── Project grid ──────────────────────────────────────── */}
+    {projects.length === 0 ? (
+      <p class="text-sm text-[var(--color-muted)]">No projects published yet.</p>
+    ) : (
+      <div id="project-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <div
+            class="project-item"
+            data-status={project.data.status}
+            data-tags={project.data.tags.join(",")}
+            data-date={project.data.date.toISOString()}
+            data-title={project.data.title.toLowerCase()}
+            data-number={project.data.number}
+          >
+            <ProjectCard project={project} />
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent-border);
+    color: var(--color-accent);
+  }
+
+  .filter-btn.active {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+  }
+
+  .sort-select {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 28px 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-muted);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.15s ease;
+  }
+
+  .sort-select:hover,
+  .sort-select:focus {
+    border-color: var(--color-accent-border);
+    outline: none;
+  }
+
+  .project-item.filtered-out {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+(function(){
+  var bar = document.getElementById('project-filters');
+  var grid = document.getElementById('project-grid');
+  var countEl = document.getElementById('project-count');
+  var noResults = document.getElementById('project-no-results');
+  var sortSelect = document.getElementById('project-sort');
+  if (!bar || !grid) return;
+
+  var filters = { status: 'all', tag: 'all' };
+
+  function applyFilters() {
+    var items = grid.querySelectorAll('.project-item');
+    var visible = 0;
+
+    items.forEach(function(item) {
+      var statusMatch = filters.status === 'all' || item.dataset.status === filters.status;
+      var tagMatch = filters.tag === 'all' || (item.dataset.tags || '').split(',').indexOf(filters.tag) !== -1;
+      var show = statusMatch && tagMatch;
+      item.classList.toggle('filtered-out', !show);
+      if (show) visible++;
+    });
+
+    if (countEl) {
+      countEl.textContent = visible + ' project' + (visible === 1 ? '' : 's');
+    }
+    if (noResults) {
+      noResults.classList.toggle('hidden', visible > 0);
+    }
+  }
+
+  function applySort() {
+    var value = sortSelect ? sortSelect.value : 'number';
+    var items = Array.from(grid.querySelectorAll('.project-item'));
+
+    items.sort(function(a, b) {
+      if (value === 'number') return a.dataset.number.localeCompare(b.dataset.number);
+      if (value === 'date-desc') return new Date(b.dataset.date) - new Date(a.dataset.date);
+      if (value === 'title-asc') return a.dataset.title.localeCompare(b.dataset.title);
+      return 0;
+    });
+
+    items.forEach(function(item) { grid.appendChild(item); });
+  }
+
+  bar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    var type = btn.dataset.filter;
+    var val = btn.dataset.value;
+    filters[type] = val;
+
+    var row = btn.parentElement;
+    row.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.value === val);
+    });
+
+    applyFilters();
+  });
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      applySort();
+    });
+  }
+})();
+</script>

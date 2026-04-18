@@ -1,0 +1,109 @@
+---
+/**
+ * PubCard.astro — Dense Citation Entry.
+ *
+ * Visual identity: No card container. Pure inline citation formatting:
+ * authors (muted), title (linked, accent color), venue (italic, muted),
+ * year, and inline action links [PDF] [DOI] [arXiv].
+ *
+ * Card variant: None (dense typographic list)
+ * Layout: Stacked entries with 8px spacing, grouped by year in PubList.
+ * Hover: Title link color deepens, row gets faint background highlight.
+ *
+ * Preserves: pagefind search indexing, CSS :has() filtering,
+ * view-transition-name for morphing to detail page.
+ */
+import type { Publication } from "@utils/bibtex";
+import { formatAuthors, pubTypeLabel } from "@utils/bibtex";
+import { siteMetadata } from "@data/meta";
+
+interface Props {
+  pub: Publication;
+  /** Show abstract excerpt (default: false) */
+  showAbstract?: boolean;
+}
+
+const { pub, showAbstract = false } = Astro.props;
+
+const authorHtml = formatAuthors(pub.authors, siteMetadata.name);
+const venue = pub.journal ?? pub.booktitle ?? "";
+
+const venueDetail = [
+  venue,
+  pub.volume ? `${pub.volume}${pub.number ? `(${pub.number})` : ""}` : "",
+  pub.pages ?? "",
+].filter(Boolean).join(", ");
+
+const vtName = `pub-${pub.slug}`;
+---
+
+<div class="pub-card-container">
+  <div
+    class="pub-card pub-entry rounded px-3 py-2 transition-colors hover:bg-[var(--color-bg-off)]"
+    data-pagefind-filter={`year:${pub.year}`}
+    data-pagefind-meta={`type:${pub.type}`}
+    style={`view-transition-name: ${vtName};`}
+  >
+    {/* Hidden data attributes for CSS :has() selectors */}
+    {pub.pdfPath && <data class="has-pdf" hidden value={pub.pdfPath} />}
+    {pub.arxivId && <data class="has-arxiv" hidden value={pub.arxivId} />}
+    {pub.doi && <data class="has-doi" hidden value={pub.doi} />}
+
+    {/* Pagefind keyword filters */}
+    {pub.keywords?.map((kw) => (
+      <data hidden data-pagefind-filter={`keywords:${kw}`} value={kw} />
+    ))}
+
+    {/* Citation entry — single flowing paragraph */}
+    <p class="text-sm leading-relaxed">
+      {/* Authors */}
+      <span class="text-[var(--color-muted)]" set:html={authorHtml} />
+      {" "}
+      {/* Title as link */}
+      <a
+        href={`/publications/${pub.slug}/`}
+        class="font-medium text-[var(--color-link)] no-underline hover:underline hover:underline-offset-2"
+      >
+        {pub.title}.
+      </a>
+      {" "}
+      {/* Venue */}
+      {venueDetail && (
+        <em class="text-[var(--color-muted)]">{venueDetail},</em>
+      )}
+      {" "}
+      <span class="text-[var(--color-muted)]">{pub.year}.</span>
+      {pub.status === "preprint" && (
+        <span class="ml-1 rounded bg-[var(--color-accent-bg)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-accent)]">
+          Preprint
+        </span>
+      )}
+      {pub.status === "under-review" && (
+        <span class="ml-1 rounded bg-[var(--color-bg-off)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
+          Under Review
+        </span>
+      )}
+      {pub.type === "misc" && pub.subtype && (
+        <span class="ml-1 rounded bg-[var(--color-bg-off)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
+          {pubTypeLabel(pub.type, pub.subtype)}
+        </span>
+      )}
+    </p>
+
+    {/* Inline action links */}
+    <div class="mt-1 flex gap-3">
+      {pub.pdfPath && (
+        <a href={pub.pdfPath} class="font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline">[PDF]</a>
+      )}
+      {pub.doi && (
+        <a href={`https://doi.org/${pub.doi}`} class="font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline" target="_blank" rel="noopener noreferrer">[DOI]</a>
+      )}
+      {pub.arxivId && (
+        <a href={`https://arxiv.org/abs/${pub.arxivId}`} class="font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline" target="_blank" rel="noopener noreferrer">[arXiv]</a>
+      )}
+      {pub.codeUrl && (
+        <a href={pub.codeUrl} class="font-mono text-[11px] text-[var(--color-link)] no-underline hover:underline" target="_blank" rel="noopener noreferrer">[Code]</a>
+      )}
+    </div>
+  </div>
+</div>

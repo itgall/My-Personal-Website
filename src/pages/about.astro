@@ -1,0 +1,342 @@
+---
+/**
+ * about.astro — About page (Pattern 1: hero + chronological timeline).
+ *
+ * Architecture:
+ *   Full-width alternating background sections with constrained content width.
+ *   Each <section> spans the full viewport; the inner <.about-inner> constrains
+ *   content to 760px. This eliminates the "narrow column floating in empty space"
+ *   problem on wide screens while keeping reading line length optimal.
+ *
+ * Structure:
+ *   1. Hero — photo, identity, tagline, affiliations, social links
+ *   2. Bio — one concise paragraph of current work (replaces the essay)
+ *   3. Trajectory — reverse-chronological career timeline with institutional detail
+ *   4. Learn more — compact CV / publications / research links row
+ *
+ * This replaces the previous ~320-line essay-style About page which contained
+ * a "Research focus" section, a "Why it matters" section with two long
+ * paragraphs, a "Path" narrative, a "Research direction" callout, a
+ * "Research interests" grid, a "Leadership & community" section with four
+ * sub-sections, a "Trajectory" timeline, and an "Awards" section.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+interface TimelineEntry {
+  period: string;
+  role: string;
+  institution: string;
+  description?: string;
+  current?: boolean;
+  future?: boolean;
+}
+
+const timeline: TimelineEntry[] = [
+  {
+    period: "2027 (target)",
+    role: "PhD program",
+    institution: "MIT / Stanford / Caltech / Harvard SEAS / UMD",
+    description:
+      "Applying for Fall 2027 matriculation in photonics, quantum sensing, and computational imaging — with a focus on correlative OCT–NV-center magnetometry.",
+    future: true,
+  },
+  {
+    period: "2025 — present",
+    role: "Research Engineer",
+    institution: "Wellman Center for Photomedicine · Harvard Medical School · MGH",
+    description:
+      "Spectroscopic intravascular OCT, inverse algorithms, NIR-II photoacoustic unmixing, and computational optical modeling.",
+    current: true,
+  },
+  {
+    period: "2025 — present",
+    role: "Research Affiliate",
+    institution: "Massachusetts Institute of Technology",
+    description:
+      "Correlative measurement frameworks between clinical OCT and quantum sensing modalities.",
+    current: true,
+  },
+  {
+    period: "2024",
+    role: "Deferred MBA admission",
+    institution: "Harvard Business School (2+2 program)",
+    description: "Admitted for matriculation in 2027 or later.",
+  },
+  {
+    period: "2021 — 2024",
+    role: "B.S. Engineering Physics",
+    institution: "Colorado School of Mines · 3.99 GPA",
+    description:
+      "Quantum optics, ultrafast laser systems, cleanroom fabrication, and Bell inequality violation measurements.",
+  },
+];
+---
+
+<BaseLayout title="About" activeNav="about">
+
+  {/* ═══════ HERO: identity, tagline, affiliations, links ═══════════ */}
+  <section class="about-section">
+    <div class="about-inner">
+
+      <div class="flex flex-col gap-8 sm:flex-row sm:items-start">
+        <img
+          src="/images/profile-v2.jpg"
+          alt="Isaac Gallegos"
+          loading="eager"
+          decoding="async"
+          class="w-40 shrink-0 rounded-xl sm:w-44"
+        />
+
+        <div class="flex-1">
+          <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+            Isaac Gallegos
+          </h1>
+          <p class="mt-3 text-[15px] text-[var(--color-text-secondary)]">
+            Research Engineer · Wellman Center for Photomedicine
+          </p>
+          <p class="text-[15px] text-[var(--color-muted)]">
+            Harvard Medical School · Massachusetts General Hospital
+          </p>
+
+          <p class="mt-5 italic text-[17px] leading-[1.55] text-[var(--color-text-secondary)]">
+            I build computational imaging systems that detect disease at the molecular level.
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-2 font-mono text-[11px] text-[var(--color-muted)]">
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1">Harvard Medical School</span>
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1">Wellman Center</span>
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1">MIT (Research Affiliate)</span>
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1">HBS 2+2 (Deferred)</span>
+          </div>
+
+          <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Google Scholar</a>
+            <a href="https://orcid.org/0009-0007-9290-6289" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">ORCID</a>
+            <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">GitHub</a>
+            <a href="https://linkedin.com/in/isaactgallegos" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">LinkedIn</a>
+            <a href="mailto:itgall@mit.edu" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Email</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {/* ═══════ BIO: one concise paragraph ═════════════════════════════ */}
+  <section class="about-section about-section-alt">
+    <div class="about-inner">
+
+      <p class="text-[16px] leading-[1.78] text-[var(--color-text-secondary)]">
+        At the Wellman Center for Photomedicine, I develop spectroscopic optical coherence
+        tomography systems and inverse algorithms for intravascular imaging — extracting
+        tissue optical properties from spectral interference signals to characterize
+        arterial plaque composition in vivo. I also contribute to a NIR-II photoacoustic
+        imaging platform built around a first-of-its-kind all-fiber laser amplifier,
+        developing unmixing algorithms that enable label-free molecular imaging in
+        biological tissue. My work sits at the intersection of photonics, quantum sensing,
+        and computational imaging, and I am preparing to apply for PhD programs for
+        Fall 2027 matriculation.
+      </p>
+
+    </div>
+  </section>
+
+  {/* ═══════ TRAJECTORY: reverse-chronological timeline ═════════════ */}
+  <section class="about-section">
+    <div class="about-inner">
+
+      <h2 class="mb-8 font-mono text-[11px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
+        Trajectory
+      </h2>
+
+      <ol class="timeline">
+        {timeline.map((entry) => (
+          <li class:list={["timeline-entry", entry.future && "timeline-entry-future"]}>
+            <div class="timeline-period font-mono">
+              {entry.period}
+            </div>
+            <div class="timeline-content">
+              <h3 class="timeline-role">
+                {entry.role}
+                {entry.current && <span class="timeline-badge">Current</span>}
+              </h3>
+              <p class="timeline-institution">
+                {entry.institution}
+              </p>
+              {entry.description && (
+                <p class="timeline-description">
+                  {entry.description}
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+    </div>
+  </section>
+
+  {/* ═══════ LEARN MORE: compact link row ═══════════════════════════ */}
+  <section class="about-section about-section-alt">
+    <div class="about-inner">
+
+      <h2 class="mb-5 font-mono text-[11px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
+        Learn more
+      </h2>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="/cv/"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-accent-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent-bg)] no-underline"
+        >
+          View CV →
+        </a>
+        <a
+          href="/publications/"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+        >
+          Publications →
+        </a>
+        <a
+          href="/research/"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+        >
+          Research →
+        </a>
+        <a
+          href="/blog/"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+        >
+          Essays →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /*
+   * ALTERNATING FULL-WIDTH SECTIONS (whitespace management)
+   *
+   * Each <section class="about-section"> spans the full viewport width.
+   * The background color alternates (default / off) to create visual rhythm
+   * between sections. Content is constrained to 760px inside each section
+   * via .about-inner. This technique — the highest-impact whitespace solution
+   * identified in the research — makes the narrow reading column feel
+   * intentional within a larger visual system rather than sparse.
+   */
+  .about-section {
+    padding: 3rem 1.5rem;
+    background: var(--color-bg);
+  }
+
+  .about-section-alt {
+    background: var(--color-bg-off);
+  }
+
+  .about-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .about-section {
+      padding: 4rem 2rem;
+    }
+  }
+
+  /*
+   * TIMELINE
+   *
+   * Two-column grid: fixed-width period column on the left, flexible content
+   * column on the right. A subtle left border on the content column creates
+   * visual rhythm and connects entries into a vertical flow without needing
+   * explicit dots/lines that clutter the layout.
+   *
+   * On mobile, the grid collapses so the period stacks above the content.
+   */
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .timeline-entry {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-entry {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+
+  .timeline-period {
+    font-size: 12px;
+    color: var(--color-muted);
+    padding-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .timeline-content {
+    border-left: 2px solid var(--color-border);
+    padding-left: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-content {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+
+  .timeline-entry-future .timeline-content {
+    border-left-style: dashed;
+    opacity: 0.85;
+  }
+
+  .timeline-role {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+  }
+
+  .timeline-institution {
+    font-size: 13px;
+    color: var(--color-muted);
+    margin: 4px 0 0;
+  }
+
+  .timeline-description {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 10px 0 0;
+    line-height: 1.65;
+  }
+</style>

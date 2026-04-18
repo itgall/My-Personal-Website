@@ -1,0 +1,94 @@
+---
+/**
+ * colophon.astro — How this site is built.
+ *
+ * Documents the technical stack, design decisions, and infrastructure.
+ * Serves multiple purposes:
+ *   - Backlink magnet: web developers share well-documented colophons
+ *   - Technical credibility: demonstrates engineering sophistication
+ *   - KHS signal: shows intellectual curiosity beyond core research
+ *   - Open source contribution: helps others building similar sites
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Colophon"
+  subtitle="How this site is built."
+  activeNav=""
+>
+  <div class="prose max-w-none">
+    <h2>Stack</h2>
+    <p>
+      This site is built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro 6</a>,
+      a content-focused web framework that ships zero JavaScript by default.
+      Pages are statically generated at build time — there is no server, no database,
+      and no client-side rendering for content pages. Interactive components use
+      Astro's Islands architecture: small React components that hydrate independently
+      without a global runtime.
+    </p>
+
+    <h2>Design</h2>
+    <p>
+      Typography uses Inter for both headings and body text at four weights (400/500/600/700),
+      and JetBrains Mono for code. The color palette uses a cool
+      neutral foundation with Rayleigh blue accents. Styling is handled by
+      Tailwind CSS v4 with a CSS-first configuration file (no JavaScript config).
+      The site meets WCAG 2.1 AA contrast requirements on all critical text pairings.
+    </p>
+
+    <h2>Content architecture</h2>
+    <p>
+      Seven content collections (posts, projects, notes, publications, podcast,
+      ventures, teaching) are managed through Astro's Content Layer with Zod-enforced
+      schemas. Eighteen cross-referencing fields create a bidirectional knowledge graph:
+      essays link to projects, projects link to publications, podcast episodes reference
+      related research. Publications are parsed from BibTeX at build time with
+      Highwire Press meta tags for Google Scholar indexation.
+    </p>
+
+    <h2>Typography features</h2>
+    <p>
+      Long-form essays use a two-level grid layout: an outer CSS Grid creates hard
+      boundaries between the content column and a sticky sidebar table of contents,
+      while inner per-element max-width rules create the breakout effect — body text
+      is constrained to 720px for optimal reading (approximately 70 characters per line),
+      while code blocks, figures, and display math expand to 960px. Footnotes use
+      standard GFM syntax with styled references and a footnotes section at the article
+      bottom. The sidebar table of contents with IntersectionObserver active-section
+      highlighting appears on screens wider than 1152px.
+    </p>
+
+    <h2>Digital garden</h2>
+    <p>
+      The notes section follows the digital garden pattern with content maturity badges
+      (seedling, budding, evergreen), wiki-style internal links resolved at build time,
+      and bidirectional backlinks computed across all content collections. A D3-powered
+      research graph visualization shows the connection topology.
+    </p>
+
+    <h2>Search and discovery</h2>
+    <p>
+      Full-text search is powered by <a href="https://pagefind.app" target="_blank" rel="noopener noreferrer">Pagefind</a>,
+      which generates a search index at build time with zero runtime dependencies.
+      Every content type has JSON-LD structured data (BlogPosting, PodcastEpisode,
+      Organization, CreativeWork, Course, ScholarlyArticle). Dynamic Open Graph images
+      are generated at build time using Satori and Sharp with the site's actual fonts.
+    </p>
+
+    <h2>Infrastructure</h2>
+    <p>
+      Hosted on <a href="https://netlify.com" target="_blank" rel="noopener noreferrer">Netlify</a>
+      with automatic deploys from the main branch on GitHub. Build caching persists
+      Astro's content cache and node_modules between deploys. The Content Security Policy
+      restricts script and frame sources to approved domains. The sitemap auto-splits
+      at 1,000 pages.
+    </p>
+
+    <h2>Source</h2>
+    <p>
+      The source code is available at
+      <a href="https://github.com/itgall/advanced-site" target="_blank" rel="noopener noreferrer">github.com/itgall/advanced-site</a>.
+    </p>
+  </div>
+</PageLayout>

@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Structured CV Data — Single source of truth for the /cv/ page.
+# Publications come from bibliography.bib, not here.
+# TODO: Review all entries for accuracy and add any missing items.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: "Isaac Gallegos"
+title: "Research Engineer"
+affiliation: "Wellman Center for Photomedicine, Massachusetts General Hospital / Harvard Medical School"
+email: "itgall@mit.edu"
+website: "https://isaac-gallegos.com"
+orcid: "0009-0007-9290-6289"
+
+research_interests:
+  - Spectroscopic Optical Coherence Tomography
+  - Intravascular Imaging
+  - NIR-II Photoacoustic Imaging
+  - Inverse Algorithms & Computational Optical Modeling
+  - Quantum Sensing & NV-Center Diamond Magnetometry
+  - Physics-Informed Neural Networks
+
+education:
+  - degree: "B.S. Engineering Physics"
+    institution: "Colorado School of Mines"
+    location: "Golden, CO"
+    dates: "2019–2023"
+    gpa: "3.99"
+    honors:
+      - "Summa Cum Laude"  # TODO: verify honors
+
+  - degree: "MBA (Deferred — 2+2 Program)"
+    institution: "Harvard Business School"
+    location: "Boston, MA"
+    dates: "Admitted 2023, Deferred"
+
+experience:
+  - title: "Research Engineer"
+    organization: "Wellman Center for Photomedicine"
+    parent: "Massachusetts General Hospital / Harvard Medical School"
+    location: "Boston, MA"
+    dates: "2023–Present"
+    current: true
+    highlights:
+      - "Developing spectroscopic intravascular OCT methods for quantitative coronary tissue characterization"
+      - "Developed NIR-II photoacoustic imaging with physics-informed neural network reconstruction"
+      - "Built Jones matrix polarization simulation framework for swept-source OCT system design"
+      - "Designed confocal gate optimization models for IV-OCT catheters"
+      - "Implemented inverse algorithms for depth-resolved spectroscopic analysis"
+
+  - title: "Founder"
+    organization: "[Venture Name]"
+    location: "Boston, MA"
+    dates: "2025–Present"
+    current: true
+    highlights:
+      - "Translating photonic sensing research into accessible clinical diagnostic tools"
+      - "Building deep-tech venture grounded in spectroscopic OCT and inverse algorithm research"
+
+skills:
+  - category: "Programming"
+    items: ["Python", "MATLAB", "C++", "TypeScript", "LaTeX"]
+  - category: "ML & Scientific Computing"
+    items: ["PyTorch", "JAX", "Physics-Informed Neural Networks", "Inverse Problem Solvers"]
+  - category: "Optical & Photonic Design"
+    items: ["Zemax OpticStudio", "COMSOL Multiphysics", "SolidWorks", "FPGA Design"]
+  - category: "Fabrication & Instrumentation"
+    items: ["Cleanroom Fabrication", "Optical System Assembly & Alignment", "Laser Systems", "Photodetector Characterization"]
+
+research:
+  - title: "Quantum Optics — Bell Inequality Violation"
+    institution: "Colorado School of Mines"
+    dates: "2022–2023"
+    description: "Designed and validated experimental apparatus for Bell inequality tests using polarization-entangled photon pairs via spontaneous parametric down-conversion."
+
+  - title: "Ultrafast Laser Systems"
+    institution: "Colorado School of Mines"
+    dates: "2021–2022"
+    description: "Designed and constructed a diode-pumped solid-state Pr:YLF laser. Modeled and tested individual design components."
+  # TODO: Add emergent gravity/holography, CMOS neural interfaces, or other projects
+
+teaching:
+  - role: "Teaching Assistant"
+    course: "PHGN 462 — Advanced Optics"
+    institution: "Colorado School of Mines"
+    dates: "Spring 2023"  # TODO: verify semester
+
+  - role: "Teaching Assistant"
+    course: "PHGN 320 — Optics"
+    institution: "Colorado School of Mines"
+    dates: "Fall 2022"  # TODO: verify semester
+
+awards:
+  - title: "Harvard Business School 2+2 Program Admission"
+    institution: "Harvard Business School"
+    dates: "2023"
+  # TODO: Add undergraduate awards/scholarships from Mines
+
+service: []
+talks: []

@@ -1,0 +1,967 @@
+---
+/**
+ * cv.astro — Curriculum Vitae (Pattern 1: hybrid academic).
+ *
+ * Architecture:
+ *   Two-column grid layout matching the essay pages (Option D):
+ *     ┌──────────┬──────────────────────────────────────┐
+ *     │  TOC     │  Header (name, title, contact)       │
+ *     │  sidebar │  Research interests                  │
+ *     │  (left)  │  Education                           │
+ *     │  sticky  │  Experience                          │
+ *     │          │  Research experience                 │
+ *     │  + PDF   │  Publications → /publications/       │
+ *     │  button  │  Teaching                            │
+ *     │  + date  │  Technical skills                    │
+ *     │          │  Awards, service, talks              │
+ *     └──────────┴──────────────────────────────────────┘
+ *
+ *   On narrow screens (<72rem):
+ *     Single column. Download PDF button and compact TOC appear inline
+ *     above the content. Sidebar collapses away.
+ *
+ *   When printed (any media):
+ *     Comprehensive @media print rules hide navigation, footer, and sidebar;
+ *     reset typography to print-optimized sizes; enable proper page break
+ *     control between sections; strip hyperlink styling; and apply US Letter
+ *     page margins. This enables single-source PDF generation via the
+ *     browser's "Save as PDF" function from the same HTML source.
+ *
+ * Data flow:
+ *   src/data/cv.yaml is parsed at build time and rendered into structured
+ *   HTML. Publications count comes from bibliography.bib. Empty sections
+ *   (service, talks) are omitted from both the page and the TOC.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { siteMetadata } from "@data/meta";
+import { parseBibliography } from "@utils/bibtex";
+import yaml from "js-yaml";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+/* ── Type definitions (matches cv.yaml schema) ─────────────────── */
+interface CVSkill { category: string; items: string[]; }
+interface CVEducation { degree: string; institution: string; location?: string; dates: string; gpa?: string; honors?: string[]; }
+interface CVExperience { title: string; organization: string; parent?: string; location?: string; dates: string; current?: boolean; highlights?: string[]; }
+interface CVResearch { title: string; institution: string; dates: string; description: string; }
+interface CVTeaching { role: string; course: string; institution: string; dates: string; }
+interface CVData {
+  name: string;
+  title: string;
+  affiliation: string;
+  email: string;
+  website: string;
+  orcid: string;
+  research_interests: string[];
+  education: CVEducation[];
+  experience: CVExperience[];
+  skills: CVSkill[];
+  research: CVResearch[];
+  teaching: CVTeaching[];
+  awards: Array<{ title: string; institution?: string; dates?: string }>;
+  service: Array<{ role: string; organization: string; dates?: string }>;
+  talks: Array<{ title: string; venue?: string; dates?: string }>;
+}
+
+/* ── Load CV data at build time ───────────────────────────────── */
+const cvPath = resolve("src/data/cv.yaml");
+const cvRaw = readFileSync(cvPath, "utf-8");
+const cv = yaml.load(cvRaw) as CVData;
+
+const pubs = await parseBibliography();
+const pubCount = pubs.length;
+
+/*
+ * Build TOC dynamically from non-empty sections. This keeps the TOC
+ * in sync with the actual content — empty sections never appear in
+ * navigation, preventing broken anchor links.
+ */
+interface TocSection { id: string; label: string; count?: number; }
+const tocSections: TocSection[] = [
+  cv.research_interests.length > 0 && { id: "interests", label: "Research interests" },
+  cv.education.length > 0 && { id: "education", label: "Education" },
+  cv.experience.length > 0 && { id: "experience", label: "Experience" },
+  cv.research.length > 0 && { id: "research", label: "Research experience" },
+  { id: "publications", label: "Publications", count: pubCount },
+  cv.teaching.length > 0 && { id: "teaching", label: "Teaching" },
+  cv.skills.length > 0 && { id: "skills", label: "Technical skills" },
+  cv.awards.length > 0 && { id: "awards", label: "Awards & fellowships" },
+  cv.service.length > 0 && { id: "service", label: "Professional service" },
+  cv.talks.length > 0 && { id: "talks", label: "Selected talks" },
+].filter(Boolean) as TocSection[];
+
+/* ── "Last updated" date: use build time in ISO format ────────── */
+const lastUpdated = new Date().toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+});
+
+/* ── JSON-LD Person schema for SEO ─────────────────────────────── */
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${siteMetadata.siteUrl}/#person`,
+  name: cv.name,
+  givenName: siteMetadata.name.split(" ")[0] ?? "",
+  familyName: siteMetadata.name.split(" ").slice(1).join(" "),
+  url: siteMetadata.siteUrl,
+  email: `mailto:${cv.email}`,
+  jobTitle: cv.title,
+  hasOccupation: {
+    "@type": "Occupation",
+    name: cv.title,
+    occupationalCategory: "Research Engineer",
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: cv.experience?.[0]?.organization ?? siteMetadata.affiliations[0]?.name ?? "Your Institution",
+    parentOrganization: cv.experience?.[0]?.parent ? {
+      "@type": "Organization",
+      name: cv.experience[0].parent,
+    } : undefined,
+  },
+  alumniOf: cv.education.map((edu) => ({
+    "@type": "CollegeOrUniversity",
+    name: edu.institution,
+  })),
+  knowsAbout: siteMetadata.knowsAbout,
+  sameAs: [
+    siteMetadata.contact.linkedin,
+    siteMetadata.contact.github,
+    siteMetadata.contact.googleScholar,
+    `https://orcid.org/${cv.orcid}`,
+  ].filter(Boolean),
+};
+---
+
+<BaseLayout title="Curriculum Vitae" activeNav="cv">
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(personJsonLd)}
+  />
+
+  <article class="cv-article" data-pagefind-body>
+    <div class="cv-grid">
+
+      {/* ═══════ LEFT COLUMN: sticky TOC + PDF button ═══════════════ */}
+      <aside class="cv-sidebar" data-print-hidden>
+        <nav aria-label="Curriculum vitae sections" class="cv-toc-nav">
+          <h2 class="cv-toc-heading">Contents</h2>
+          <ol class="cv-toc-list">
+            {tocSections.map((section) => (
+              <li>
+                <a
+                  href={`#${section.id}`}
+                  class="cv-toc-link"
+                  data-toc-slug={section.id}
+                >
+                  {section.label}
+                  {section.count !== undefined && (
+                    <span class="cv-toc-count">({section.count})</span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <div class="cv-sidebar-actions">
+          <button
+            type="button"
+            onclick="window.print()"
+            class="cv-download-btn"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Save as PDF
+          </button>
+          <p class="cv-sidebar-meta">
+            Updated {lastUpdated}
+          </p>
+          <noscript>
+            <p class="cv-sidebar-meta">
+              Use Ctrl+P / Cmd+P to save as PDF.
+            </p>
+          </noscript>
+        </div>
+      </aside>
+
+      {/* ═══════ RIGHT COLUMN: CV content ═══════════════════════════ */}
+      <div class="cv-main">
+
+        {/* ── Header ──────────────────────────────────────────── */}
+        <header class="cv-header">
+          <h1 class="cv-name">{cv.name}</h1>
+          <p class="cv-title-line">{cv.title}</p>
+          <p class="cv-affiliation">{cv.affiliation}</p>
+          <p class="cv-contact">
+            <a href={`mailto:${cv.email}`} class="cv-contact-link">{cv.email}</a>
+            <span class="cv-contact-sep">·</span>
+            <a href={cv.website} class="cv-contact-link">{cv.website.replace("https://", "")}</a>
+            <span class="cv-contact-sep">·</span>
+            <a href={`https://orcid.org/${cv.orcid}`} class="cv-contact-link">ORCID: {cv.orcid}</a>
+          </p>
+
+          {/* Mobile-only PDF button (sidebar is hidden on narrow screens) */}
+          <div class="cv-header-actions" data-print-hidden>
+            <button
+              type="button"
+              onclick="window.print()"
+              class="cv-download-btn-mobile"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Save as PDF
+            </button>
+          </div>
+        </header>
+
+        {/* ── Research interests ──────────────────────────────── */}
+        {cv.research_interests.length > 0 && (
+          <section id="interests" class="cv-section">
+            <h2 class="cv-heading">Research interests</h2>
+            <p class="cv-interests">
+              {cv.research_interests.join(" · ")}
+            </p>
+          </section>
+        )}
+
+        {/* ── Education ───────────────────────────────────────── */}
+        {cv.education.length > 0 && (
+          <section id="education" class="cv-section">
+            <h2 class="cv-heading">Education</h2>
+            {cv.education.map((edu) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{edu.degree}</span>
+                    <span class="cv-entry-org">{edu.institution}</span>
+                    {edu.location && <span class="cv-entry-detail">{edu.location}</span>}
+                  </div>
+                  <span class="cv-entry-dates">{edu.dates}</span>
+                </div>
+                {edu.gpa && <p class="cv-entry-detail">GPA: {edu.gpa}</p>}
+                {edu.honors && edu.honors.length > 0 && (
+                  <p class="cv-entry-detail">{edu.honors.join(", ")}</p>
+                )}
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Experience ──────────────────────────────────────── */}
+        {cv.experience.length > 0 && (
+          <section id="experience" class="cv-section">
+            <h2 class="cv-heading">Experience</h2>
+            {cv.experience.map((exp) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{exp.title}</span>
+                    <span class="cv-entry-org">
+                      {exp.organization}
+                      {exp.parent && `, ${exp.parent}`}
+                    </span>
+                    {exp.location && <span class="cv-entry-detail">{exp.location}</span>}
+                  </div>
+                  <span class="cv-entry-dates">{exp.dates}</span>
+                </div>
+                {exp.highlights && exp.highlights.length > 0 && (
+                  <ul class="cv-highlights">
+                    {exp.highlights.map((h) => (
+                      <li>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Research experience ─────────────────────────────── */}
+        {cv.research && cv.research.length > 0 && (
+          <section id="research" class="cv-section">
+            <h2 class="cv-heading">Research experience</h2>
+            {cv.research.map((r) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{r.title}</span>
+                    <span class="cv-entry-org">{r.institution}</span>
+                  </div>
+                  <span class="cv-entry-dates">{r.dates}</span>
+                </div>
+                <p class="cv-entry-detail">{r.description}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Publications ────────────────────────────────────── */}
+        <section id="publications" class="cv-section">
+          <h2 class="cv-heading">Publications</h2>
+          <p class="cv-entry-detail">
+            {pubCount} publication{pubCount !== 1 ? "s" : ""}.{" "}
+            <a
+              href="/publications/"
+              class="cv-inline-link"
+            >
+              View all →
+            </a>
+          </p>
+        </section>
+
+        {/* ── Teaching ────────────────────────────────────────── */}
+        {cv.teaching && cv.teaching.length > 0 && (
+          <section id="teaching" class="cv-section">
+            <h2 class="cv-heading">Teaching</h2>
+            {cv.teaching.map((t) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{t.role}</span>
+                    <span class="cv-entry-org">{t.course}, {t.institution}</span>
+                  </div>
+                  <span class="cv-entry-dates">{t.dates}</span>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Technical skills ────────────────────────────────── */}
+        {cv.skills.length > 0 && (
+          <section id="skills" class="cv-section">
+            <h2 class="cv-heading">Technical skills</h2>
+            {cv.skills.map((group) => (
+              <p class="cv-skills-line">
+                <strong class="cv-skills-category">{group.category}:</strong>{" "}
+                {group.items.join(", ")}
+              </p>
+            ))}
+          </section>
+        )}
+
+        {/* ── Awards ──────────────────────────────────────────── */}
+        {cv.awards && cv.awards.length > 0 && (
+          <section id="awards" class="cv-section">
+            <h2 class="cv-heading">Awards & fellowships</h2>
+            {cv.awards.map((a) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{a.title}</span>
+                    {a.institution && <span class="cv-entry-org">{a.institution}</span>}
+                  </div>
+                  {a.dates && <span class="cv-entry-dates">{a.dates}</span>}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Service ─────────────────────────────────────────── */}
+        {cv.service && cv.service.length > 0 && (
+          <section id="service" class="cv-section">
+            <h2 class="cv-heading">Professional service</h2>
+            {cv.service.map((s) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{s.role}</span>
+                    <span class="cv-entry-org">{s.organization}</span>
+                  </div>
+                  {s.dates && <span class="cv-entry-dates">{s.dates}</span>}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── Talks ───────────────────────────────────────────── */}
+        {cv.talks && cv.talks.length > 0 && (
+          <section id="talks" class="cv-section">
+            <h2 class="cv-heading">Selected talks</h2>
+            {cv.talks.map((t) => (
+              <div class="cv-entry">
+                <div class="cv-entry-header">
+                  <div>
+                    <span class="cv-entry-title">{t.title}</span>
+                    {t.venue && <span class="cv-entry-org">{t.venue}</span>}
+                  </div>
+                  {t.dates && <span class="cv-entry-dates">{t.dates}</span>}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /*
+   * ═══════════════════════════════════════════════════════════════════
+   * CV PAGE LAYOUT — Pattern 1 (hybrid academic)
+   * ═══════════════════════════════════════════════════════════════════
+   */
+
+  .cv-article {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  /* ─── Two-column grid: sidebar + content ──────────────────────── */
+  .cv-grid {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    align-items: start;
+  }
+
+  /* ─── Left column: sticky sidebar (wide screens only) ─────────── */
+  .cv-sidebar {
+    position: sticky;
+    top: 5rem;
+    display: none;
+  }
+
+  @media (min-width: 72rem) {
+    .cv-sidebar {
+      display: block;
+    }
+  }
+
+  /* ─── Responsive: single column on narrow screens ─────────────── */
+  @media (max-width: 71.999rem) {
+    .cv-grid {
+      grid-template-columns: 1fr;
+      max-width: 760px;
+      gap: 0;
+    }
+  }
+
+  /* ─── Right column: main content ──────────────────────────────── */
+  .cv-main {
+    min-width: 0;
+  }
+
+  /* Constrain all direct children of cv-main to content width */
+  .cv-main > * {
+    max-width: 760px;
+  }
+
+  /*
+   * ═══════════════════════════════════════════════════════════════════
+   * SIDEBAR: TABLE OF CONTENTS + ACTIONS
+   * ═══════════════════════════════════════════════════════════════════
+   */
+
+  .cv-toc-heading {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .cv-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+  }
+
+  .cv-toc-list li {
+    margin: 0;
+  }
+
+  .cv-toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    font-size: 12px;
+    color: var(--color-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    line-height: 1.4;
+  }
+
+  .cv-toc-link:hover {
+    color: var(--color-text);
+    border-left-color: var(--color-border);
+  }
+
+  .cv-toc-link.active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+  }
+
+  .cv-toc-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+    opacity: 0.7;
+  }
+
+  /* ─── Sidebar actions: PDF button + meta ──────────────────────── */
+  .cv-sidebar-actions {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cv-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-md, 0.375rem);
+    border: 1px solid var(--color-accent-border);
+    background: transparent;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .cv-download-btn:hover {
+    background: var(--color-accent-bg);
+  }
+
+  .cv-sidebar-meta {
+    margin: 0.875rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-muted);
+  }
+
+  /* ─── Mobile PDF button (hidden on wide screens) ──────────────── */
+  .cv-download-btn-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    border-radius: var(--radius-md, 0.375rem);
+    border: 1px solid var(--color-accent-border);
+    background: transparent;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .cv-download-btn-mobile:hover {
+    background: var(--color-accent-bg);
+  }
+
+  @media (min-width: 72rem) {
+    .cv-header-actions {
+      display: none;
+    }
+  }
+
+  /*
+   * ═══════════════════════════════════════════════════════════════════
+   * MAIN CONTENT: HEADER AND SECTIONS
+   * ═══════════════════════════════════════════════════════════════════
+   */
+
+  .cv-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cv-name {
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .cv-name {
+      font-size: 2.25rem;
+    }
+  }
+
+  .cv-title-line {
+    margin: 0.5rem 0 0.125rem;
+    font-size: 15px;
+    color: var(--color-text-secondary);
+  }
+
+  .cv-affiliation {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-muted);
+  }
+
+  .cv-contact {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-muted);
+    line-height: 1.6;
+  }
+
+  .cv-contact-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .cv-contact-link:hover {
+    color: var(--color-accent);
+  }
+
+  .cv-contact-sep {
+    margin: 0 0.5rem;
+    color: var(--color-border);
+  }
+
+  /* ─── Section heading ─────────────────────────────────────────── */
+  .cv-section {
+    margin-bottom: 2.25rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .cv-heading {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  /* ─── CV entries ──────────────────────────────────────────────── */
+  .cv-entry {
+    margin-bottom: 1rem;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cv-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .cv-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .cv-entry-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  .cv-entry-org {
+    display: block;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin-top: 1px;
+  }
+
+  .cv-entry-dates {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .cv-entry-detail {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.55;
+    margin: 0.25rem 0 0;
+  }
+
+  .cv-interests {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .cv-skills-line {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 0.625rem;
+  }
+
+  .cv-skills-line:last-child {
+    margin-bottom: 0;
+  }
+
+  .cv-skills-category {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .cv-inline-link {
+    color: var(--color-link);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cv-inline-link:hover {
+    color: var(--color-link-hover);
+    border-bottom-color: var(--color-link-hover);
+  }
+
+  .cv-highlights {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0.375rem 0 0;
+  }
+
+  .cv-highlights li {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin-bottom: 0.125rem;
+  }
+
+  .cv-highlights li::marker {
+    color: var(--color-muted);
+  }
+
+  /*
+   * ═══════════════════════════════════════════════════════════════════
+   * PRINT STYLES — Single-source PDF generation from HTML
+   * ═══════════════════════════════════════════════════════════════════
+   *
+   * When the user clicks "Save as PDF" (which calls window.print()), or
+   * invokes the browser's print function directly, these rules produce
+   * a properly formatted print/PDF output from the same HTML source.
+   *
+   * Strategy:
+   *   1. Hide everything that is not CV content (nav, footer, sidebar,
+   *      theme toggle, any [data-print-hidden] elements)
+   *   2. Reset the layout to a single column with proper page margins
+   *   3. Scale typography to print-friendly sizes (points, not rems)
+   *   4. Use page-break controls to keep entries together where possible
+   *   5. Convert colored text to high-contrast near-black for legibility
+   *   6. Strip hyperlink underlines (URLs remain as text)
+   */
+  @media print {
+    /* Page setup: US Letter with 0.5" side margins, 0.65" top/bottom */
+    @page {
+      size: letter;
+      margin: 0.65in 0.55in;
+    }
+
+    /* Hide all navigation, footer, sidebar, and explicitly marked elements */
+    :global(nav),
+    :global(footer),
+    :global(.mobile-nav),
+    :global([data-print-hidden]),
+    .cv-sidebar,
+    .cv-header-actions {
+      display: none !important;
+    }
+
+    /* Reset page background and colors for print */
+    :global(body),
+    :global(html) {
+      background: white !important;
+      color: black !important;
+      font-size: 10pt;
+      line-height: 1.4;
+    }
+
+    /* Reset grid layout to single column, remove width constraints */
+    .cv-article {
+      padding: 0 !important;
+    }
+
+    .cv-grid {
+      display: block !important;
+      max-width: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .cv-main {
+      max-width: none !important;
+    }
+
+    .cv-main > * {
+      max-width: none !important;
+    }
+
+    /* Typography for print */
+    .cv-name {
+      font-size: 20pt;
+      color: black !important;
+    }
+
+    .cv-title-line {
+      font-size: 11pt;
+      color: black !important;
+      margin-top: 0.15rem;
+    }
+
+    .cv-affiliation {
+      font-size: 10pt;
+      color: #333 !important;
+    }
+
+    .cv-contact {
+      font-size: 9pt;
+      color: #333 !important;
+      margin-top: 0.3rem;
+    }
+
+    .cv-contact-link {
+      color: #333 !important;
+    }
+
+    .cv-contact-sep {
+      color: #888 !important;
+    }
+
+    .cv-header {
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom-color: #000 !important;
+    }
+
+    .cv-heading {
+      font-size: 10pt;
+      color: #000 !important;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.375rem;
+      padding-bottom: 0.15rem;
+      border-bottom: 0.5pt solid #666 !important;
+      page-break-after: avoid;
+    }
+
+    .cv-section {
+      margin-bottom: 1rem;
+      page-break-inside: auto;
+    }
+
+    .cv-entry {
+      margin-bottom: 0.4rem;
+      page-break-inside: avoid;
+    }
+
+    .cv-entry-title {
+      font-size: 10.5pt;
+      color: black !important;
+    }
+
+    .cv-entry-org {
+      font-size: 10pt;
+      color: #222 !important;
+    }
+
+    .cv-entry-dates {
+      font-size: 9pt;
+      color: #444 !important;
+    }
+
+    .cv-entry-detail {
+      font-size: 9.5pt;
+      color: #333 !important;
+    }
+
+    .cv-interests,
+    .cv-skills-line {
+      font-size: 10pt;
+      color: #222 !important;
+    }
+
+    .cv-skills-category {
+      color: black !important;
+    }
+
+    .cv-highlights li {
+      font-size: 9.5pt;
+      color: #222 !important;
+    }
+
+    .cv-inline-link {
+      color: #000 !important;
+      text-decoration: none !important;
+      border-bottom: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+/*
+ * TOC active-section highlighting via IntersectionObserver.
+ * Matches the behavior of the essay-page TOC for consistency.
+ * Only activates when the sidebar is visible (≥72rem / 1152px).
+ */
+(function() {
+  if (window.innerWidth < 1152) return;
+
+  var links = document.querySelectorAll(".cv-toc-link[data-toc-slug]");
+  if (!links.length) return;
+
+  var sections = [];
+  links.forEach(function(link) {
+    var slug = link.dataset.tocSlug;
+    var el = document.getElementById(slug);
+    if (el) sections.push({ el: el, link: link });
+  });
+
+  if (!sections.length) return;
+
+  var currentActive = null;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (currentActive) currentActive.classList.remove("active");
+        var match = sections.find(function(s) { return s.el === entry.target; });
+        if (match) {
+          match.link.classList.add("active");
+          currentActive = match.link;
+        }
+      }
+    });
+  }, {
+    rootMargin: "-80px 0px -70% 0px",
+    threshold: 0,
+  });
+
+  sections.forEach(function(s) { observer.observe(s.el); });
+})();
+</script>

@@ -1,0 +1,75 @@
+---
+/**
+ * Footer.astro — Institutional footer with complete site map.
+ *
+ * Three rows:
+ *   1. Name/affiliation left, contact links right
+ *   2. Site map — all pages, matching the three-tier nav architecture
+ *   3. Disclaimer + copyright + attribution
+ */
+import { siteMetadata } from "@data/meta";
+import { footerNav } from "@data/navigation";
+
+const currentYear = new Date().getFullYear();
+
+const contactLinks = [
+  { label: "itgall@mit.edu", href: "mailto:itgall@mit.edu", external: false },
+  { label: "LinkedIn", href: siteMetadata.contact.linkedin, external: true },
+  { label: "GitHub", href: siteMetadata.contact.github, external: true },
+  { label: "ORCID", href: `https://orcid.org/${siteMetadata.contact.orcid}`, external: true },
+];
+---
+
+<footer class="mt-24 border-t border-[var(--color-border)] print:hidden" role="contentinfo" data-pagefind-ignore>
+  <div class="full-container py-12">
+
+    {/* Top row: name/affiliation left, links right */}
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div>
+        <p class="text-sm font-medium text-[var(--color-text)]">
+          Isaac Gallegos
+        </p>
+        <p class="mt-1 text-xs text-[var(--color-muted)]">
+          Harvard Medical School · Wellman Center for Photomedicine · MIT
+        </p>
+      </div>
+      <div class="flex items-center gap-5">
+        {contactLinks.map((link) => (
+          <a
+            href={link.href}
+            target={link.external ? "_blank" : undefined}
+            rel={link.external ? "noopener noreferrer" : undefined}
+            class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* Site map */}
+    <div class="mt-8 flex flex-wrap gap-x-5 gap-y-1.5">
+      {footerNav.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener noreferrer" : undefined}
+          class="font-mono text-[11px] text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    {/* Disclaimer */}
+    <p class="mt-8 max-w-xl text-xs text-[var(--color-muted)] leading-relaxed opacity-60">
+      This is a personal website. Views expressed here are my own and do not represent Harvard Medical School, Massachusetts General Hospital, MIT, or any affiliated institution.
+    </p>
+
+    {/* Copyright + attribution */}
+    <p class="mt-3 text-xs text-[var(--color-muted)] opacity-40">
+      © {currentYear} Isaac Gallegos · Designed and coded by hand
+    </p>
+
+  </div>
+</footer>

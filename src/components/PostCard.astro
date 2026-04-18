@@ -1,0 +1,84 @@
+---
+/**
+ * PostCard.astro — Blog post card with category and reading time.
+ *
+ * Visual identity: Outlined card (1px border, white background, 8px radius)
+ * with category tag, reading time, date, title, and description excerpt.
+ *
+ * Card variant: Outlined (border, no shadow)
+ * Layout: Single-column stacked list on blog index and homepage.
+ * Hover: Border shifts to accent color.
+ */
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "@utils/dates";
+import { calculateReadingTime } from "@utils/readingTime";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  /** Whether to render tag chips below the description (default: true) */
+  showTags?: boolean;
+}
+
+const { post, showTags = true } = Astro.props;
+const { title, date, category, description, readingTime } = post.data;
+const tags: string[] = post.data.tags;
+
+const displayReadingTime = readingTime ?? calculateReadingTime(post.body ?? "");
+
+const categoryLabels: Record<string, string> = {
+  technical: "Technical Note",
+  thesis: "Thesis",
+  essay: "Essay",
+  dispatch: "Dispatch",
+  "build-log": "Build Log",
+};
+
+/** Category color: terracotta for technical/thesis, slate for essays/dispatches */
+const isTechnical = ["technical", "thesis", "build-log"].includes(category);
+---
+
+<article
+  class="post-card rounded-lg border border-[var(--color-border)] border-l-2 border-l-transparent bg-[var(--color-surface)] px-4 py-3 transition-all duration-200 hover:border-l-[var(--color-accent)] hover:bg-[var(--color-accent-bg)]"
+>
+  <a href={`/blog/${post.id}/`} class="block no-underline">
+    {/* Top row: category tag + reading time + date */}
+    <div class="flex items-center gap-2 text-xs">
+      <span
+        class:list={[
+          "rounded px-1.5 py-0.5 font-mono text-[10px]",
+          isTechnical
+            ? "bg-[var(--color-accent-bg)] text-[var(--color-accent)]"
+            : "bg-[var(--color-bg-off)] text-[var(--color-muted)]",
+        ]}
+      >
+        {categoryLabels[category] ?? category}
+      </span>
+      <span class="font-mono text-[11px] text-[var(--color-muted)]">{displayReadingTime}</span>
+      <span class="ml-auto font-mono text-[11px] text-[var(--color-muted)]">{formatDate(date)}</span>
+    </div>
+
+    {/* Title */}
+    <h3 class="mt-2 text-sm font-medium leading-snug text-[var(--color-text)]">{title}</h3>
+
+    {/* Description */}
+    {description && (
+      <p class="mt-1.5 text-xs leading-relaxed text-[var(--color-muted)] line-clamp-2">
+        {description}
+      </p>
+    )}
+  </a>
+
+  {/* Tag chips — only rendered when showTags is true */}
+  {showTags && tags.length > 0 && (
+    <div class="mt-2.5 flex flex-wrap gap-1.5">
+      {tags.map((tag) => (
+        <a
+          href={`/blog/tags/${tag}/`}
+          class="rounded-full border border-[var(--color-border)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+        >
+          {tag}
+        </a>
+      ))}
+    </div>
+  )}
+</article>

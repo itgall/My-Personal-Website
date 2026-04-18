@@ -1,0 +1,120 @@
+/**
+ * sidenote.css — Footnote styles + stale cache defense.
+ *
+ * Footnotes are handled by Astro's built-in GFM support (remark-gfm).
+ * No custom rehype plugin is needed. Standard [^1] markdown syntax produces:
+ *   - Inline: <sup><a href="#user-content-fn-1" data-footnote-ref>1</a></sup>
+ *   - Section: <section data-footnotes class="footnotes">...</section>
+ *
+ * This file styles the default GFM footnote output and provides defense
+ * rules to hide any stale sidenote/popover elements from cached builds.
+ */
+
+/* ── Screen-reader-only utility ──────────────────────────────────────────
+ * Required because GFM footnotes inject <h2 class="sr-only">Footnotes</h2>.
+ * Without this class, the heading renders as a visible element.
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Footnotes section at the bottom of articles ─────────────────────── */
+
+section[data-footnotes] {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+section[data-footnotes] ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0 0;
+  list-style-type: decimal;
+}
+
+section[data-footnotes] li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+section[data-footnotes] li p {
+  margin: 0;
+  display: inline;
+}
+
+section[data-footnotes] li:target {
+  background: var(--color-accent-bg);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem;
+  margin: -0.25rem;
+}
+
+/* ── Inline superscript references ───────────────────────────────────── */
+
+[data-footnote-ref] {
+  font-size: 0.75em;
+  text-decoration: none;
+  color: var(--color-accent);
+  font-weight: 600;
+  vertical-align: super;
+  line-height: 0;
+}
+
+[data-footnote-ref]:hover {
+  text-decoration: underline;
+  color: var(--color-link-hover);
+}
+
+/* ── Back-reference arrows ───────────────────────────────────────────── */
+
+.data-footnote-backref {
+  text-decoration: none;
+  margin-left: 0.25em;
+  color: var(--color-accent);
+  font-size: 0.85em;
+}
+
+.data-footnote-backref:hover {
+  color: var(--color-link-hover);
+}
+
+/* ── Defense — hide stale sidenote/popover elements from cached builds ─
+ * Previous builds may have cached HTML containing <span class="sidenote">
+ * and <div class="sidenote-popover"> elements. These rules ensure they
+ * are hidden even if stale cached HTML is served.
+ */
+
+.sidenote {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sidenote-popover {
+  display: none !important;
+}
+
+.sidenote-toggle {
+  /* If stale cached HTML has toggle labels, make them look like
+     standard superscript footnote references */
+  cursor: default;
+}
+
+.sidenote-fallback {
+  display: none !important;
+}

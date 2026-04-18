@@ -1,0 +1,80 @@
+---
+/**
+ * contact.astro — Minimal contact page.
+ *
+ * Uses BaseLayout with prose-container (720px) to right-size
+ * the minimal content. No forms, no cards, no over-engineering.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { siteMetadata } from "@data/meta";
+---
+
+<BaseLayout title="Contact" activeNav="contact">
+  <div class="prose-container py-16">
+
+    <header class="mb-12 border-b border-[var(--color-border)] pb-8">
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        Contact
+      </h1>
+      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed">
+        The best way to reach me is by email.
+      </p>
+    </header>
+
+    {/* Email — prominent, direct */}
+    <a
+      href={`mailto:${siteMetadata.contact.professionalEmail}`}
+      class="text-lg font-medium text-[var(--color-link)] hover:underline hover:underline-offset-2 transition-colors no-underline"
+    >
+      {siteMetadata.contact.professionalEmail}
+    </a>
+
+    <p class="mt-3 text-sm text-[var(--color-muted)]">
+      Research Engineer · Wellman Center for Photomedicine · Harvard Medical School
+    </p>
+
+    {/* Profile links — simple row */}
+    <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      <a
+        href={siteMetadata.contact.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+      >
+        LinkedIn
+      </a>
+      <a
+        href={siteMetadata.contact.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+      >
+        GitHub
+      </a>
+      <a
+        href={`https://orcid.org/${siteMetadata.contact.orcid}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+      >
+        ORCID
+      </a>
+      {siteMetadata.contact.googleScholar && (
+        <a
+          href={siteMetadata.contact.googleScholar}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+        >
+          Google Scholar
+        </a>
+      )}
+    </div>
+
+    {/* Availability */}
+    <p class="mt-8 text-sm text-[var(--color-muted)] italic">
+      I typically respond within 2–3 business days.
+    </p>
+
+  </div>
+</BaseLayout>

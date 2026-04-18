@@ -1,0 +1,360 @@
+---
+/**
+ * PostLayout.astro — Essay / blog post layout.
+ *
+ * Option D architecture: left TOC sidebar, all content in the right column.
+ *
+ * Layout structure:
+ *   On wide screens (≥72rem):
+ *     ┌──────────┬──────────────────────────────────────┐
+ *     │  TOC     │  Header (title, date, tags)          │
+ *     │  sidebar │  Body (prose with breakout)           │
+ *     │  (left)  │  Footnotes                            │
+ *     │  sticky  │  Citation block                       │
+ *     │          │  Related content / backlinks           │
+ *     └──────────┴──────────────────────────────────────┘
+ *
+ *   On narrow screens (<72rem):
+ *     Single column. Mobile collapsible TOC appears inline
+ *     above the article body. Sidebar TOC is hidden.
+ *
+ * Alignment guarantee: The header, body, footnotes, citation block,
+ * and related content ALL live in the same grid column. They are
+ * guaranteed to align perfectly because they share a single container.
+ * There is no separate centering context that could fall out of sync.
+ *
+ * Content breakout: Inside the content column, per-element max-width
+ * creates the visual breakout effect. Prose text is constrained to
+ * var(--spacing-content) (720px), while code blocks expand to
+ * min(var(--spacing-wide), 100%) (960px or the column width).
+ */
+import BaseLayout from "./BaseLayout.astro";
+import TOC from "@components/TOC.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import CiteBlock from "@components/CiteBlock.astro";
+import Backlinks from "@components/Backlinks.astro";
+import SEO from "@components/SEO.astro";
+import { formatDate } from "@utils/dates";
+import { getBacklinksForUrl } from "@utils/backlinks";
+import { parseBibliography } from "@utils/bibtex";
+import PubCard from "@components/PubCard.astro";
+import { features } from "@data/settings";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  headings?: Heading[];
+}
+
+const { post, headings = [] } = Astro.props;
+const { title, date, category, description, readingTime, updatedDate } = post.data;
+const tags: string[] = post.data.tags;
+
+const pageUrl = `/blog/${post.id}/`;
+const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
+
+/* ── Cross-references ──────────────────────────────────────────── */
+const relProjectSlugs = post.data.relatedProjects ?? [];
+const relPubKeys = post.data.relatedPublications ?? [];
+const relEpisodeSlugs = post.data.relatedEpisodes ?? [];
+
+const linkedProjects = relProjectSlugs.length > 0
+  ? (await getCollection("projects")).filter((p) => relProjectSlugs.includes(p.id))
+  : [];
+
+const linkedPubs = relPubKeys.length > 0
+  ? (await parseBibliography()).filter((p) => relPubKeys.includes(p.key))
+  : [];
+
+const linkedEpisodes = relEpisodeSlugs.length > 0
+  ? (await getCollection("podcast")).filter((e) => relEpisodeSlugs.includes(e.id) && e.data.published)
+  : [];
+
+const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedEpisodes.length > 0;
+const hasFooter = hasRelated || (features.backlinks && backlinks.length > 0);
+
+/* ── TOC headings — exclude GFM "Footnotes" heading ───────────── */
+const tocHeadings = headings.filter(
+  (h) => (h.depth === 2 || h.depth === 3) && h.slug !== "footnote-label"
+);
+const hasToc = features.tableOfContents && tocHeadings.length > 0;
+---
+
+<BaseLayout title={title} description={description} activeNav="blog" ogImage={`/og/blog/${post.id}.png`}>
+  <SEO
+    slot="head"
+    pageType="post"
+    title={title}
+    description={description}
+    url={pageUrl}
+    datePublished={date.toISOString()}
+    dateModified={updatedDate ? updatedDate.toISOString() : date.toISOString()}
+    tags={tags}
+    category={category}
+  />
+
+  <article class="py-12" data-pagefind-body>
+    <div class={hasToc ? "essay-grid" : "essay-solo"}>
+
+      {/* ─── Left column: TOC sidebar (wide screens only) ─────── */}
+      {hasToc && (
+        <aside class="essay-toc">
+          <TOC headings={tocHeadings} />
+        </aside>
+      )}
+
+      {/* ─── Right column: everything else ────────────────────── */}
+      <div class="essay-main">
+
+        {/* ── Header ──────────────────────────────────────────── */}
+        <header class="mb-10">
+          <Breadcrumbs items={[
+            { label: "Essays", href: "/blog/" },
+            { label: title }
+          ]} />
+          <h1 class="text-3xl font-bold tracking-tight md:text-4xl leading-tight" data-pagefind-meta="title">
+            {title}
+          </h1>
+          <data hidden data-pagefind-filter={`year:${date.getFullYear()}`} />
+          <data hidden data-pagefind-filter={`type:${category}`} />
+          <div class="mt-4 flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-muted)]">
+            <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            {updatedDate && (
+              <>
+                <span class="text-[var(--color-border)]">·</span>
+                <span>Updated {formatDate(updatedDate)}</span>
+              </>
+            )}
+            <span class="text-[var(--color-border)]">·</span>
+            <span class="rounded-sm bg-[var(--color-accent-bg)] px-2 py-0.5 text-[var(--color-accent)]">
+              {category}
+            </span>
+            {readingTime && (
+              <>
+                <span class="text-[var(--color-border)]">·</span>
+                <span>{readingTime}</span>
+              </>
+            )}
+          </div>
+          {tags.length > 0 && (
+            <div class="mt-3 flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <a
+                  href={`/blog/tags/${tag}/`}
+                  class="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)] hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+                  data-pagefind-filter={`tag:${tag}`}
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* ── Mobile TOC (narrow screens only) ────────────────── */}
+        {hasToc && (
+          <div class="essay-toc-mobile">
+            <TOC headings={tocHeadings} />
+          </div>
+        )}
+
+        {/* ── Article body ────────────────────────────────────── */}
+        <div class="essay-body prose">
+          <slot />
+        </div>
+
+        {/* ── Footer: citation, related content, backlinks ────── */}
+        <CiteBlock title={title} slug={post.id} date={date} />
+
+        {hasFooter && (
+          <footer class="essay-footer">
+            {hasRelated && (
+              <section class="mt-12 border-t border-[var(--color-border)] pt-8">
+                <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+                  Related content
+                </h2>
+                <div class="space-y-6">
+                  {linkedProjects.length > 0 && (
+                    <div>
+                      <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Research projects</h3>
+                      <div class="space-y-2">
+                        {linkedProjects.map((proj) => (
+                          <a href={`/projects/${proj.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                            {proj.data.title}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {linkedPubs.length > 0 && (
+                    <div>
+                      <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Publications</h3>
+                      <div class="space-y-3">
+                        {linkedPubs.map((pub) => (
+                          <PubCard pub={pub} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {linkedEpisodes.length > 0 && (
+                    <div>
+                      <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Podcast episodes</h3>
+                      <div class="space-y-2">
+                        {linkedEpisodes.map((ep) => (
+                          <a href={`/podcast/${ep.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                            {ep.data.title}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {features.backlinks && backlinks.length > 0 && (
+              <Backlinks backlinks={backlinks.map((b) => ({ title: b.sourceTitle, url: b.sourceUrl, context: b.context }))} />
+            )}
+          </footer>
+        )}
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /*
+   * OPTION D: LEFT TOC SIDEBAR
+   *
+   * Two-column grid: TOC on the left, all content on the right.
+   * Everything — header, body, footnotes, citation, backlinks —
+   * shares the right column, guaranteeing perfect alignment.
+   *
+   * On narrow screens (<72rem), the grid collapses to a single column.
+   * The sidebar TOC is hidden and replaced by a mobile collapsible TOC
+   * rendered inline above the article body.
+   */
+
+  /* ═══ WIDE SCREENS: two-column grid ═══════════════════════════ */
+  .essay-grid {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    align-items: start;
+  }
+
+  /* ─── Left column: sticky TOC ─────────────────────────────────── */
+  .essay-toc {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    display: none;
+  }
+
+  @media (min-width: 72rem) {
+    .essay-toc {
+      display: block;
+    }
+  }
+
+  /* ─── Mobile TOC (inline, narrow screens only) ────────────────── */
+  .essay-toc-mobile {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 72rem) {
+    .essay-toc-mobile {
+      display: none;
+    }
+  }
+
+  /* ═══ NARROW SCREENS: single column ═══════════════════════════ */
+  @media (max-width: 71.999rem) {
+    .essay-grid {
+      grid-template-columns: 1fr;
+      max-width: var(--spacing-content);
+      gap: 0;
+      padding: 0 1.5rem;
+    }
+  }
+
+  /* ═══ SOLO MODE (no TOC) ══════════════════════════════════════ */
+  .essay-solo {
+    max-width: var(--spacing-wide);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ═══ RIGHT COLUMN: main content ══════════════════════════════ */
+  .essay-main {
+    min-width: 0;
+  }
+
+  /*
+   * Structural width constraint: ALL direct children of essay-main
+   * are constrained to content width by default. This ensures the
+   * header, CiteBlock, footnotes, related content, and backlinks
+   * all share the same width as the body text — guaranteed by
+   * construction, not by individual component styling.
+   *
+   * The essay-body opts out (max-width: none) because it manages
+   * its own children's widths via the breakout rules below.
+   */
+  .essay-main > :global(*) {
+    max-width: var(--spacing-content);
+  }
+
+  .essay-main > .essay-body {
+    max-width: none;
+  }
+
+  /* ═══ CONTENT BREAKOUT via per-element max-width ══════════════ */
+
+  /* Default: all prose children constrained to content width */
+  .essay-body > :global(*) {
+    max-width: var(--spacing-content);
+  }
+
+  /* Code blocks, figures, tables expand wider */
+  .essay-body > :global(pre),
+  .essay-body > :global(figure),
+  .essay-body > :global(table),
+  .essay-body > :global(.astro-code),
+  .essay-body > :global(.expressive-code) {
+    max-width: min(var(--spacing-wide), 100%);
+    overflow-x: auto;
+  }
+
+  /* Display math: prose width with horizontal scroll */
+  .essay-body > :global(.katex-display) {
+    max-width: var(--spacing-content);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* Full-bleed elements fill the content column */
+  .essay-body > :global(.full-bleed) {
+    max-width: 100%;
+  }
+
+  /* Footnotes section */
+  .essay-body > :global(section[data-footnotes]) {
+    max-width: var(--spacing-content);
+    border-top: 1px solid var(--color-border);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+  }
+</style>

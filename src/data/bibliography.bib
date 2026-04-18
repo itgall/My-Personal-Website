@@ -1,0 +1,105 @@
+%% ═══════════════════════════════════════════════════════════════════════════════
+%% bibliography.bib — Single source of truth for all publications.
+%%
+%% Add your publications here as standard BibTeX entries. Each entry generates:
+%%   1. A publication card on /publications/
+%%   2. An individual publication page at /publications/[citekey]/
+%%   3. Highwire Press meta tags for Google Scholar indexing
+%%   4. JSON-LD ScholarlyArticle structured data
+%%   5. A BibTeX download/copy button
+%%
+%% Standard BibTeX types supported:
+%%   @article          — Journal articles
+%%   @inproceedings    — Conference papers (peer-reviewed)
+%%   @incollection     — Book chapters
+%%   @book             — Books
+%%   @phdthesis        — PhD theses
+%%   @mastersthesis    — Master's theses
+%%   @techreport       — Technical reports
+%%   @misc             — Preprints, posters, talks (see `type` field below)
+%%
+%% Custom fields (non-standard BibTeX, parsed by the tooling):
+%%   status        = {published | under-review | preprint | accepted}
+%%   code          = {https://github.com/...}
+%%   slides        = {/files/slides.pdf}
+%%   poster        = {/files/poster.pdf}
+%%   pdf           = {/files/paper.pdf}
+%%
+%%   featured      = {true}    — Adds entry to "Selected works" section at top
+%%                               of /publications/ page. Otherwise, it only
+%%                               appears in the full chronological archive.
+%%   featurednote  = {...}     — 2–3 sentences of context for featured works.
+%%                               Only rendered if entry is featured = {true}.
+%%
+%% Conference presentations (posters, talks):
+%%   Use @misc with the `type` field to distinguish subtypes:
+%%     type = {poster}         — Rendered as "Poster" badge
+%%     type = {talk}           — Rendered as "Talk" badge
+%%     type = {invited-talk}   — Rendered as "Invited Talk" badge
+%%     type = {presentation}   — Rendered as "Presentation" badge
+%%   Use the `booktitle` field for the conference/venue name.
+%%   For peer-reviewed conference papers with published proceedings,
+%%   use @inproceedings instead.
+%%
+%% TODO: Add your publications below. Template entries are provided as examples.
+%% ═══════════════════════════════════════════════════════════════════════════════
+
+%% ── Example: journal article ────────────────────────────────────────────────
+%%
+%% @article{gallegos2026ssoct,
+%%   author       = {Gallegos, Isaac and Vakoc, Benjamin J. and Bouma, Brett E.},
+%%   title        = {Your Paper Title Here},
+%%   journal      = {Biomedical Optics Express},
+%%   volume       = {17},
+%%   number       = {3},
+%%   pages        = {1234--1256},
+%%   year         = {2026},
+%%   doi          = {10.xxxx/xxxxx},
+%%   abstract     = {Your abstract here.},
+%%   keywords     = {optical coherence tomography, spectroscopy},
+%%   status       = {published},
+%%   pdf          = {/files/papers/gallegos2026ssoct.pdf},
+%%   code         = {https://github.com/itgall/soct-inverse},
+%%   featured     = {true},
+%%   featurednote = {First demonstration of Tikhonov regularization applied to
+%%                   spectroscopic IV-OCT. Extends the prior forward-model
+%%                   framework to handle multi-wavelength inverse problems
+%%                   with clinically actionable resolution.},
+%% }
+
+%% ── Example: conference paper (peer-reviewed) ─────────────────────────────
+%%
+%% @inproceedings{gallegos2025spie,
+%%   author       = {Gallegos, Isaac and ...},
+%%   title        = {Confocal Gate Optimization for IV-OCT Catheters},
+%%   booktitle    = {Proceedings of SPIE Photonics West},
+%%   volume       = {12345},
+%%   year         = {2025},
+%%   doi          = {10.1117/12.xxxxx},
+%%   keywords     = {optical coherence tomography, catheter design},
+%%   status       = {published},
+%% }
+
+%% ── Example: conference poster ────────────────────────────────────────────
+%%
+%% @misc{gallegos2025bmes_poster,
+%%   type         = {poster},
+%%   author       = {Gallegos, Isaac and ...},
+%%   title        = {Jones Matrix Polarization Framework for SS-OCT Design},
+%%   booktitle    = {BMES Annual Meeting},
+%%   year         = {2025},
+%%   month        = {nov},
+%%   poster       = {/files/posters/gallegos2025bmes.pdf},
+%% }
+
+%% ── Example: invited talk ─────────────────────────────────────────────────
+%%
+%% @misc{gallegos2026invited,
+%%   type         = {invited-talk},
+%%   author       = {Gallegos, Isaac},
+%%   title        = {Spectroscopic IV-OCT for Vulnerable Plaque Characterization},
+%%   booktitle    = {MIT Photonics Seminar},
+%%   year         = {2026},
+%%   month        = {feb},
+%%   slides       = {/files/slides/gallegos2026mit.pdf},
+%% }

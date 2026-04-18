@@ -1,0 +1,377 @@
+---
+/**
+ * BaseLayout.astro — Root layout wrapping every page.
+ *
+ * Provides the <html>/<head>/<body> shell with:
+ *   - <Head> component for meta/OG/JSON-LD
+ *   - Blocking inline theme script (prevents FOUC, <500 bytes)
+ *   - Self-hosted font preloads
+ *   - Astro ClientRouter for View Transitions
+ *   - Skip-to-content link (WCAG 2.2 AA)
+ *   - <Nav> and <Footer> components
+ *   - KaTeX math CSS bundled via Vite (no CDN, CSP-safe)
+ *
+ * All other layouts extend this via Astro's slot mechanism.
+ */
+import { ClientRouter } from "astro:transitions";
+import Head from "@components/Head.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import { siteMetadata } from "@data/meta";
+import { features, appearance } from "@data/settings";
+import { generateLinkPreviewManifest } from "@utils/linkPreviews";
+import LinkPreview from "@islands/LinkPreview";
+import CommandPalette from "@islands/CommandPalette";
+import ReadingProgress from "@islands/ReadingProgress";
+
+/**
+ * KaTeX CSS: imported from node_modules so Astro's Vite pipeline bundles it
+ * as a first-party asset. This is critical because the site's Content Security
+ * Policy (style-src 'self' ...) blocks external CDN stylesheets from
+ * cdn.jsdelivr.net. Without this CSS, KaTeX's .katex-mathml accessibility
+ * layer renders visibly, producing garbled double-rendered math output.
+ * Vite also processes the KaTeX font url() references and copies the .woff2
+ * files to the build output with hashed filenames.
+ */
+import "katex/dist/katex.min.css";
+import VisualEffects from "@islands/VisualEffects";
+import ChatWidget from "@islands/ChatWidget";
+import DocumentRequest from "@islands/DocumentRequest";
+import LoadingScreen from "@components/LoadingScreen.astro";
+import ImageZoom from "@components/ImageZoom.astro";
+import DocumentViewer from "@components/DocumentViewer.astro";
+import MaintenanceMode from "@components/MaintenanceMode.astro";
+import "../styles/global.css";
+
+/** Build-time link preview manifest — only generated if the feature is enabled */
+const linkPreviewData = features.linkPreviews
+  ? await generateLinkPreviewManifest()
+  : "[]";
+
+/**
+ * Build-time command palette manifest — generates searchable entries for
+ * all content pages (blog posts, publications, notes, projects, teaching).
+ * Only computed if the command palette feature is enabled.
+ */
+let commandManifest: string = "[]";
+if (features.commandPalette) {
+  const { getCollection } = await import("astro:content");
+  const { parseBibliography } = await import("@utils/bibtex");
+
+  const entries: Array<{ id: string; label: string; category: string; categoryLabel: string; icon: string; keywords: string; href: string }> = [];
+
+  try {
+    const posts = await getCollection("posts", (p: { data: { published: boolean } }) => p.data.published);
+    for (const post of posts) {
+      entries.push({
+        id: `post-${post.id}`,
+        label: post.data.title,
+        category: "content",
+        categoryLabel: "Essays",
+        icon: "✍️",
+        keywords: [post.data.category, ...post.data.tags].join(" "),
+        href: `/blog/${post.id}/`,
+      });
+    }
+  } catch { /* Collection may not exist */ }
+
+  try {
+    const projects = await getCollection("projects", (p: { data: { published: boolean } }) => p.data.published);
+    for (const project of projects) {
+      entries.push({
+        id: `project-${project.id}`,
+        label: project.data.title,
+        category: "content",
+        categoryLabel: "Projects",
+        icon: "🔬",
+        keywords: project.data.tags.join(" "),
+        href: `/projects/${project.id}/`,
+      });
+    }
+  } catch { /* Collection may not exist */ }
+
+  try {
+    const notes = await getCollection("notes", (n: { data: { published: boolean } }) => n.data.published);
+    for (const note of notes) {
+      entries.push({
+        id: `note-${note.id}`,
+        label: note.data.title,
+        category: "content",
+        categoryLabel: "Notes",
+        icon: "🌱",
+        keywords: [note.data.maturity, ...note.data.tags].join(" "),
+        href: `/notes/${note.id}/`,
+      });
+    }
+  } catch { /* Collection may not exist */ }
+
+  try {
+    const pubs = await parseBibliography();
+    for (const pub of pubs) {
+      entries.push({
+        id: `pub-${pub.key}`,
+        label: pub.title,
+        category: "content",
+        categoryLabel: "Publications",
+        icon: "📄",
+        keywords: [pub.type, pub.journal ?? "", pub.booktitle ?? "", String(pub.year)].join(" "),
+        href: `/publications/${pub.key}/`,
+      });
+    }
+  } catch { /* BibTeX may not parse */ }
+
+  try {
+    const episodes = await getCollection("podcast", (e: { data: { published: boolean } }) => e.data.published);
+    for (const episode of episodes) {
+      entries.push({
+        id: `episode-${episode.id}`,
+        label: episode.data.title,
+        category: "content",
+        categoryLabel: "Podcast",
+        icon: "🎙️",
+        keywords: [...episode.data.tags, ...episode.data.guests.map((g: { name: string }) => g.name)].join(" "),
+        href: `/podcast/${episode.id}/`,
+      });
+    }
+  } catch { /* Collection may not exist */ }
+
+  commandManifest = JSON.stringify(entries);
+}
+
+interface Props {
+  /** Page title — composed as "Title — Site Name" */
+  title?: string;
+  /** Meta description (defaults to site description) */
+  description?: string;
+  /** Open Graph image path relative to public/ */
+  ogImage?: string;
+  /** Active nav item identifier for highlighting */
+  activeNav?: string;
+  /** Additional class names for <main> */
+  mainClass?: string;
+  /** Page type for conditional JSON-LD (default: "page") */
+  pageType?: "home" | "page" | "article" | "publication";
+}
+
+const {
+  title,
+  description = siteMetadata.description,
+  ogImage,
+  activeNav,
+  mainClass = "",
+  pageType = "page",
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} — ${siteMetadata.title}`
+  : siteMetadata.title;
+const canonicalUrl = new URL(Astro.url.pathname, siteMetadata.siteUrl).href;
+---
+
+<!doctype html>
+<!--
+  Designed and coded by Isaac Gallegos.
+  If you're reading this, you're my kind of person.
+  isaac-gallegos.com · itgall@mit.edu
+-->
+<html lang={siteMetadata.language}>
+  <head>
+    <Head
+      title={pageTitle}
+      description={description}
+      ogImage={ogImage}
+      canonicalUrl={canonicalUrl}
+      pageType={pageType}
+    />
+
+    {/* Named slot for page-specific <head> content (e.g., ScholarMeta) */}
+    <slot name="head" />
+
+    {/* Google Fonts — Inter (body + headings), JetBrains Mono (code) */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    {/* Preconnect hints for external origins used across the site */}
+    <link rel="preconnect" href="https://doi.org" />
+    <link rel="preconnect" href="https://scholar.google.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+    {/*
+     * Blocking theme + accent script — MUST run before first paint to prevent FOUC.
+     * Theme and accent are set by the site owner via the admin dashboard.
+     * "system" theme follows the visitor's OS preference; "light"/"dark" are fixed.
+     */}
+    <script is:inline define:vars={{ defaultTheme: appearance.defaultTheme, defaultAccent: features.defaultAccent }}>
+      (function(){
+        var presets={
+          terracotta:{light:{"--color-accent":"#E2725B","--color-accent-bg":"rgba(226,114,91,0.07)","--color-accent-border":"rgba(226,114,91,0.25)","--color-link":"#B8533C","--color-link-hover":"#953F2C"},dark:{"--color-accent":"#E8907C","--color-accent-bg":"rgba(232,144,124,0.10)","--color-accent-border":"rgba(232,144,124,0.25)","--color-link":"#E8907C","--color-link-hover":"#F0A898"}},
+          interferometer:{light:{"--color-accent":"#4b6a88","--color-accent-bg":"rgba(75,106,136,0.07)","--color-accent-border":"rgba(75,106,136,0.25)","--color-link":"#4b6a88","--color-link-hover":"#36516b"},dark:{"--color-accent":"#8facc8","--color-accent-bg":"rgba(143,172,200,0.10)","--color-accent-border":"rgba(143,172,200,0.25)","--color-link":"#8facc8","--color-link-hover":"#afc5da"}},
+          coherence:{light:{"--color-accent":"#1e3a5f","--color-accent-bg":"rgba(30,58,95,0.06)","--color-accent-border":"rgba(30,58,95,0.22)","--color-link":"#1e3a5f","--color-link-hover":"#142842"},dark:{"--color-accent":"#5b8db8","--color-accent-bg":"rgba(91,141,184,0.10)","--color-accent-border":"rgba(91,141,184,0.25)","--color-link":"#5b8db8","--color-link-hover":"#7faece"}},
+          rayleigh:{light:{"--color-accent":"#2b6cb0","--color-accent-bg":"rgba(43,108,176,0.06)","--color-accent-border":"rgba(43,108,176,0.22)","--color-link":"#2b6cb0","--color-link-hover":"#1d4f85"},dark:{"--color-accent":"#5b9bd5","--color-accent-bg":"rgba(91,155,213,0.10)","--color-accent-border":"rgba(91,155,213,0.25)","--color-link":"#5b9bd5","--color-link-hover":"#82b4e2"}},
+          "sodium-arc":{light:{"--color-accent":"#b45309","--color-accent-bg":"rgba(180,83,9,0.06)","--color-accent-border":"rgba(180,83,9,0.22)","--color-link":"#b45309","--color-link-hover":"#92400e"},dark:{"--color-accent":"#f59e0b","--color-accent-bg":"rgba(245,158,11,0.08)","--color-accent-border":"rgba(245,158,11,0.22)","--color-link":"#f59e0b","--color-link-hover":"#fbbf24"}},
+          cherenkov:{light:{"--color-accent":"#0c6fd4","--color-accent-bg":"rgba(12,111,212,0.06)","--color-accent-border":"rgba(12,111,212,0.22)","--color-link":"#0c6fd4","--color-link-hover":"#0856a5"},dark:{"--color-accent":"#3d9bff","--color-accent-bg":"rgba(61,155,255,0.10)","--color-accent-border":"rgba(61,155,255,0.25)","--color-link":"#3d9bff","--color-link-hover":"#6db5ff"}},
+          blackbody:{light:{"--color-accent":"#b45e2a","--color-accent-bg":"rgba(180,94,42,0.06)","--color-accent-border":"rgba(180,94,42,0.22)","--color-link":"#b45e2a","--color-link-hover":"#8d481e"},dark:{"--color-accent":"#e08c4a","--color-accent-bg":"rgba(224,140,74,0.10)","--color-accent-border":"rgba(224,140,74,0.25)","--color-link":"#e08c4a","--color-link-hover":"#eaa56e"}},
+          "second-harmonic":{light:{"--color-accent":"#2b7a44","--color-accent-bg":"rgba(43,122,68,0.06)","--color-accent-border":"rgba(43,122,68,0.22)","--color-link":"#2b7a44","--color-link-hover":"#1e5a32"},dark:{"--color-accent":"#4caf6e","--color-accent-bg":"rgba(76,175,110,0.10)","--color-accent-border":"rgba(76,175,110,0.25)","--color-link":"#4caf6e","--color-link-hover":"#6ec48a"}}
+        };
+
+        function resolveTheme(){
+          var t=defaultTheme;
+          if(t==="system"){t=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}
+          return t;
+        }
+
+        function applyToElement(root){
+          var t=resolveTheme();
+          root.setAttribute("data-theme",t);
+          root.setAttribute("data-accent",defaultAccent);
+          var c=presets[defaultAccent];
+          if(c){
+            var s=c[t]||c.dark;
+            for(var k in s){root.style.setProperty(k,s[k])}
+          }
+        }
+
+        /* Apply on initial page load */
+        applyToElement(document.documentElement);
+
+        /* Apply to the INCOMING document BEFORE the swap renders it.
+         * This is the only way to prevent theme flash during View Transitions.
+         * astro:after-swap is too late — the browser has already painted. */
+        document.addEventListener("astro:before-swap",function(e){
+          applyToElement(e.newDocument.documentElement);
+        });
+      })();
+    </script>
+
+    {/* Astro View Transitions — enabled via settings.json */}
+    {appearance.viewTransitions && <ClientRouter />}
+  </head>
+  <body class="min-h-screen flex flex-col">
+    {/* Maintenance mode — blocks all content, bypassable with ?preview=true */}
+    {features.maintenanceMode && <MaintenanceMode />}
+
+    {/* Custom SVG cursor — themed to accent color, applied via inline style injection */}
+    {appearance.customCursor && (
+      <script is:inline>
+        (function(){
+          if(window._cursorInit) return;
+          window._cursorInit=true;
+          function applyCursor(){
+            var accent=getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim();
+            if(!accent)return;
+            var h=encodeURIComponent(accent);
+            var d="url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='"+h+"' stroke-width='1.5' opacity='0.7'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='"+h+"' opacity='0.9'/%3E%3C/svg%3E\") 16 16, auto";
+            var p="url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='7' fill='"+h+"' opacity='0.25'/%3E%3Ccircle cx='16' cy='16' r='2' fill='"+h+"' opacity='0.9'/%3E%3C/svg%3E\") 16 16, pointer";
+            var id="custom-cursor-style";
+            var el=document.getElementById(id);
+            if(!el){el=document.createElement("style");el.id=id;document.head.appendChild(el);}
+            el.textContent="body{cursor:"+d+"}a,button,[role=button],summary{cursor:"+p+"}";
+          }
+          applyCursor();
+          new MutationObserver(applyCursor).observe(document.documentElement,{attributes:true,attributeFilter:["data-accent","data-theme","style"]});
+        })();
+      </script>
+    )}
+
+    {/* Loading screen overlay — renders inline, dismissed by inline JS after animation */}
+    {appearance.loadingAnimation !== "none" && (
+      <LoadingScreen style={appearance.loadingAnimation} />
+    )}
+
+    {/* Visual effects canvas — behind all content, purely decorative */}
+    {features.visualEffects && <VisualEffects client:idle />}
+
+    <a href="#main-content" class="skip-to-content">
+      Skip to content
+    </a>
+
+    <Nav activeNav={activeNav} />
+
+    <main
+      id="main-content"
+      class:list={["flex-1", mainClass]}
+      tabindex="-1"
+    >
+      <slot />
+    </main>
+
+    <Footer />
+
+    {/* Image zoom overlay — click-to-enlarge for article images */}
+    {features.imageZoom && <ImageZoom />}
+
+    {/* Document viewer overlay — inline PDF/doc preview */}
+    {features.documentViewer && <DocumentViewer />}
+
+    {/* Link preview data manifest — consumed by LinkPreview island */}
+    {features.linkPreviews && (
+      <script
+        type="application/json"
+        id="link-preview-data"
+        is:inline
+        set:html={JSON.stringify(linkPreviewData)}
+      />
+    )}
+
+    {/* Link preview island — loads idle, attaches hover/focus behavior */}
+    {features.linkPreviews && <LinkPreview client:idle />}
+
+    {/* Command palette data manifest — dynamic content entries from build time */}
+    {features.commandPalette && (
+      <script
+        type="application/json"
+        id="command-palette-data"
+        is:inline
+        set:html={commandManifest}
+      />
+    )}
+
+    {/* Command palette island — ⌘K / Ctrl+K keyboard shortcut */}
+    {features.commandPalette && <CommandPalette client:idle />}
+
+    {/* Reading progress bar + back-to-top button */}
+    {features.readingProgressBar && <ReadingProgress client:idle />}
+
+    {/* AI chat widget — floating button + expandable chat panel */}
+    {features.chatWidget && <ChatWidget client:idle />}
+
+    {/* Document request modal — triggered by buttons with data-request-doc attribute */}
+    {features.documentRequestModal && <DocumentRequest client:idle />}
+
+    {/* Scroll reveal — IntersectionObserver-based entrance animations */}
+    {appearance.scrollReveal && (
+      <script is:inline>
+        (function(){
+          if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          /* Auto-discover content elements to reveal */
+          var selectors=[
+            'main section','main article','.pub-card',
+            '.prose-container > h2','.prose-container > h3',
+            '.wide-container > section','.wide-container > div'
+          ].join(',');
+          var els=document.querySelectorAll(selectors);
+          if(!els.length) return;
+          els.forEach(function(el){
+            el.style.opacity='0';
+            el.style.transform='translateY(16px)';
+            el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+          });
+          var obs=new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+              if(e.isIntersecting){
+                e.target.style.opacity='1';
+                e.target.style.transform='translateY(0)';
+                obs.unobserve(e.target);
+              }
+            });
+          },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+          els.forEach(function(el){obs.observe(el);});
+        })();
+      </script>
+    )}
+  </body>
+</html>

@@ -1,0 +1,167 @@
+---
+/**
+ * TOC.astro — Table of Contents with sticky sidebar mode.
+ *
+ * Three display modes controlled entirely by CSS:
+ *   1. Mobile (< md):     collapsible <details>/<summary> disclosure
+ *   2. Tablet (md – lg):  visible inline block at the top of the article
+ *   3. Desktop (≥ 72rem): sticky sidebar in a dedicated grid column
+ *
+ * The TOC renders once. CSS media queries control its position and appearance.
+ * The IntersectionObserver script only activates on wide screens where the
+ * sidebar is visible.
+ *
+ * Breakpoint: 72rem (1152px) — the two-level grid layout provides a dedicated
+ * 220px grid column for the TOC, so the sidebar can appear at a lower
+ * breakpoint than the previous absolute-positioned approach (which needed 1536px).
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+/** Filter to only h2 and h3 for a clean, scannable TOC */
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocHeadings.length > 0 && (
+  <nav aria-label="Table of contents" class="toc-nav" id="article-toc">
+    {/* ── Mobile: collapsible disclosure ─────────────────────────── */}
+    <details class="toc-mobile md:hidden rounded-md border border-[var(--color-border)] bg-[var(--color-bg-off)]">
+      <summary class="cursor-pointer px-4 py-3 text-sm font-medium text-[var(--color-text)] select-none">
+        Table of Contents
+      </summary>
+      <ol class="list-none px-4 pb-4 space-y-1">
+        {tocHeadings.map((heading) => (
+          <li class:list={[heading.depth === 3 && "ml-4"]}>
+            <a
+              href={`#${heading.slug}`}
+              class="block py-1 text-xs text-[var(--color-muted)] no-underline hover:text-[var(--color-link)] transition-colors"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
+
+    {/* ── Tablet/Desktop: visible list ───────────────────────────── */}
+    <div class="toc-desktop hidden md:block">
+      <h2 class="mb-3 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        Contents
+      </h2>
+      <ol class="list-none space-y-0.5">
+        {tocHeadings.map((heading) => (
+          <li class:list={[heading.depth === 3 && "ml-3"]}>
+            <a
+              href={`#${heading.slug}`}
+              class="toc-link block py-1 text-xs text-[var(--color-muted)] no-underline hover:text-[var(--color-link)] transition-colors leading-snug"
+              data-toc-slug={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </nav>
+)}
+
+<style>
+  /*
+   * Inline mode (default + tablet): bordered box inside the content flow.
+   * Applied below 2xl breakpoint.
+   */
+  .toc-nav .toc-desktop {
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-off);
+    border-radius: var(--radius-md, 0.375rem);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  /*
+   * Sidebar mode (≥ 72rem / 1152px): TOC is in a dedicated grid column.
+   * The parent .toc-sidebar handles sticky positioning.
+   * This just removes the inline-block styling.
+   */
+  @media (min-width: 72rem) {
+    .toc-nav .toc-desktop {
+      border: none;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 0;
+    }
+
+    .toc-nav .toc-desktop h2 {
+      font-size: 10px;
+    }
+
+    .toc-link {
+      font-size: 11px;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      border-left: 2px solid transparent;
+      padding-left: 0.5rem;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .toc-link:hover {
+      border-left-color: var(--color-border);
+    }
+
+    /* Active section highlight */
+    .toc-link.active {
+      color: var(--color-accent);
+      border-left-color: var(--color-accent);
+    }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  /* Only activate IntersectionObserver on wide screens with sidebar TOC */
+  if (window.innerWidth < 1152) return;
+
+  var links = document.querySelectorAll('.toc-link[data-toc-slug]');
+  if (!links.length) return;
+
+  var headingEls = [];
+  links.forEach(function(link) {
+    var slug = link.dataset.tocSlug;
+    var el = document.getElementById(slug);
+    if (el) headingEls.push({ el: el, link: link });
+  });
+
+  if (!headingEls.length) return;
+
+  var currentActive = null;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (currentActive) currentActive.classList.remove('active');
+        var match = headingEls.find(function(h) { return h.el === entry.target; });
+        if (match) {
+          match.link.classList.add('active');
+          currentActive = match.link;
+        }
+      }
+    });
+  }, {
+    rootMargin: '-80px 0px -70% 0px',
+    threshold: 0
+  });
+
+  headingEls.forEach(function(h) { observer.observe(h.el); });
+})();
+</script>

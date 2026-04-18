@@ -1,0 +1,75 @@
+---
+/**
+ * now.astro — "Now" page inspired by nownownow.com.
+ *
+ * A snapshot of current priorities, projects, and focus areas.
+ * Updated periodically to signal active engagement.
+ *
+ * Audience value:
+ *   - KHS reviewers: signals current trajectory and priorities
+ *   - PhD committees: shows active research direction
+ *   - Collaborators: identifies areas open for partnership
+ *   - General visitors: humanizes the author
+ *
+ * Content is hardcoded here rather than in a content collection because
+ * it changes infrequently and should be edited directly.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Now"
+  subtitle="What I'm focused on right now."
+  activeNav=""
+>
+  <p class="mb-8 text-xs text-[var(--color-muted)] font-mono">
+    Last updated: April 2026 · Boston, MA
+  </p>
+
+  <div class="prose max-w-none">
+    <h2>Research</h2>
+    <p>
+      Building spectroscopic intravascular OCT systems at the
+      <a href="https://octresearch.org" target="_blank" rel="noopener noreferrer">Wellman Center for Photomedicine</a>
+      (Harvard Medical School / MGH). Current work focuses on inverse algorithms
+      for extracting tissue optical properties from spectroscopic OCT data, and
+      NIR-II photoacoustic imaging for deep-tissue molecular detection.
+    </p>
+
+    <h2>PhD applications</h2>
+    <p>
+      Preparing applications for Fall 2027 entry. Target programs center on
+      quantum sensing, correlative OCT–NV center diamond magnetometry, and
+      computational optical imaging. Exploring labs at MIT, Stanford, Caltech,
+      Harvard SEAS, and University of Maryland.
+    </p>
+
+    <h2>Podcast</h2>
+    <p>
+      Developing a science podcast exploring how fundamental physics innovation
+      translates into technologies that solve grand challenges in health, energy,
+      and information. Currently in pre-production: building the guest pipeline,
+      production stack, and first episode scripts.
+    </p>
+
+    <h2>Ventures</h2>
+    <p>
+      Exploring deep-tech venture creation at the intersection of biophotonics
+      and clinical diagnostics — translating research from the lab to real-world
+      patient impact.
+    </p>
+
+    <h2>Learning</h2>
+    <p>
+      Quantum computing fundamentals, Lean 4 theorem proving, advanced
+      fiber optics, and the business mechanics of deep-tech company formation.
+    </p>
+  </div>
+
+  <div class="mt-12 pt-8 border-t border-[var(--color-border)]">
+    <p class="text-xs text-[var(--color-muted)]">
+      This page is inspired by <a href="https://nownownow.com" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] no-underline hover:underline">nownownow.com</a>.
+      It's a snapshot of what I'm focused on at this point in my life.
+    </p>
+  </div>
+</PageLayout>

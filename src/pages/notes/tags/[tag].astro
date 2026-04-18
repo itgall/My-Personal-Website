@@ -1,0 +1,50 @@
+---
+/**
+ * notes/tags/[tag].astro — Notes filtered by tag.
+ *
+ * Generates a static page for each unique tag across published notes.
+ * These pages provide SEO-friendly entry points into the digital garden
+ * and are linked from the notes listing page tag chips.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import NoteCard from "@components/NoteCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Note = CollectionEntry<"notes">;
+
+export async function getStaticPaths() {
+  const notes: Note[] = await getCollection("notes", ({ data }: Note) => data.published);
+  const tags = [...new Set(notes.flatMap((n: Note) => n.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      notes: notes
+        .filter((n: Note) => n.data.tags.includes(tag))
+        .sort((a: Note, b: Note) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { tag, notes } = Astro.props;
+---
+
+<PageLayout
+  title={`Tag: ${tag}`}
+  subtitle={`${notes.length} note${notes.length === 1 ? "" : "s"} tagged "${tag}".`}
+  activeNav="notes"
+>
+  <div class="mb-4">
+    <a
+      href="/notes/"
+      class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+    >
+      ← All notes
+    </a>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {notes.map((note: any) => (
+      <NoteCard note={note} />
+    ))}
+  </div>
+</PageLayout>

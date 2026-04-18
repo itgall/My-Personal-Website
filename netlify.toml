@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Netlify Configuration
+#
+# Alternative deployment target. Netlify auto-detects this file in the repo
+# root. Build command runs both Astro and Pagefind for full search support.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[build]
+  command = "rm -rf .astro && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NODE_ENV = "production"
+  NPM_FLAGS = "--legacy-peer-deps"
+  # Increase Node.js heap to 8GB for large content collection builds.
+  # Default is ~1.7GB which can cause OOM with thousands of content items.
+  NODE_OPTIONS = "--max-old-space-size=8192"
+
+# ── Netlify cache plugin ──────────────────────────────────────────────────────
+# Persist Astro's content layer cache and image optimization cache between
+# deploys. Without this, every build starts cold — re-parsing all markdown,
+# re-validating all Zod schemas, re-optimizing all images from scratch.
+# With caching, subsequent builds only process changed files.
+
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [
+      ".astro",
+      "node_modules/.astro",
+    ]
+
+# ── 404 fallback ──────────────────────────────────────────────────────────────
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# ── Legacy URL redirects (preserve SEO from Eleventy site) ────────────────────
+
+[[redirects]]
+  from = "/writing/*"
+  to = "/blog/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/research/*"
+  to = "/publications/:splat"
+  status = 301
+
+# ── Security headers ─────────────────────────────────────────────────────────
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-DNS-Prefetch-Control = "on"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' plausible.io; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://api.semanticscholar.org https://pub.orcid.org https://plausible.io; frame-src 'self' https://www.youtube-nocookie.com"
+
+# ── Cache-Control for immutable hashed assets ─────────────────────────────────
+
+# ── Admin CMS — permissive CSP for Sveltia CMS ───────────────────────────────
+# Sveltia CMS loads from unpkg.com and communicates with the GitHub API.
+# The admin page is behind authentication and not indexed by search engines.
+# This permissive policy overrides the strict site-wide CSP for /admin/ only.
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' unpkg.com; style-src 'self' 'unsafe-inline' unpkg.com fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com data:; connect-src 'self' https://api.github.com https://github.com https://raw.githubusercontent.com https://api.semanticscholar.org https://pub.orcid.org; frame-src 'self' https://github.com"
+
+# ── Cache-Control for immutable hashed assets ─────────────────────────────────
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/pagefind/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

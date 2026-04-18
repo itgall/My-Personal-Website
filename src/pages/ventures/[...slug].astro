@@ -1,0 +1,126 @@
+---
+/**
+ * ventures/[...slug].astro — Individual venture detail page.
+ *
+ * Structure follows the "case study" format:
+ *   1. The deep-tech problem
+ *   2. Scientific foundation (linking to publications/projects)
+ *   3. Role and approach
+ *   4. Body content (milestones, team, etc.)
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import SEO from "@components/SEO.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+
+type Venture = CollectionEntry<"ventures">;
+
+export async function getStaticPaths() {
+  const ventures = await getCollection("ventures", ({ data }) => data.published);
+  return ventures.map((venture) => ({
+    params: { slug: venture.id },
+    props: { venture },
+  }));
+}
+
+const { venture } = Astro.props;
+const { Content } = await render(venture);
+
+const statusLabels: Record<string, string> = {
+  "active": "Active",
+  "in-development": "In Development",
+  "stealth": "Stealth",
+};
+---
+
+<BaseLayout title={venture.data.title} activeNav="ventures" ogImage={`/og/ventures/${venture.id}.png`}>
+  <SEO
+    slot="head"
+    pageType="venture"
+    title={venture.data.title}
+    description={venture.data.tagline}
+    url={`/ventures/${venture.id}/`}
+    datePublished={venture.data.date.toISOString()}
+    tags={venture.data.tags}
+  />
+  <div class="wide-container py-16" data-pagefind-body>
+
+    <Breadcrumbs items={[
+      { label: "Ventures", href: "/ventures/" },
+      { label: venture.data.title }
+    ]} />
+
+    <header class="mb-12 border-b border-[var(--color-border)] pb-8">
+      <div class="mb-3 flex items-center gap-3">
+        <span class="font-mono text-[11px] tracking-wider text-[var(--color-accent)]">
+          {statusLabels[venture.data.status] || "In Development"}
+        </span>
+        <span class="text-[var(--color-border)]">·</span>
+        <span class="font-mono text-[11px] tracking-wider text-[var(--color-muted)]">
+          {venture.data.role}
+        </span>
+      </div>
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+        {venture.data.title}
+      </h1>
+      <p class="mt-3 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+        {venture.data.tagline}
+      </p>
+    </header>
+
+    {/* The deep-tech problem */}
+    {venture.data.problem && (
+      <section class="mb-10">
+        <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">The problem</h2>
+        <p class="text-[15px] text-[var(--color-text-secondary)] leading-[1.78] max-w-2xl">
+          {venture.data.problem}
+        </p>
+      </section>
+    )}
+
+    {/* Scientific foundation */}
+    {venture.data.researchFoundation && (
+      <section class="mb-10">
+        <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">Research foundation</h2>
+        <div class="border-l-2 border-[var(--color-accent)] pl-5 max-w-2xl">
+          <p class="text-[15px] text-[var(--color-text-secondary)] leading-[1.78]">
+            {venture.data.researchFoundation}
+          </p>
+        </div>
+        {venture.data.relatedProjects.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {venture.data.relatedProjects.map((slug) => (
+              <a
+                href={`/projects/${slug}/`}
+                class="rounded border border-[var(--color-border)] px-3 py-1 font-mono text-[10px] text-[var(--color-link)] hover:border-[var(--color-accent-border)] transition-colors no-underline"
+              >
+                Related research →
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+    )}
+
+    {/* Tech stack */}
+    {venture.data.techStack.length > 0 && (
+      <section class="mb-10">
+        <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">Technology</h2>
+        <div class="flex flex-wrap gap-2">
+          {venture.data.techStack.map((tech) => (
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1 font-mono text-[10px] text-[var(--color-muted)]">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Body content */}
+    <div class="prose max-w-2xl">
+      <Content />
+    </div>
+
+  </div>
+</BaseLayout>

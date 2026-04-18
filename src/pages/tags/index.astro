@@ -1,0 +1,148 @@
+---
+/**
+ * tags/index.astro — Unified tag index across all content types.
+ *
+ * Aggregates every tag from posts, notes, projects, podcast episodes,
+ * and ventures into a single page. Tags are grouped by content type
+ * and displayed with occurrence counts. Each tag links to the
+ * type-specific tag page where it exists, or serves as a discovery
+ * entry point.
+ *
+ * Design: Content types as sections, tags as filter chips with counts,
+ * matching the visual language of listing page filter bars.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Post = CollectionEntry<"posts">;
+type Note = CollectionEntry<"notes">;
+type Project = CollectionEntry<"projects">;
+type Episode = CollectionEntry<"podcast">;
+type Venture = CollectionEntry<"ventures">;
+
+/* ── Collect tags from every content type ───────────────────────────────── */
+
+const posts = await getCollection("posts", ({ data }: Post) => data.published);
+const notes = await getCollection("notes", ({ data }: Note) => data.published);
+const projects = await getCollection("projects", ({ data }: Project) => data.published);
+const episodes = await getCollection("podcast", ({ data }: Episode) => data.published);
+const ventures = await getCollection("ventures", ({ data }: Venture) => data.published);
+
+interface TagGroup {
+  label: string;
+  /** Base URL for tag pages — null if no per-tag pages exist for this type */
+  tagBaseUrl: string | null;
+  /** Tags with their occurrence counts */
+  tags: Map<string, number>;
+}
+
+function countTags(items: { data: { tags: string[] } }[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const item of items) {
+    for (const tag of item.data.tags) {
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    }
+  }
+  return new Map([...counts.entries()].sort((a, b) => a[0].localeCompare(b[0])));
+}
+
+const groups: TagGroup[] = [
+  { label: "Essays", tagBaseUrl: "/blog/tags", tags: countTags(posts) },
+  { label: "Notes", tagBaseUrl: "/notes/tags", tags: countTags(notes) },
+  { label: "Research", tagBaseUrl: null, tags: countTags(projects) },
+  { label: "Podcast", tagBaseUrl: null, tags: countTags(episodes) },
+  { label: "Ventures", tagBaseUrl: null, tags: countTags(ventures) },
+].filter((g) => g.tags.size > 0);
+
+/* ── Compute cross-type statistics ──────────────────────────────────────── */
+
+const allTagsSet = new Set<string>();
+for (const g of groups) {
+  for (const tag of g.tags.keys()) {
+    allTagsSet.add(tag);
+  }
+}
+
+const totalUniqueTags = allTagsSet.size;
+const totalTagUsages = groups.reduce(
+  (sum, g) => sum + [...g.tags.values()].reduce((s, c) => s + c, 0),
+  0,
+);
+---
+
+<PageLayout
+  title="Tags"
+  subtitle={`${totalUniqueTags} unique tags across ${totalTagUsages} usages.`}
+  activeNav=""
+>
+  {groups.length === 0 ? (
+    <p class="text-sm text-[var(--color-muted)]">No tags found across published content.</p>
+  ) : (
+    <div class="space-y-10">
+      {groups.map((group) => (
+        <section>
+          <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+            {group.label}
+            <span class="ml-2 text-[var(--color-border)]">
+              {group.tags.size} tag{group.tags.size === 1 ? "" : "s"}
+            </span>
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {[...group.tags.entries()].map(([tag, count]) => {
+              const href = group.tagBaseUrl ? `${group.tagBaseUrl}/${tag}/` : null;
+              return href ? (
+                <a
+                  href={href}
+                  class="tag-chip inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+                >
+                  {tag}
+                  <span class="text-[9px] text-[var(--color-border)]">{count}</span>
+                </a>
+              ) : (
+                <span class="tag-chip inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)]">
+                  {tag}
+                  <span class="text-[9px] text-[var(--color-border)]">{count}</span>
+                </span>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+
+      {/* Cross-type tag overlap */}
+      {(() => {
+        const crossType = [...allTagsSet].filter((tag) => {
+          let appearances = 0;
+          for (const g of groups) {
+            if (g.tags.has(tag)) appearances++;
+          }
+          return appearances > 1;
+        }).sort();
+
+        return crossType.length > 0 ? (
+          <section class="pt-8 border-t border-[var(--color-border)]">
+            <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+              Cross-type tags
+              <span class="ml-2 text-[var(--color-border)]">
+                Tags appearing in multiple content types
+              </span>
+            </h2>
+            <div class="flex flex-wrap gap-2">
+              {crossType.map((tag) => {
+                const typeLabels = groups
+                  .filter((g) => g.tags.has(tag))
+                  .map((g) => g.label);
+                return (
+                  <span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-bg)] px-3 py-1 font-mono text-[11px] text-[var(--color-accent)]">
+                    {tag}
+                    <span class="text-[9px]">({typeLabels.join(", ")})</span>
+                  </span>
+                );
+              })}
+            </div>
+          </section>
+        ) : null;
+      })()}
+    </div>
+  )}
+</PageLayout>

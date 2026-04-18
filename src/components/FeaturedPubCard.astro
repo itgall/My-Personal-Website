@@ -1,0 +1,184 @@
+---
+/**
+ * FeaturedPubCard.astro — Richer publication card for the Selected Works section.
+ *
+ * Used on the publications index page for publications marked with
+ * `featured = {true}` in their BibTeX entry. Provides more visual context
+ * than a PubCard archive entry while maintaining the dense, no-card
+ * academic aesthetic.
+ *
+ * Visual identity:
+ *   - A left-border accent using --color-accent to distinguish from
+ *     archive entries
+ *   - Slightly larger title
+ *   - Full venue citation
+ *   - Optional featuredNote field: 2–3 sentences of context about why
+ *     this work matters (e.g., "First demonstration of...", "Extends
+ *     the prior framework of..."). Not rendered if absent.
+ *   - Same inline action links as PubCard: [PDF] [DOI] [arXiv] [Code]
+ */
+import type { Publication } from "@utils/bibtex";
+import { formatAuthors } from "@utils/bibtex";
+import { siteMetadata } from "@data/meta";
+
+interface Props {
+  pub: Publication;
+}
+
+const { pub } = Astro.props;
+
+const authorHtml = formatAuthors(pub.authors, siteMetadata.name);
+const venue = pub.journal ?? pub.booktitle ?? "";
+
+const venueDetail = [
+  venue,
+  pub.volume ? `${pub.volume}${pub.number ? `(${pub.number})` : ""}` : "",
+  pub.pages ?? "",
+].filter(Boolean).join(", ");
+---
+
+<article class="featured-pub">
+  {/* Title as link to detail page */}
+  <a
+    href={`/publications/${pub.slug}/`}
+    class="featured-pub-title"
+  >
+    {pub.title}
+  </a>
+
+  {/* Authors and venue inline */}
+  <p class="featured-pub-meta">
+    <span class="featured-pub-authors" set:html={authorHtml} />
+    {" · "}
+    {venueDetail && (
+      <em class="featured-pub-venue">{venueDetail}</em>
+    )}
+    {venueDetail && ", "}
+    <span>{pub.year}</span>
+    {pub.status === "preprint" && (
+      <span class="featured-pub-status">Preprint</span>
+    )}
+    {pub.status === "under-review" && (
+      <span class="featured-pub-status featured-pub-status-muted">Under Review</span>
+    )}
+  </p>
+
+  {/* Featured note — 2–3 sentences of context */}
+  {pub.featuredNote && (
+    <p class="featured-pub-note">{pub.featuredNote}</p>
+  )}
+
+  {/* Inline action links */}
+  {(pub.pdfPath || pub.doi || pub.arxivId || pub.codeUrl) && (
+    <div class="featured-pub-links">
+      {pub.pdfPath && (
+        <a href={pub.pdfPath} class="featured-pub-link">[PDF]</a>
+      )}
+      {pub.doi && (
+        <a href={`https://doi.org/${pub.doi}`} class="featured-pub-link" target="_blank" rel="noopener noreferrer">[DOI]</a>
+      )}
+      {pub.arxivId && (
+        <a href={`https://arxiv.org/abs/${pub.arxivId}`} class="featured-pub-link" target="_blank" rel="noopener noreferrer">[arXiv]</a>
+      )}
+      {pub.codeUrl && (
+        <a href={pub.codeUrl} class="featured-pub-link" target="_blank" rel="noopener noreferrer">[Code]</a>
+      )}
+    </div>
+  )}
+</article>
+
+<style>
+  /*
+   * Featured publication card.
+   *
+   * Distinguished from archive entries by:
+   *   - Left border accent (subtle visual anchor that reinforces "selected")
+   *   - Slightly larger title (matches h3 sizing)
+   *   - Generous padding and spacing
+   *   - Optional featuredNote paragraph below the citation
+   *
+   * Intentionally NOT a raised card — maintains the dense academic
+   * aesthetic while still differentiating from archive entries.
+   */
+  .featured-pub {
+    padding: 0.75rem 0 0.75rem 1.25rem;
+    border-left: 2px solid var(--color-accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .featured-pub:last-child {
+    margin-bottom: 0;
+  }
+
+  .featured-pub-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-link);
+    text-decoration: none;
+    margin: 0 0 0.375rem;
+  }
+
+  .featured-pub-title:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .featured-pub-meta {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .featured-pub-authors {
+    color: var(--color-muted);
+  }
+
+  .featured-pub-venue {
+    font-style: italic;
+  }
+
+  .featured-pub-status {
+    display: inline-block;
+    margin-left: 0.25rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .featured-pub-status-muted {
+    background: var(--color-bg-off);
+    color: var(--color-muted);
+  }
+
+  .featured-pub-note {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0.625rem 0 0;
+  }
+
+  .featured-pub-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .featured-pub-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .featured-pub-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

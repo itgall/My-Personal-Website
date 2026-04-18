@@ -1,0 +1,46 @@
+{
+  "features": {
+    "maintenanceMode": false,
+    "defaultAccent": "rayleigh",
+    "sidenotes": true,
+    "backlinks": true,
+    "tableOfContents": true,
+    "linkPreviews": false,
+    "searchPage": true,
+    "researchGraph": true,
+    "contentMaturityBadges": true,
+    "copyCodeButton": true,
+    "imageZoom": true,
+    "documentViewer": true,
+    "readingProgressBar": true,
+    "commandPalette": true,
+    "visualEffects": false,
+    "chatWidget": false,
+    "documentRequestModal": false
+  },
+  "sections": {
+    "publications": true,
+    "projects": true,
+    "blog": true,
+    "notes": true,
+    "teaching": true,
+    "cv": true,
+    "about": true,
+    "contact": true,
+    "ventures": true,
+    "speaking": true,
+    "podcast": true
+  },
+  "appearance": {
+    "defaultTheme": "light",
+    "loadingAnimation": "none",
+    "viewTransitions": true,
+    "scrollReveal": false,
+    "customCursor": false
+  },
+  "analytics": {
+    "provider": "plausible",
+    "domain": "",
+    "enabled": false
+  }
+}

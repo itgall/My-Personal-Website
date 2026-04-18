@@ -1,0 +1,83 @@
+---
+/**
+ * ProjectCard.astro — Elevated research project card.
+ *
+ * Visual identity: Shadow-elevated card with image placeholder,
+ * tech stack tags, title, description, and "View project →" link.
+ * Inspired by MIT research group project galleries (e.g., Englund Lab).
+ *
+ * Card variant: Elevated (shadow, no border, white background)
+ * Layout: Used in 3-column grid on projects index and homepage.
+ * Hover: Card lifts with deeper shadow (translateY + shadow-lg).
+ */
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, institution, highlightTag } = project.data;
+const tags: string[] = project.data.tags;
+const techStack: string[] = project.data.techStack;
+---
+
+<article
+  class="project-card group overflow-hidden rounded-xl bg-[var(--color-surface)] transition-all duration-200"
+>
+  <a href={`/projects/${project.id}/`} class="block no-underline">
+    {/* Image placeholder area */}
+    <div class="flex h-36 items-center justify-center bg-[var(--color-surface-raised)] transition-colors group-hover:bg-[var(--color-border)]">
+      <span class="font-mono text-xs text-[var(--color-muted)]">
+        {highlightTag ?? "Research"}
+      </span>
+    </div>
+
+    {/* Card body */}
+    <div class="px-4 pb-4 pt-3">
+      {/* Tech stack tags */}
+      {techStack.length > 0 && (
+        <div class="mb-2 flex flex-wrap gap-1.5">
+          {techStack.slice(0, 4).map((tech) => (
+            <span class="rounded-sm bg-[var(--color-surface-raised)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-muted)]">
+              {tech}
+            </span>
+          ))}
+          {techStack.length > 4 && (
+            <span class="font-mono text-[10px] text-[var(--color-muted)]">
+              +{techStack.length - 4}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Title */}
+      <h3 class="text-base font-medium leading-snug md:text-lg">
+        {title}
+      </h3>
+
+      {/* Institution */}
+      <p class="mt-1 text-xs text-[var(--color-muted)] line-clamp-2">{institution}</p>
+
+      {/* Footer: year + view link */}
+      <div class="mt-3 flex items-baseline justify-between">
+        <span class="font-mono text-[11px] text-[var(--color-muted)]">
+          {new Date(project.data.date).getFullYear()}
+        </span>
+        <span class="font-mono text-[11px] text-[var(--color-link)] opacity-0 transition-opacity group-hover:opacity-100">
+          View project →
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-card {
+    box-shadow: var(--shadow-low);
+  }
+  .project-card:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-1px);
+  }
+</style>
