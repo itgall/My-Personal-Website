@@ -1,0 +1,146 @@
+---
+/**
+ * subscribe.astro — Newsletter signup page.
+ *
+ * Embeds a Substack signup form via their official iframe endpoint.
+ * The iframe is cross-origin and cannot be styled internally — all
+ * design work is done on the surrounding card and page copy.
+ *
+ * Publication: isaactgallegos.substack.com
+ * Embed URL: https://isaactgallegos.substack.com/embed
+ *
+ * Content-structure separation: the publication subdomain is the only
+ * hardcoded value. If the newsletter moves to a different platform,
+ * only this file needs to change.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const publication = "isaactgallegos.substack.com";
+const embedUrl = `https://${publication}/embed`;
+const archiveUrl = `https://${publication}/archive`;
+const directSubscribeUrl = `https://${publication}/subscribe`;
+---
+
+<BaseLayout
+  title="Subscribe"
+  description="Subscribe to Isaac Gallegos's newsletter — occasional notes on biomedical imaging, computational optics, and what we can see when we build the right instruments."
+>
+  <div class="subscribe-page">
+
+    {/* ─── Header ─────────────────────────────────────────── */}
+    <header class="subscribe-header">
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight">
+        Subscribe
+      </h1>
+      <p class="subscribe-subtitle">
+        Occasional notes on biomedical imaging, computational optics, and what
+        we can see when we build the right instruments.
+      </p>
+    </header>
+
+    {/* ─── Embed card ─────────────────────────────────────── */}
+    <div class="subscribe-card" aria-label="Newsletter signup">
+      <iframe
+        title="Newsletter signup form"
+        src={embedUrl}
+        width="100%"
+        height="320"
+        style="border:0; background:white; display:block;"
+        frameborder="0"
+        scrolling="no"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    {/* ─── What to expect ─────────────────────────────────── */}
+    <div class="subscribe-details">
+      <h2 class="subscribe-details-heading">What to expect</h2>
+      <p class="subscribe-details-text">
+        Deep-dives on imaging methods and optical engineering, plain-English
+        breakdowns of papers I'm reading, code and simulations I'm building,
+        and behind-the-scenes notes from current research at the Wellman Center
+        for Photomedicine. Short. No spam. Unsubscribe in one click.
+      </p>
+      <p class="subscribe-fallback">
+        Form not loading?
+        <a href={directSubscribeUrl} target="_blank" rel="noopener noreferrer">
+          Subscribe on Substack directly &rarr;
+        </a>
+      </p>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .subscribe-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .subscribe-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .subscribe-subtitle {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .subscribe-card {
+    max-width: 480px;
+    margin: 2rem auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+  }
+
+  .subscribe-card iframe {
+    display: block;
+    width: 100%;
+    height: 320px;
+    border: 0;
+  }
+
+  .subscribe-details {
+    max-width: 480px;
+    margin: 2rem auto 0;
+  }
+
+  .subscribe-details-heading {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .subscribe-details-text {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .subscribe-fallback {
+    margin-top: 1.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+
+  .subscribe-fallback a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .subscribe-fallback a:hover {
+    color: var(--color-link-hover);
+  }
+</style>

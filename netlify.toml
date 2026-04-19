@@ -61,7 +61,7 @@
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     X-DNS-Prefetch-Control = "on"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' plausible.io; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://api.semanticscholar.org https://pub.orcid.org https://plausible.io; frame-src 'self' https://www.youtube-nocookie.com"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' plausible.io; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://api.semanticscholar.org https://pub.orcid.org https://plausible.io; frame-src 'self' https://www.youtube-nocookie.com https://*.substack.com"
 
 # ── Cache-Control for immutable hashed assets ─────────────────────────────────
 
