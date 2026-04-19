@@ -94,6 +94,7 @@ collections:
       - label: Tags
         name: tags
         widget: list
+        required: false
         default: []
 
       - label: Published
@@ -150,6 +151,7 @@ collections:
       - label: Tags
         name: tags
         widget: list
+        required: false
         default: []
 
       - label: Highlight Tag
@@ -233,6 +235,7 @@ collections:
       - label: Tech Stack
         name: techStack
         widget: list
+        required: false
         default: []
         field: { label: "Technology", name: tech, widget: string }
 
@@ -257,6 +260,7 @@ collections:
       - label: Related Publications
         name: relatedPublications
         widget: list
+        required: false
         default: []
         hint: "BibTeX citation keys from bibliography.bib (e.g., doe2026ssoct)."
         field: { label: "Citation Key", name: key, widget: string }
@@ -326,6 +330,7 @@ collections:
       - label: Tags
         name: tags
         widget: list
+        required: false
         default: []
 
       - label: Syllabus URL
@@ -394,6 +399,7 @@ collections:
       - label: Tags
         name: tags
         widget: list
+        required: false
         default: []
 
       - label: Backlinks
