@@ -9,6 +9,7 @@ tags:
   - intravascular imaging
 highlightTag: "spectroscopy"
 institution: "Wellman Center for Photomedicine, MGH / Harvard Medical School"
+description: "Extracting wavelength-dependent tissue optical properties from broadband OCT signals for quantitative coronary artery characterization without additional imaging modalities."
 contentMode: freeform
 techStack:
   - MATLAB

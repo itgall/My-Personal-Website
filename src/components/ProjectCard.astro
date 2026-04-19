@@ -1,14 +1,20 @@
 ---
 /**
- * ProjectCard.astro — Elevated research project card.
+ * ProjectCard.astro — Research project card (content-forward style).
  *
- * Visual identity: Shadow-elevated card with image placeholder,
- * tech stack tags, title, description, and "View project →" link.
- * Inspired by MIT research group project galleries (e.g., Englund Lab).
+ * Visual identity: Bordered card on white background with result figure
+ * placeholder, title, description, institution, and topic tag pills.
+ * Modeled after the older site version the user preferred.
  *
- * Card variant: Elevated (shadow, no border, white background)
- * Layout: Used in 3-column grid on projects index and homepage.
- * Hover: Card lifts with deeper shadow (translateY + shadow-lg).
+ * Hover behavior:
+ *   - Card lifts 2px (translateY)
+ *   - Border shifts to accent color (blue glow)
+ *   - Box shadow picks up accent-tinted glow
+ *   - Title transitions to accent color
+ *
+ * Layout: Used in 3-column grid on projects index page.
+ * Content separation: All data comes from the project collection entry.
+ * The description field in frontmatter provides the card summary text.
  */
 import type { CollectionEntry } from "astro:content";
 
@@ -17,67 +23,124 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, institution, highlightTag } = project.data;
+const { title, description, institution, highlightTag } = project.data;
 const tags: string[] = project.data.tags;
-const techStack: string[] = project.data.techStack;
 ---
 
-<article
-  class="project-card group overflow-hidden rounded-xl bg-[var(--color-surface)] transition-all duration-200"
->
+<article class="project-card group">
   <a href={`/projects/${project.id}/`} class="block no-underline">
-    {/* Image placeholder area */}
-    <div class="flex h-36 items-center justify-center bg-[var(--color-surface-raised)] transition-colors group-hover:bg-[var(--color-border)]">
+    {/* Result figure placeholder */}
+    <div class="card-figure">
       <span class="font-mono text-xs text-[var(--color-muted)]">
         {highlightTag ?? "Research"}
       </span>
     </div>
 
-    {/* Card body */}
-    <div class="px-4 pb-4 pt-3">
-      {/* Tech stack tags */}
-      {techStack.length > 0 && (
-        <div class="mb-2 flex flex-wrap gap-1.5">
-          {techStack.slice(0, 4).map((tech) => (
-            <span class="rounded-sm bg-[var(--color-surface-raised)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-muted)]">
-              {tech}
-            </span>
-          ))}
-          {techStack.length > 4 && (
-            <span class="font-mono text-[10px] text-[var(--color-muted)]">
-              +{techStack.length - 4}
-            </span>
-          )}
-        </div>
-      )}
+    {/* Title */}
+    <h3 class="card-title">
+      {title}
+    </h3>
 
-      {/* Title */}
-      <h3 class="text-base font-medium leading-snug md:text-lg">
-        {title}
-      </h3>
+    {/* Description */}
+    {description && (
+      <p class="card-description">
+        {description}
+      </p>
+    )}
 
-      {/* Institution */}
-      <p class="mt-1 text-xs text-[var(--color-muted)] line-clamp-2">{institution}</p>
+    {/* Institution */}
+    <p class="card-institution">
+      {institution}
+    </p>
 
-      {/* Footer: year + view link */}
-      <div class="mt-3 flex items-baseline justify-between">
-        <span class="font-mono text-[11px] text-[var(--color-muted)]">
-          {new Date(project.data.date).getFullYear()}
-        </span>
-        <span class="font-mono text-[11px] text-[var(--color-link)] opacity-0 transition-opacity group-hover:opacity-100">
-          View project →
-        </span>
+    {/* Topic tags */}
+    {tags.length > 0 && (
+      <div class="card-tags">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="card-tag">{tag}</span>
+        ))}
       </div>
-    </div>
+    )}
   </a>
 </article>
 
 <style>
   .project-card {
-    box-shadow: var(--shadow-low);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.3s ease;
   }
+
   .project-card:hover {
-    box-shadow: var(--shadow-medium);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    border-color: var(--color-accent-border);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+
+  .card-figure {
+    width: 100%;
+    height: 9rem;
+    border-radius: 6px;
+    background: var(--color-bg-off, var(--color-surface));
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.3;
+    transition: color 0.15s ease;
+  }
+
+  .project-card:hover .card-title {
+    color: var(--color-accent);
+  }
+
+  .card-description {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-institution {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    margin-top: 0.5rem;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.75rem;
+  }
+
+  .card-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    padding: 0.15em 0.5em;
+    border-radius: 9999px;
+    background: var(--color-accent-bg);
+    color: var(--color-accent);
+    border: 1px solid var(--color-border);
+    letter-spacing: 0.02em;
   }
 </style>
