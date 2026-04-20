@@ -272,13 +272,6 @@ const timeline: TimelineEntry[] = [
     align-items: start;
   }
 
-  @media (max-width: 640px) {
-    .timeline-entry {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-  }
-
   .timeline-period {
     font-size: 12px;
     color: var(--color-muted);
@@ -289,16 +282,6 @@ const timeline: TimelineEntry[] = [
   .timeline-content {
     border-left: 2px solid var(--color-border);
     padding-left: 1.25rem;
-  }
-
-  @media (max-width: 640px) {
-    .timeline-content {
-      border-left: none;
-      padding-left: 0;
-    }
-    .timeline-entry-future .timeline-content {
-      border-left: none;
-    }
   }
 
   .timeline-entry-future .timeline-content {
@@ -341,5 +324,21 @@ const timeline: TimelineEntry[] = [
     color: var(--color-text-secondary);
     margin: 10px 0 0;
     line-height: 1.65;
+  }
+
+  /* ── Mobile: single block, MUST come last to win the cascade ── */
+  @media (max-width: 640px) {
+    .timeline-entry {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .timeline-content {
+      border-left: none;
+      padding-left: 0;
+    }
+    .timeline-entry-future .timeline-content {
+      border-left: none;
+      opacity: 1;
+    }
   }
 </style>
