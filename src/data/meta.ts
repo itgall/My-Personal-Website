@@ -74,7 +74,7 @@ export const siteMetadata: SiteMetadata = {
   role: "Research Engineer",
   subtitle: "Wellman Center for Photomedicine · Harvard Medical School · MIT",
   description:
-    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, MGH & Harvard Medical School. Spectroscopic OCT, photoacoustic imaging, inverse algorithms.",
+    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Optical systems, inverse algorithms, quantum photonics, integrated photonic devices, and physics-informed deep learning.",
   siteUrl: "https://isaac-gallegos.com",
   image: "/images/profile-v2.jpg",
   language: "en",

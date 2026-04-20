@@ -23,15 +23,10 @@ education:
   - degree: "B.S. Engineering Physics"
     institution: "Colorado School of Mines"
     location: "Golden, CO"
-    dates: "2019–2023"
+    dates: "2021–2024"
     gpa: "3.99"
     honors:
       - "Summa Cum Laude"  # TODO: verify honors
-
-  - degree: "MBA (Deferred — 2+2 Program)"
-    institution: "Harvard Business School"
-    location: "Boston, MA"
-    dates: "Admitted 2023, Deferred"
 
 experience:
   - title: "Research Engineer"
@@ -90,10 +85,8 @@ teaching:
     dates: "Fall 2022"  # TODO: verify semester
 
 awards:
-  - title: "Harvard Business School 2+2 Program Admission"
-    institution: "Harvard Business School"
-    dates: "2023"
   # TODO: Add undergraduate awards/scholarships from Mines
+  []
 
 service: []
 talks: []
