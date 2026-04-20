@@ -26,7 +26,7 @@ interface PreviewEntry {
 
 /** Type badge color accents (CSS color values) */
 const TYPE_COLORS: Record<string, string> = {
-  post: "#2b6cb0",
+  post: "#2563eb",
   project: "#708090",
   note: "#B07A28",
   publication: "#3D7A50",

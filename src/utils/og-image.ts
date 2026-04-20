@@ -64,8 +64,8 @@ const colors = {
   bgDark: "#1C1E22",
   text: "#36454F",
   muted: "#6B7885",
-  accent: "#2b6cb0",
-  accentLight: "rgba(43, 108, 176, 0.12)",
+  accent: "#2563eb",
+  accentLight: "rgba(37, 99, 235, 0.12)",
   border: "#D5D0CB",
 };
 
