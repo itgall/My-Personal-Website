@@ -604,8 +604,15 @@ collections:
                   - { label: "Princeton Orange", value: "princeton" }
                   - { label: "Caltech Orange", value: "caltech" }
                   - { label: "Dartmouth Green", value: "dartmouth" }
+                  - { label: "Terracotta", value: "terracotta" }
+                  - { label: "Interferometer (steel blue)", value: "interferometer" }
+                  - { label: "Coherence (deep navy)", value: "coherence" }
+                  - { label: "Sodium Arc (amber)", value: "sodium-arc" }
+                  - { label: "Cherenkov (luminous blue)", value: "cherenkov" }
+                  - { label: "Blackbody (copper)", value: "blackbody" }
+                  - { label: "Second Harmonic (532nm green)", value: "second-harmonic" }
                 default: "violet"
-                hint: "Accent color preset. Three custom accents plus university brand colors."
+                hint: "Accent color preset. Custom accents, university brands, and physics-grounded themes."
               - { label: "Backlinks", name: backlinks, widget: boolean, default: true, hint: "Show bidirectional backlink panels on content pages." }
               - { label: "Table of Contents", name: tableOfContents, widget: boolean, default: true, hint: "Show table of contents on blog posts." }
               - { label: "Link Previews", name: linkPreviews, widget: boolean, default: true, hint: "Show hover/focus link preview popovers." }
