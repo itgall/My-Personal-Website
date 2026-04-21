@@ -1,7 +1,7 @@
 {
   "features": {
     "maintenanceMode": false,
-    "defaultAccent": "rayleigh",
+    "defaultAccent": "violet",
     "sidenotes": true,
     "backlinks": true,
     "tableOfContents": true,

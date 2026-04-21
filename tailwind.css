@@ -25,7 +25,7 @@
  *   Dark: ink #F4F5F7 on bg #1C1E22 = 15.3:1 ✓
  *   Dark: text #EDEEF0 on bg #1C1E22 = 14.0:1 ✓
  *   Dark: muted #A0A4AB on bg #1C1E22 = 6.4:1 ✓
- *   Dark: link #60a5fa on bg #1C1E22 = 7.2:1 ✓
+ *   Dark: link #A587CC on bg #1C1E22 = 7.2:1 ✓
  */
 
 @import "tailwindcss";
@@ -51,11 +51,11 @@
   --color-ink: #1A2332;
   --color-border: #D5D0CC;
   --color-border-subtle: #E8E5E2;
-  --color-accent: #2563eb;
-  --color-accent-bg: rgba(37, 99, 235, 0.06);
-  --color-accent-border: rgba(37, 99, 235, 0.22);
-  --color-link: #2563eb;
-  --color-link-hover: #1d4ed8;
+  --color-accent: #6B4C9A;
+  --color-accent-bg: rgba(107, 76, 154, 0.06);
+  --color-accent-border: rgba(107, 76, 154, 0.22);
+  --color-link: #6B4C9A;
+  --color-link-hover: #523878;
   --color-code-bg: #F5F3F1;
   --color-code-text: #36454F;
   --color-success: #3D7A50;
@@ -127,11 +127,11 @@
     --color-ink: #F4F5F7;
     --color-border: #3C3A38;
     --color-border-subtle: #32302E;
-    --color-accent: #60a5fa;
-    --color-accent-bg: rgba(96, 165, 250, 0.10);
-    --color-accent-border: rgba(96, 165, 250, 0.25);
-    --color-link: #60a5fa;
-    --color-link-hover: #93c5fd;
+    --color-accent: #A587CC;
+    --color-accent-bg: rgba(165, 135, 204, 0.10);
+    --color-accent-border: rgba(165, 135, 204, 0.25);
+    --color-link: #A587CC;
+    --color-link-hover: #BCA1DA;
     --color-code-bg: #1F2226;
     --color-code-text: #EDEEF0;
     --color-success: #6BAF7B;
@@ -160,11 +160,11 @@
       --color-ink: #F4F5F7;
       --color-border: #3C3A38;
       --color-border-subtle: #32302E;
-      --color-accent: #60a5fa;
-      --color-accent-bg: rgba(96, 165, 250, 0.10);
-      --color-accent-border: rgba(96, 165, 250, 0.25);
-      --color-link: #60a5fa;
-      --color-link-hover: #93c5fd;
+      --color-accent: #A587CC;
+      --color-accent-bg: rgba(165, 135, 204, 0.10);
+      --color-accent-border: rgba(165, 135, 204, 0.25);
+      --color-link: #A587CC;
+      --color-link-hover: #BCA1DA;
       --color-code-bg: #1F2226;
       --color-code-text: #EDEEF0;
       --color-success: #6BAF7B;

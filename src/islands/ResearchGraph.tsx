@@ -51,7 +51,7 @@ interface LinkGraph {
 /* ── Color palette matching site design tokens ──────────────────────────── */
 
 const TYPE_COLORS: Record<string, string> = {
-  post: "#2563eb",
+  post: "#6B4C9A",
   project: "#708090",
   note: "#B07A28",
   publication: "#3D7A50",

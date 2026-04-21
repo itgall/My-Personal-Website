@@ -48,7 +48,7 @@ function getAccentRgb(): [number, number, number] {
   const accent = getComputedStyle(document.documentElement)
     .getPropertyValue("--color-accent")
     .trim();
-  return hexToRgb(accent || "#2563eb");
+  return hexToRgb(accent || "#6B4C9A");
 }
 
 /* ── Particle type ────────────────────────────────────────────────────────── */
