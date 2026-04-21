@@ -120,12 +120,16 @@ export const siteMetadata: SiteMetadata = {
   ],
 
   knowsAbout: [
+    "Quantum Photonics",
+    "Spin-Photon Interfaces",
+    "Integrated Photonic Systems",
+    "Computational Inverse Design",
+    "Physics-Informed Deep Learning",
     "Optical Coherence Tomography",
-    "Spectroscopic Imaging",
     "Photoacoustic Imaging",
-    "Inverse Algorithms",
-    "Computational Optical Modeling",
-    "Quantum Sensing",
+    "Laser Physics",
+    "Nonlinear Optics",
+    "Single-Photon Detection",
   ],
 
   footer: {
