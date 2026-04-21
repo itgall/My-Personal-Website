@@ -594,16 +594,18 @@ collections:
                 name: defaultAccent
                 widget: select
                 options:
-                  - { label: "Terracotta", value: "terracotta" }
-                  - { label: "Interferometer (steel blue)", value: "interferometer" }
-                  - { label: "Coherence (deep navy)", value: "coherence" }
-                  - { label: "Rayleigh (sky blue)", value: "rayleigh" }
-                  - { label: "Sodium Arc (amber)", value: "sodium-arc" }
-                  - { label: "Cherenkov (luminous blue)", value: "cherenkov" }
-                  - { label: "Blackbody (copper)", value: "blackbody" }
-                  - { label: "Second Harmonic (532nm green)", value: "second-harmonic" }
-                default: "rayleigh"
-                hint: "Accent color preset derived from optical/physical phenomena. Applied site-wide."
+                  - { label: "405nm Violet", value: "violet" }
+                  - { label: "Ink Teal", value: "ink-teal" }
+                  - { label: "Web Blue", value: "web-blue" }
+                  - { label: "Harvard Crimson", value: "harvard" }
+                  - { label: "MIT Red", value: "mit" }
+                  - { label: "Stanford Cardinal", value: "stanford" }
+                  - { label: "Yale Blue", value: "yale" }
+                  - { label: "Princeton Orange", value: "princeton" }
+                  - { label: "Caltech Orange", value: "caltech" }
+                  - { label: "Dartmouth Green", value: "dartmouth" }
+                default: "violet"
+                hint: "Accent color preset. Three custom accents plus university brand colors."
               - { label: "Backlinks", name: backlinks, widget: boolean, default: true, hint: "Show bidirectional backlink panels on content pages." }
               - { label: "Table of Contents", name: tableOfContents, widget: boolean, default: true, hint: "Show table of contents on blog posts." }
               - { label: "Link Previews", name: linkPreviews, widget: boolean, default: true, hint: "Show hover/focus link preview popovers." }
