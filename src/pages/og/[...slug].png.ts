@@ -39,8 +39,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     subtitle: "Research Engineer · Wellman Center for Photomedicine",
   });
 
-  /* Blog posts — generates OG for every entry, matching blog/[...slug] behavior */
-  const posts = await getCollection("posts");
+  /* Blog posts */
+  const posts = await getCollection("posts", ({ data }) => data.published);
   for (const post of posts) {
     entries.push({
       slug: `blog/${post.id}`,
@@ -52,7 +52,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Projects */
-  const projects = await getCollection("projects");
+  const projects = await getCollection("projects", ({ data }) => data.published);
   for (const project of projects) {
     entries.push({
       slug: `projects/${project.id}`,
@@ -64,7 +64,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Notes */
-  const notes = await getCollection("notes");
+  const notes = await getCollection("notes", ({ data }) => data.published);
   for (const note of notes) {
     entries.push({
       slug: `notes/${note.id}`,
@@ -76,7 +76,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Podcast episodes */
-  const episodes = await getCollection("podcast");
+  const episodes = await getCollection("podcast", ({ data }) => data.published);
   for (const ep of episodes) {
     const guestNames = ep.data.guests.map((g: { name: string }) => g.name);
     entries.push({
@@ -91,7 +91,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Ventures */
-  const ventures = await getCollection("ventures");
+  const ventures = await getCollection("ventures", ({ data }) => data.published);
   for (const venture of ventures) {
     entries.push({
       slug: `ventures/${venture.id}`,
