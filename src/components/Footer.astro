@@ -1,75 +1,241 @@
 ---
 /**
- * Footer.astro — Institutional footer with complete site map.
+ * Footer.astro — Colophon-forward asymmetric footer.
  *
- * Three rows:
- *   1. Name/affiliation left, contact links right
- *   2. Site map — all pages, matching the three-tier nav architecture
- *   3. Disclaimer + copyright + attribution
+ * Layout:
+ *   ─────────────────────────────────────── hairline rule
+ *   Name block (left)     │  Site (mid)    │  Explore (right)
+ *   Positioning line      │  About         │  Now
+ *   Email · GitHub · ...  │  CV            │  Uses
+ *                         │  Contact       │  Bookshelf
+ *                         │  Subscribe     │  Tags
+ *                         │  Colophon      │
+ *   ───────────────────────────────────────
+ *   © 2019–{year} · stack · license · last updated
+ *
+ * Design principles (from footer research):
+ *   - Accent color withheld — neutrals only
+ *   - Monospace reserved for the meta line (engineered feel)
+ *   - External links as plaintext, not icons
+ *   - Primary nav items (Research, Writing, Publications) excluded
+ *   - Empty sections (Podcast, Speaking, Ventures) excluded
  */
 import { siteMetadata } from "@data/meta";
-import { footerNav } from "@data/navigation";
 
 const currentYear = new Date().getFullYear();
 
-const contactLinks = [
-  { label: "itgall@mit.edu", href: "mailto:itgall@mit.edu", external: false },
-  { label: "LinkedIn", href: siteMetadata.contact.linkedin, external: true },
-  { label: "GitHub", href: siteMetadata.contact.github, external: true },
-  { label: "ORCID", href: `https://orcid.org/${siteMetadata.contact.orcid}`, external: true },
+const externalLinks = [
+  { label: "Email", href: "mailto:itgall@mit.edu" },
+  { label: "GitHub", href: siteMetadata.contact.github },
+  { label: "Scholar", href: siteMetadata.contact.googleScholar },
+  { label: "ORCID", href: `https://orcid.org/${siteMetadata.contact.orcid}` },
+  { label: "RSS", href: "/rss.xml" },
+];
+
+const siteLinks = [
+  { label: "About", href: "/about/" },
+  { label: "CV", href: "/documents/gallegos-cv.pdf" },
+  { label: "Contact", href: "/contact/" },
+  { label: "Subscribe", href: "/subscribe/" },
+  { label: "Colophon", href: "/colophon/" },
+];
+
+const exploreLinks = [
+  { label: "Now", href: "/now/" },
+  { label: "Uses", href: "/uses/" },
+  { label: "Bookshelf", href: "/bookshelf/" },
+  { label: "Tags", href: "/tags/" },
 ];
 ---
 
-<footer class="mt-24 border-t border-[var(--color-border)] print:hidden" role="contentinfo" data-pagefind-ignore>
-  <div class="full-container py-12">
+<footer class="site-footer" role="contentinfo" data-pagefind-ignore>
+  <div class="full-container">
 
-    {/* Top row: name/affiliation left, links right */}
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+    {/* Hairline rule */}
+    <div class="footer-rule"></div>
+
+    {/* Three-section asymmetric grid */}
+    <div class="footer-grid">
+
+      {/* Left: name block */}
       <div>
-        <p class="text-sm font-medium text-[var(--color-text)]">
-          Isaac Gallegos
-        </p>
-        <p class="mt-1 text-xs text-[var(--color-muted)]">
-          Harvard Medical School · Wellman Center for Photomedicine · MIT
-        </p>
+        <p class="footer-name">Isaac Gallegos</p>
+        <p class="footer-positioning">Physics · Photonics · Computation</p>
+        <div class="footer-external">
+          {externalLinks.map((link, i) => (
+            <>
+              <a
+                href={link.href}
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                class="footer-ext-link"
+              >
+                {link.label}
+              </a>
+              {i < externalLinks.length - 1 && <span class="footer-ext-sep">&middot;</span>}
+            </>
+          ))}
+        </div>
       </div>
-      <div class="flex items-center gap-5">
-        {contactLinks.map((link) => (
-          <a
-            href={link.href}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noopener noreferrer" : undefined}
-            class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
-          >
-            {link.label}
-          </a>
+
+      {/* Middle column: Site */}
+      <div class="footer-col">
+        <p class="footer-col-header">Site</p>
+        {siteLinks.map((link) => (
+          <a href={link.href} class="footer-col-link">{link.label}</a>
         ))}
       </div>
+
+      {/* Right column: Explore */}
+      <div class="footer-col">
+        <p class="footer-col-header">Explore</p>
+        {exploreLinks.map((link) => (
+          <a href={link.href} class="footer-col-link">{link.label}</a>
+        ))}
+      </div>
+
     </div>
 
-    {/* Site map */}
-    <div class="mt-8 flex flex-wrap gap-x-5 gap-y-1.5">
-      {footerNav.map((item) => (
-        <a
-          href={item.href}
-          target={item.external ? "_blank" : undefined}
-          rel={item.external ? "noopener noreferrer" : undefined}
-          class="font-mono text-[11px] text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-
-    {/* Disclaimer */}
-    <p class="mt-8 max-w-xl text-xs text-[var(--color-muted)] leading-relaxed opacity-60">
-      This is a personal website. Views expressed here are my own and do not represent Harvard Medical School, Massachusetts General Hospital, MIT, or any affiliated institution.
-    </p>
-
-    {/* Copyright + attribution */}
-    <p class="mt-3 text-xs text-[var(--color-muted)] opacity-40">
-      © {currentYear} Isaac Gallegos · Designed and coded by hand
+    {/* Meta line — monospace, the "engineered" signal */}
+    <p class="footer-meta">
+      &copy; 2019&ndash;{currentYear} Isaac Gallegos &middot; Astro &middot; Netlify &middot; Source Serif 4 + Inter &middot; CC BY 4.0
     </p>
 
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+  }
+
+  .footer-rule {
+    height: 1px;
+    background: var(--color-text);
+    opacity: 0.08;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px;
+    gap: 2rem;
+    align-items: start;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* ── Name block (left) ── */
+  .footer-name {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-positioning {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    margin-top: 3px;
+  }
+
+  .footer-external {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    margin-top: 0.75rem;
+  }
+
+  .footer-ext-link {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-ext-link:hover {
+    color: var(--color-text);
+  }
+
+  .footer-ext-sep {
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    opacity: 0.4;
+    margin: 0 0.4rem;
+  }
+
+  /* ── Link columns ── */
+  .footer-col-header {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-col-link {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    padding: 2px 0;
+    transition: color 0.15s ease;
+  }
+
+  .footer-col-link:hover {
+    color: var(--color-text);
+  }
+
+  /* ── Meta line ── */
+  .footer-meta {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--color-muted);
+    opacity: 0.5;
+    margin-top: 1.5rem;
+    padding-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    .site-footer {
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 1rem;
+      align-items: baseline;
+    }
+
+    .footer-col-header {
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-col-link {
+      padding: 1px 0;
+    }
+  }
+
+  /* ── Print ── */
+  @media print {
+    .site-footer {
+      display: none !important;
+    }
+  }
+</style>
