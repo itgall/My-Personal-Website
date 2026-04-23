@@ -8,10 +8,13 @@
  *   4. Code block styling (Shiki integration)
  *   5. Print stylesheet import
  *
- * Font stack:
- *   Headings:  DM Serif Display — dramatic display serif for titles and h1–h3
- *   Body:      Inter — modern sans-serif for readable body text
- *   Code:      JetBrains Mono — monospace with 138 coding ligatures
+ * Font stack (mixed typography):
+ *   UI chrome:  Inter — navigation, headings, cards, metadata, buttons
+ *   Body text:  Source Serif 4 — essay and note body paragraphs (.prose)
+ *   Code:       JetBrains Mono — inline code and code blocks
+ *
+ * The serif body + sans headings pattern differentiates from the
+ * Inter-everywhere template aesthetic while keeping the UI clean.
  *
  * Fonts are loaded via Google Fonts API in BaseLayout.astro with font-display: swap.
  * The system font fallback stack provides seamless reading if fonts haven't loaded yet.
@@ -30,9 +33,11 @@
     color: var(--color-text-secondary);
     font-size: var(--font-size-base);
     line-height: 1.78;
+    font-family: var(--font-serif);
   }
 
   .prose h1 {
+    font-family: var(--font-sans);
     font-size: var(--font-size-3xl);
     font-weight: 700;
     letter-spacing: -0.025em;
@@ -43,6 +48,7 @@
   }
 
   .prose h2 {
+    font-family: var(--font-sans);
     font-size: var(--font-size-2xl);
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -55,6 +61,7 @@
   }
 
   .prose h3 {
+    font-family: var(--font-sans);
     font-size: var(--font-size-xl);
     font-weight: 600;
     letter-spacing: -0.015em;
@@ -65,6 +72,7 @@
   }
 
   .prose h4 {
+    font-family: var(--font-sans);
     font-size: var(--font-size-lg);
     font-weight: 600;
     line-height: 1.4;
@@ -157,6 +165,7 @@
     border-collapse: collapse;
     margin: 1.5rem 0;
     font-size: var(--font-size-sm);
+    font-family: var(--font-sans);
   }
 
   .prose th {
@@ -215,6 +224,26 @@
 
   .prose .heading-anchor:hover {
     text-decoration: none;
+  }
+
+  /* ── Drop cap: first paragraph of essays ───────────────────────────── */
+  .essay-body.prose > p:first-of-type::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-size: 3.4em;
+    line-height: 0.8;
+    padding-right: 0.08em;
+    margin-top: 0.05em;
+    color: var(--color-ink);
+    font-weight: 400;
+  }
+
+  /* ── Small caps for acronyms ───────────────────────────────────────── */
+  .prose .sc,
+  .sc {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.03em;
+    font-size: 1.05em;
   }
 }
 
