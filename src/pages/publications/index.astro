@@ -67,11 +67,14 @@ const filterOptions: FilterOption[] = types.map((type) => ({
   {/* ═══════ 1. SCOPE + EXTERNAL LINKS ═══════════════════════════ */}
   <section class="pubs-scope">
     <p class="pubs-scope-prose">
-      Peer-reviewed papers, preprints, conference presentations, and selected
-      working papers in optical physics, inverse algorithms,
-      and computational imaging. The canonical publication record — with
-      citation counts and continuous indexing — lives at Google Scholar
-      and ORCID.
+      Research I led or contributed to at the Wellman Center for
+      Photomedicine and during my undergraduate work at Colorado School
+      of Mines. A complete list with citation counts is available on
+      <a
+        href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Google Scholar</a>.
     </p>
 
     <div class="pubs-external-links">
@@ -200,6 +203,18 @@ const filterOptions: FilterOption[] = types.map((type) => ({
     line-height: 1.7;
     color: var(--color-text-secondary);
     margin: 0 0 1.25rem;
+  }
+
+  .pubs-scope-prose a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .pubs-scope-prose a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .pubs-external-links {
