@@ -520,8 +520,11 @@
 
 /* ── Minimal: component overrides ── */
 
-/* Links: inherit body color, underline as only affordance */
-[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]) {
+/* Links: inherit body color, underline as only affordance.
+ * Excludes: nav links, buttons, and any element with Tailwind's no-underline class.
+ * This means only inline prose links get underlines — card wrappers, nav items,
+ * tag pills, breadcrumbs, and action links all respect their existing styling. */
+[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):not(.no-underline) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
@@ -529,13 +532,13 @@
   transition: text-decoration-thickness 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):hover {
+[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):not(.no-underline):hover {
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-text);
 }
 
-[data-style="minimal"][data-theme="dark"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]),
-[data-style="minimal"]:not([data-theme]) a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]) {
+[data-style="minimal"][data-theme="dark"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):not(.no-underline),
+[data-style="minimal"]:not([data-theme]) a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):not(.no-underline) {
   text-decoration-color: #555;
 }
 
@@ -557,6 +560,13 @@
 [data-style="minimal"] footer,
 [data-style="minimal"] .site-footer {
   font-family: var(--font-sans);
+}
+
+/* Navigation and footer links: no underlines */
+[data-style="minimal"] nav a,
+[data-style="minimal"] footer a,
+[data-style="minimal"] .site-footer a {
+  text-decoration: none !important;
 }
 
 /* Cards: strip all chrome */
