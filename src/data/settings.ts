@@ -81,6 +81,8 @@ export interface SectionSettings {
 export interface AppearanceSettings {
   /** Default theme: light, dark, or system (follows OS preference) */
   defaultTheme: "light" | "dark" | "system";
+  /** Site style: default (current design) or minimal (typography-first, no accent) */
+  siteStyle: "default" | "minimal";
   /** Loading animation style: none, monogram, terminal, pulse, name */
   loadingAnimation: "none" | "monogram" | "terminal" | "pulse" | "name";
   /** Enable Astro View Transitions for smooth page navigation */
@@ -143,6 +145,7 @@ const defaultSections: SectionSettings = {
 
 const defaultAppearance: AppearanceSettings = {
   defaultTheme: "light",
+  siteStyle: "default",
   loadingAnimation: "none",
   viewTransitions: true,
   scrollReveal: false,

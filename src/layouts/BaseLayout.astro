@@ -205,7 +205,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteMetadata.siteUrl).href;
      * Theme and accent are set by the site owner via the admin dashboard.
      * "system" theme follows the visitor's OS preference; "light"/"dark" are fixed.
      */}
-    <script is:inline define:vars={{ defaultTheme: appearance.defaultTheme, defaultAccent: features.defaultAccent }}>
+    <script is:inline define:vars={{ defaultTheme: appearance.defaultTheme, defaultAccent: features.defaultAccent, siteStyle: appearance.siteStyle }}>
       (function(){
         var presets={
           violet:{light:{"--color-accent":"#6B4C9A","--color-accent-bg":"rgba(107, 76, 154, 0.06)","--color-accent-border":"rgba(107, 76, 154, 0.22)","--color-link":"#6B4C9A","--color-link-hover":"#523878"},dark:{"--color-accent":"#A587CC","--color-accent-bg":"rgba(165, 135, 204, 0.10)","--color-accent-border":"rgba(165, 135, 204, 0.25)","--color-link":"#A587CC","--color-link-hover":"#BCA1DA"}},
@@ -237,6 +237,11 @@ const canonicalUrl = new URL(Astro.url.pathname, siteMetadata.siteUrl).href;
           var t=resolveTheme();
           root.setAttribute("data-theme",t);
           root.setAttribute("data-accent",defaultAccent);
+          if(siteStyle&&siteStyle!=="default"){root.setAttribute("data-style",siteStyle)}else{root.removeAttribute("data-style")}
+          /* In minimal mode, skip accent color application — the CSS custom
+           * properties from [data-style="minimal"] handle colors instead.
+           * Inline styles would override them due to higher specificity. */
+          if(siteStyle==="minimal"){return}
           var c=presets[defaultAccent];
           if(c){
             var s=c[t]||c.dark;

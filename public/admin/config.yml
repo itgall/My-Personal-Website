@@ -672,3 +672,11 @@ collections:
               - { label: "View Transitions", name: viewTransitions, widget: boolean, default: true, hint: "Smooth page transitions powered by the Astro View Transitions API." }
               - { label: "Scroll Reveal", name: scrollReveal, widget: boolean, default: false, hint: "Fade/slide elements in as they enter the viewport." }
               - { label: "Custom Cursor", name: customCursor, widget: boolean, default: false, hint: "Use custom SVG cursor themed to the accent color." }
+              - label: "Site Style"
+                name: siteStyle
+                widget: select
+                options:
+                  - { label: "Default", value: "default" }
+                  - { label: "Minimal", value: "minimal" }
+                default: "default"
+                hint: "Default uses the full accent color system. Minimal uses monochrome typography-first design."

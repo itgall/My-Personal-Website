@@ -398,3 +398,180 @@
     outline-width: 3px;
   }
 }
+
+/* ── Minimal Theme ───────────────────────────────────────────────────────── */
+/**
+ * data-style="minimal" on <html> activates a typography-first aesthetic:
+ *   - Warm white background (#fdfdfa), near-black text (#1a1a1a)
+ *   - Links inherit body color; thin underline is the only affordance
+ *   - No accent color on links or UI elements
+ *   - Cards lose borders, shadows, radius, and tag pills
+ *   - Affiliation badges hidden
+ *   - Shadows removed
+ *   - Body text in serif everywhere
+ *
+ * Works in combination with data-theme="dark" for four total states:
+ *   default-light, default-dark, minimal-light, minimal-dark
+ */
+
+/* ── Minimal: light mode tokens ── */
+[data-style="minimal"] {
+  --color-bg: #fdfdfa;
+  --color-bg-off: #f8f7f4;
+  --color-surface: #fdfdfa;
+  --color-surface-raised: #fdfdfa;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #1a1a1a;
+  --color-muted: #6b6b66;
+  --color-ink: #1a1a1a;
+  --color-border: #e5e3dc;
+  --color-border-subtle: #e5e3dc;
+  --color-accent: #1a1a1a;
+  --color-accent-bg: transparent;
+  --color-accent-border: #e5e3dc;
+  --color-link: #1a1a1a;
+  --color-link-hover: #1a1a1a;
+  --color-code-bg: #f3f1ea;
+  --color-code-text: #1a1a1a;
+  --color-nav-bg: rgba(253, 253, 250, 0.90);
+  --color-secondary: #6b6b66;
+  --shadow-low: none;
+  --shadow-medium: none;
+  --shadow-high: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-glass: none;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+}
+
+/* ── Minimal: dark mode tokens (explicit toggle) ── */
+[data-style="minimal"][data-theme="dark"] {
+  --color-bg: #161616;
+  --color-bg-off: #1c1c1c;
+  --color-surface: #161616;
+  --color-surface-raised: #161616;
+  --color-text: #e8e6df;
+  --color-text-secondary: #e8e6df;
+  --color-muted: #8a8880;
+  --color-ink: #e8e6df;
+  --color-border: #2a2a2a;
+  --color-border-subtle: #2a2a2a;
+  --color-accent: #e8e6df;
+  --color-accent-bg: transparent;
+  --color-accent-border: #2a2a2a;
+  --color-link: #e8e6df;
+  --color-link-hover: #e8e6df;
+  --color-code-bg: #1e1e1e;
+  --color-code-text: #e8e6df;
+  --color-nav-bg: rgba(22, 22, 22, 0.90);
+  --color-secondary: #8a8880;
+  --shadow-low: none;
+  --shadow-medium: none;
+  --shadow-high: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-glass: none;
+}
+
+/* ── Minimal: dark mode tokens (system preference fallback) ── */
+@media (prefers-color-scheme: dark) {
+  [data-style="minimal"]:not([data-theme]) {
+    --color-bg: #161616;
+    --color-bg-off: #1c1c1c;
+    --color-surface: #161616;
+    --color-surface-raised: #161616;
+    --color-text: #e8e6df;
+    --color-text-secondary: #e8e6df;
+    --color-muted: #8a8880;
+    --color-ink: #e8e6df;
+    --color-border: #2a2a2a;
+    --color-border-subtle: #2a2a2a;
+    --color-accent: #e8e6df;
+    --color-accent-bg: transparent;
+    --color-accent-border: #2a2a2a;
+    --color-link: #e8e6df;
+    --color-link-hover: #e8e6df;
+    --color-code-bg: #1e1e1e;
+    --color-code-text: #e8e6df;
+    --color-nav-bg: rgba(22, 22, 22, 0.90);
+    --color-secondary: #8a8880;
+    --shadow-low: none;
+    --shadow-medium: none;
+    --shadow-high: none;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-glass: none;
+  }
+}
+
+/* ── Minimal: component overrides ── */
+
+/* Links: inherit body color, underline as only affordance */
+[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: #c0bdb6;
+  transition: text-decoration-thickness 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+[data-style="minimal"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]):hover {
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-text);
+}
+
+[data-style="minimal"][data-theme="dark"] a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]),
+[data-style="minimal"]:not([data-theme]) a:not(.site-name):not(.nav-item):not([class*="button"]):not([class*="btn"]) {
+  text-decoration-color: #555;
+}
+
+/* Body text: serif everywhere */
+[data-style="minimal"] body {
+  font-family: var(--font-serif);
+}
+
+/* Headings: stay on sans but lighter weight */
+[data-style="minimal"] h1,
+[data-style="minimal"] h2,
+[data-style="minimal"] h3,
+[data-style="minimal"] h4 {
+  font-family: var(--font-sans);
+}
+
+/* Navigation and footer stay on sans */
+[data-style="minimal"] nav,
+[data-style="minimal"] footer,
+[data-style="minimal"] .site-footer {
+  font-family: var(--font-sans);
+}
+
+/* Cards: strip all chrome */
+[data-style="minimal"] .project-card,
+[data-style="minimal"] [class*="card"] {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* Tag pills: hide */
+[data-style="minimal"] .tag-pill,
+[data-style="minimal"] .card-tag,
+[data-style="minimal"] [class*="tag-pill"],
+[data-style="minimal"] [class*="topic-tag"],
+[data-style="minimal"] .card-tags {
+  display: none;
+}
+
+/* Affiliation badges: hide (preserve timeline and maturity badges) */
+[data-style="minimal"] .affiliation-badge,
+[data-style="minimal"] [class*="badge"]:not(.maturity-badge):not(.timeline-badge) {
+  display: none;
+}
