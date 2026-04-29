@@ -424,11 +424,11 @@
   --color-text-secondary: #1a1a1a;
   --color-muted: #6b6b66;
   --color-ink: #1a1a1a;
-  --color-border: #e5e3dc;
+  --color-border: #d5d3cc;
   --color-border-subtle: #e5e3dc;
   --color-accent: #1a1a1a;
   --color-accent-bg: transparent;
-  --color-accent-border: #e5e3dc;
+  --color-accent-border: #b5b2aa;
   --color-link: #1a1a1a;
   --color-link-hover: #1a1a1a;
   --color-code-bg: #f3f1ea;
@@ -446,6 +446,10 @@
   --radius-md: 0px;
   --radius-lg: 0px;
   --radius-xl: 0px;
+
+  /* Wider content area for minimal theme */
+  --spacing-content: 820px;
+  --spacing-wide: 1080px;
 }
 
 /* ── Minimal: dark mode tokens (explicit toggle) ── */
@@ -458,11 +462,11 @@
   --color-text-secondary: #e8e6df;
   --color-muted: #8a8880;
   --color-ink: #e8e6df;
-  --color-border: #2a2a2a;
+  --color-border: #3a3a3a;
   --color-border-subtle: #2a2a2a;
   --color-accent: #e8e6df;
   --color-accent-bg: transparent;
-  --color-accent-border: #2a2a2a;
+  --color-accent-border: #555;
   --color-link: #e8e6df;
   --color-link-hover: #e8e6df;
   --color-code-bg: #1e1e1e;
@@ -476,6 +480,8 @@
   --shadow-md: none;
   --shadow-lg: none;
   --shadow-glass: none;
+  --spacing-content: 820px;
+  --spacing-wide: 1080px;
 }
 
 /* ── Minimal: dark mode tokens (system preference fallback) ── */
@@ -489,11 +495,11 @@
     --color-text-secondary: #e8e6df;
     --color-muted: #8a8880;
     --color-ink: #e8e6df;
-    --color-border: #2a2a2a;
+    --color-border: #3a3a3a;
     --color-border-subtle: #2a2a2a;
     --color-accent: #e8e6df;
     --color-accent-bg: transparent;
-    --color-accent-border: #2a2a2a;
+    --color-accent-border: #555;
     --color-link: #e8e6df;
     --color-link-hover: #e8e6df;
     --color-code-bg: #1e1e1e;
@@ -507,6 +513,8 @@
     --shadow-md: none;
     --shadow-lg: none;
     --shadow-glass: none;
+    --spacing-content: 820px;
+    --spacing-wide: 1080px;
   }
 }
 
@@ -574,4 +582,62 @@
 [data-style="minimal"] .affiliation-badge,
 [data-style="minimal"] [class*="badge"]:not(.maturity-badge):not(.timeline-badge) {
   display: none;
+}
+
+/* ── Blog post entries: stronger visual differentiation ── */
+
+/* Post titles: larger, heavier, clearly distinct from description */
+[data-style="minimal"] .post-card h3 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  font-family: var(--font-sans) !important;
+  color: var(--color-ink) !important;
+  line-height: 1.35 !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Post descriptions: clearly subordinate to title */
+[data-style="minimal"] .post-card p {
+  font-size: 0.8125rem !important;
+  color: var(--color-muted) !important;
+  line-height: 1.5 !important;
+}
+
+/* Post cards: more visible separation between entries */
+[data-style="minimal"] .post-card {
+  border: none !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 1.25rem 0 !important;
+  box-shadow: none !important;
+}
+
+[data-style="minimal"] .post-card:hover {
+  background: transparent !important;
+  border-color: var(--color-border) !important;
+  transform: none !important;
+}
+
+/* ── Project cards: visible borders ── */
+
+/* Project cards in minimal mode get a stronger border */
+[data-style="minimal"] .project-card {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--color-bg) !important;
+}
+
+[data-style="minimal"] .project-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: var(--color-ink) !important;
+}
+
+/* Project card figure area: clearer border */
+[data-style="minimal"] .card-figure {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
 }
