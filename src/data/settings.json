@@ -7,7 +7,7 @@
     "tableOfContents": true,
     "linkPreviews": false,
     "searchPage": true,
-    "researchGraph": true,
+    "researchGraph": false,
     "contentMaturityBadges": true,
     "copyCodeButton": true,
     "imageZoom": true,
@@ -32,7 +32,7 @@
     "podcast": true
   },
   "appearance": {
-    "defaultTheme": "dark",
+    "defaultTheme": "light",
     "loadingAnimation": "none",
     "viewTransitions": true,
     "scrollReveal": true,
@@ -40,8 +40,8 @@
     "siteStyle": "minimal"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   }
 }
