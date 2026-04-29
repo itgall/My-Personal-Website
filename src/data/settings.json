@@ -2,7 +2,7 @@
   "features": {
     "maintenanceMode": false,
     "sidenotes": true,
-    "defaultAccent": "stanford",
+    "defaultAccent": "ink-teal",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,
@@ -12,7 +12,7 @@
     "copyCodeButton": true,
     "imageZoom": true,
     "documentViewer": true,
-    "readingProgressBar": true,
+    "readingProgressBar": false,
     "commandPalette": true,
     "visualEffects": false,
     "chatWidget": false,
@@ -37,11 +37,11 @@
     "viewTransitions": true,
     "scrollReveal": true,
     "customCursor": false,
-    "siteStyle": "minimal"
+    "siteStyle": "default"
   },
   "analytics": {
-    "provider": "plausible",
+    "enabled": false,
     "domain": "",
-    "enabled": false
+    "provider": "plausible"
   }
 }
