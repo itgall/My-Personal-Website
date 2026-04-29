@@ -577,6 +577,30 @@ collections:
             output_code_only: true
             hint: "Edit BibTeX entries directly. Each @article{...}, @inproceedings{...}, etc. generates a publication page with Highwire Press meta tags."
 
+      # ── Navigation ────────────────────────────────────────────────────────
+      # File: src/data/navigation.json
+      # Read by: src/data/navigation.ts → consumed by Nav.astro
+      - name: navigation
+        label: "🧭 Navigation"
+        file: src/data/navigation.json
+        fields:
+          - label: "Primary Navigation"
+            name: primaryNav
+            widget: list
+            hint: "Items shown in the top navigation bar. Drag to reorder. Recommended: 3–5 items."
+            fields:
+              - { label: "Label", name: label, widget: string, hint: "Display text shown in the nav bar." }
+              - { label: "URL", name: href, widget: string, hint: "Path like /projects/ or /publications/. Must start with /." }
+              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item. E.g. '/projects|/publications' highlights for both paths." }
+          - label: "More Navigation"
+            name: moreNav
+            widget: list
+            hint: "Overflow items accessible via the 'More' dropdown on desktop and the mobile menu."
+            fields:
+              - { label: "Label", name: label, widget: string, hint: "Display text shown in the menu." }
+              - { label: "URL", name: href, widget: string, hint: "Path like /podcast/ or /notes/. Must start with /." }
+              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item when active." }
+
       # ── Site Settings ──────────────────────────────────────────────────────
       # File: src/data/settings.json
       # Read by: src/data/settings.ts → consumed by layouts and components

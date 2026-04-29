@@ -1,31 +1,31 @@
 /**
- * Navigation Configuration — typed, centralized, three-tier.
+ * Navigation Configuration — typed, CMS-editable, three-tier.
  *
- * Three navigation tiers based on UX research:
+ * Primary and More navigation are editable via the CMS admin panel
+ * (file collection "Navigation" → src/data/navigation.json).
+ * Changes are committed to git and take effect on the next build.
  *
- *   primaryNav (8 items) — always visible in the nav bar.
- *     Order exploits the serial position effect:
- *     Primacy zone: Research → Publications → Podcast (what I study → publish → communicate)
- *     Bridge:       Ventures → Notes (dual identity + intellectual depth)
- *     Recency zone: CV → About
+ * Footer navigation and social links are hardcoded here because they
+ * change rarely and represent a complete sitemap rather than a curated
+ * selection.
  *
- *   moreNav (2 items) — accessible via mobile menu and footer.
- *     Essays (renamed from Blog) and Speaking — accessible but
- *     not competing for primary nav slots.
- *
- *   footerNav — complete site map in footer.
- *
- * Note: "Research" displays as the label but routes to /projects/
- * to preserve existing URLs and content collection structure.
- * "Essays" displays as the label but routes to /blog/ for the same reason.
+ * Architecture:
+ *   - primaryNav: top nav bar items (CMS-editable)
+ *   - moreNav: overflow/mobile menu items (CMS-editable)
+ *   - footerNav: complete site map in footer (hardcoded)
+ *   - socialLinks: external profile links (hardcoded)
  */
+
+import rawNav from "./navigation.json";
+
+/* ── Type definitions ─────────────────────────────────────────────────────── */
 
 export interface NavItem {
   /** Display label */
   label: string;
   /** URL path (internal) or full URL (external) */
   href: string;
-  /** Optional: highlight as current page when URL starts with this path */
+  /** Optional: highlight as current page when URL matches this regex pattern */
   activeMatch?: string;
   /** Optional: open in new tab */
   external?: boolean;
@@ -38,34 +38,42 @@ export interface SocialLink {
   icon: "github" | "linkedin" | "orcid" | "scholar" | "email" | "rss";
 }
 
-/**
- * Primary navigation — 4 items displayed in the top nav bar.
- * Order: Research → Writing → Podcast → About
- * Research credibility leads. Writing shows intellectual range.
- * Podcast is subordinate but first-class. About holds the narrative.
- * CV is a PDF download link in the homepage hero, not a nav destination.
- */
-export const primaryNav: NavItem[] = [
+interface NavigationData {
+  primaryNav: NavItem[];
+  moreNav: NavItem[];
+}
+
+/* ── Safe defaults (used if navigation.json is missing or malformed) ───── */
+
+const defaultPrimaryNav: NavItem[] = [
   { label: "Research", href: "/projects/", activeMatch: "/projects|/publications" },
+  { label: "Publications", href: "/publications/", activeMatch: "/publications" },
   { label: "Writing", href: "/blog/", activeMatch: "/blog" },
-  { label: "Podcast", href: "/podcast/", activeMatch: "/podcast" },
   { label: "About", href: "/about/", activeMatch: "/about" },
 ];
 
-/**
- * "More" items — accessible via mobile menu and footer.
- * Notes, Publications (if browsed separately), Speaking.
- */
-export const moreNav: NavItem[] = [
-  { label: "Publications", href: "/publications/", activeMatch: "/publications" },
+const defaultMoreNav: NavItem[] = [
+  { label: "Podcast", href: "/podcast/", activeMatch: "/podcast" },
   { label: "Notes", href: "/notes/", activeMatch: "/notes" },
   { label: "Speaking", href: "/speaking/", activeMatch: "/speaking" },
 ];
 
-/**
- * Footer navigation — complete site map.
- * Includes all primary nav items, more nav items, and Contact.
- */
+/* ── Merge raw JSON with defaults ─────────────────────────────────────── */
+
+const raw = rawNav as Partial<NavigationData>;
+
+export const primaryNav: NavItem[] =
+  Array.isArray(raw.primaryNav) && raw.primaryNav.length > 0
+    ? raw.primaryNav
+    : defaultPrimaryNav;
+
+export const moreNav: NavItem[] =
+  Array.isArray(raw.moreNav) && raw.moreNav.length > 0
+    ? raw.moreNav
+    : defaultMoreNav;
+
+/* ── Footer navigation (hardcoded — complete sitemap) ─────────────────── */
+
 export const footerNav: NavItem[] = [
   { label: "Research", href: "/projects/" },
   { label: "Publications", href: "/publications/" },
@@ -88,7 +96,8 @@ export const footerNav: NavItem[] = [
   { label: "RSS", href: "/rss.xml", external: true },
 ];
 
-/** Social links — displayed in footer and contact page. */
+/* ── Social links (hardcoded — rarely change) ─────────────────────────── */
+
 export const socialLinks: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/itgall", icon: "github" },
   { label: "LinkedIn", href: "https://linkedin.com/in/isaactgallegos", icon: "linkedin" },

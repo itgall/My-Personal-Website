@@ -1,0 +1,13 @@
+{
+  "primaryNav": [
+    { "label": "Research", "href": "/projects/", "activeMatch": "/projects|/publications" },
+    { "label": "Publications", "href": "/publications/", "activeMatch": "/publications" },
+    { "label": "Writing", "href": "/blog/", "activeMatch": "/blog" },
+    { "label": "About", "href": "/about/", "activeMatch": "/about" }
+  ],
+  "moreNav": [
+    { "label": "Podcast", "href": "/podcast/", "activeMatch": "/podcast" },
+    { "label": "Notes", "href": "/notes/", "activeMatch": "/notes" },
+    { "label": "Speaking", "href": "/speaking/", "activeMatch": "/speaking" }
+  ]
+}
