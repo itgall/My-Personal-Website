@@ -1,6 +1,6 @@
 {
   "features": {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "sidenotes": true,
     "defaultAccent": "ink-teal",
     "backlinks": true,
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   }
 }
