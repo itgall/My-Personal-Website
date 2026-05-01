@@ -1,25 +1,31 @@
 ---
-title: "Spectroscopic Intravascular OCT"
-number: "01"
+title: Spectroscopic Optical Coherence Tomography
+number: '01'
 date: 2024-09-01
 tags:
   - optical coherence tomography
   - spectroscopy
   - inverse problems
   - intravascular imaging
-highlightTag: "spectroscopy"
-institution: "Wellman Center for Photomedicine, MGH / Harvard Medical School"
-description: "Extracting wavelength-dependent tissue optical properties from broadband OCT signals for quantitative coronary artery characterization without additional imaging modalities."
+highlightTag: spectroscopy
+institution: Wellman Center for Photomedicine, MGH / Harvard Medical School
 contentMode: freeform
+problem: ''
+impact: ''
+heroCaption: ''
+videoUrl: ''
+interactiveUrl: ''
+interactiveHeight: null
 techStack:
   - MATLAB
   - Python
   - COMSOL
   - Zemax
   - SolidWorks
-githubUrl: ""
-published: true
+githubUrl: ''
 relatedPublications: []
+published: true
+description: Extracting wavelength-dependent tissue optical properties from broadband OCT signals for quantitative coronary artery characterization without additional imaging modalities.
 ---
 
 ## Overview
