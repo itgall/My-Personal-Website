@@ -1,23 +1,32 @@
 ---
-title: "NIR-II Photoacoustic Imaging"
-number: "02"
+title: NIR-II Photoacoustic Imaging
+number: '02'
 date: 2025-03-01
 tags:
   - photoacoustic imaging
   - nir-ii
   - deep tissue
   - contrast agents
-highlightTag: "photoacoustic"
-institution: "Wellman Center for Photomedicine, MGH / Harvard Medical School"
-description: "Label-free molecular imaging using a first-of-its-kind all-fiber laser amplifier operating in the 1064nm band with spectral unmixing algorithms for deep tissue characterization."
+highlightTag: photoacoustic
+institution: Wellman Center for Photomedicine, Harvard Medical School
 contentMode: freeform
+problem: ''
+impact: ''
+heroCaption: ''
+videoUrl: ''
+interactiveUrl: ''
+interactiveHeight: null
 techStack:
   - Python
   - PyTorch
   - COMSOL
   - LabVIEW
-published: true
+linkUrl: ''
+linkText: ''
+githubUrl: ''
 relatedPublications: []
+published: true
+description: Label-free molecular imaging using a first-of-its-kind all-fiber laser amplifier operating in the 1064nm band with spectral unmixing algorithms for deep tissue characterization.
 ---
 
 ## Overview
