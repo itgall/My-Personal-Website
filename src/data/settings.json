@@ -16,7 +16,7 @@
     "commandPalette": true,
     "visualEffects": false,
     "chatWidget": false,
-    "documentRequestModal": false
+    "documentRequestModal": true
   },
   "sections": {
     "publications": true,
