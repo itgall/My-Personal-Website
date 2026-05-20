@@ -48,8 +48,8 @@ const categoryLabels: Record<string, string> = {
   <div class="wide-container py-16 md:py-24">
 
     {/* ─── Hero ─────────────────────────────────────────────────── */}
-    <section class="mb-12">
-      <div class="flex items-start gap-5 mb-6">
+    <section class="mb-12 text-center md:text-left">
+      <div class="flex flex-col items-center gap-3 mb-6 md:flex-row md:items-start md:gap-5">
         <img
           src="/images/profile-v2.jpg"
           alt="Isaac Gallegos"
@@ -67,7 +67,7 @@ const categoryLabels: Record<string, string> = {
         </div>
       </div>
 
-      <p class="text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+      <p class="text-[var(--color-text-secondary)] leading-relaxed max-w-2xl mx-auto md:mx-0">
         I build optical systems and inverse models at the Wellman Center for
         Photomedicine (Harvard Medical School). Most of my time goes into
         interferometric imaging, spectral unmixing, and figuring out what you
@@ -77,7 +77,7 @@ const categoryLabels: Record<string, string> = {
         programs for Fall 2027.
       </p>
 
-      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm md:justify-start">
         <a href="mailto:itgall@mit.edu" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">itgall@mit.edu</a>
         <span class="text-[var(--color-border)]">&middot;</span>
         <a href="/documents/gallegos-cv.pdf" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">CV</a>
@@ -91,7 +91,7 @@ const categoryLabels: Record<string, string> = {
         <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Google Scholar</a>
       </div>
 
-      <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-[var(--color-muted)] font-mono">
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--color-muted)] font-mono md:justify-start">
         <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Harvard Medical School</span>
         <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Wellman Center for Photomedicine</span>
         <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">MIT</span>

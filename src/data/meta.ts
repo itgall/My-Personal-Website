@@ -106,7 +106,7 @@ export const siteMetadata: SiteMetadata = {
     {
       degree: "B.S. Engineering Physics",
       school: "Colorado School of Mines",
-      dates: "2019–2023",
+      dates: "2021–2024",
     },
   ],
 

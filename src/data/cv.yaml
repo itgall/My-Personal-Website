@@ -1,7 +1,7 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # Structured CV Data — Single source of truth for the /cv/ page.
 # Publications come from bibliography.bib, not here.
-# TODO: Review all entries for accuracy and add any missing items.
+
 # ═══════════════════════════════════════════════════════════════════════════════
 
 name: "Isaac Gallegos"
@@ -26,7 +26,7 @@ education:
     dates: "2021–2024"
     gpa: "3.99"
     honors:
-      - "Summa Cum Laude"  # TODO: verify honors
+      - "Summa Cum Laude"
 
 experience:
   - title: "Research Engineer"
@@ -71,21 +71,19 @@ research:
     institution: "Colorado School of Mines"
     dates: "2021–2022"
     description: "Designed and constructed a diode-pumped solid-state Pr:YLF laser. Modeled and tested individual design components."
-  # TODO: Add emergent gravity/holography, CMOS neural interfaces, or other projects
 
 teaching:
   - role: "Teaching Assistant"
     course: "PHGN 462 — Advanced Optics"
     institution: "Colorado School of Mines"
-    dates: "Spring 2023"  # TODO: verify semester
+    dates: "Spring 2023"
 
   - role: "Teaching Assistant"
     course: "PHGN 320 — Optics"
     institution: "Colorado School of Mines"
-    dates: "Fall 2022"  # TODO: verify semester
+    dates: "Fall 2022"
 
 awards:
-  # TODO: Add undergraduate awards/scholarships from Mines
   []
 
 service: []
