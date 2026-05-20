@@ -38,17 +38,17 @@ const isTechnical = ["technical", "thesis", "build-log"].includes(category);
 ---
 
 <article
-  class="post-card rounded-lg border border-[var(--color-border)] border-l-2 border-l-transparent bg-[var(--color-surface)] px-4 py-3 transition-all duration-200 hover:border-l-[var(--color-accent)] hover:bg-[var(--color-accent-bg)]"
+  class="post-card border-b border-[var(--color-border)] py-4 transition-colors duration-200"
 >
-  <a href={`/blog/${post.id}/`} class="block no-underline">
+  <a href={`/blog/${post.id}/`} class="group block no-underline">
     {/* Top row: category tag + reading time + date */}
     <div class="flex items-center gap-2 text-xs">
       <span
         class:list={[
-          "rounded px-1.5 py-0.5 font-mono text-[10px]",
+          "font-mono text-[11px]",
           isTechnical
-            ? "bg-[var(--color-accent-bg)] text-[var(--color-accent)]"
-            : "bg-[var(--color-bg-off)] text-[var(--color-muted)]",
+            ? "text-[var(--color-accent)]"
+            : "text-[var(--color-muted)]",
         ]}
       >
         {categoryLabels[category] ?? category}
@@ -58,11 +58,11 @@ const isTechnical = ["technical", "thesis", "build-log"].includes(category);
     </div>
 
     {/* Title */}
-    <h3 class="mt-2 text-sm font-medium leading-snug text-[var(--color-text)]">{title}</h3>
+    <h3 class="mt-2 text-[15px] font-medium leading-snug text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">{title}</h3>
 
     {/* Description */}
     {description && (
-      <p class="mt-1.5 text-xs leading-relaxed text-[var(--color-muted)] line-clamp-2">
+      <p class="mt-1.5 text-sm leading-relaxed text-[var(--color-muted)] line-clamp-2">
         {description}
       </p>
     )}

@@ -48,7 +48,7 @@ const categoryLabels: Record<string, string> = {
   <div class="wide-container py-16 md:py-24">
 
     {/* ─── Hero ─────────────────────────────────────────────────── */}
-    <section class="mb-12 text-center md:text-left">
+    <section class="mb-16 text-center md:text-left">
       <div class="flex flex-col items-center gap-3 mb-6 md:flex-row md:items-start md:gap-5">
         <img
           src="/images/profile-v2.jpg"
@@ -58,7 +58,7 @@ const categoryLabels: Record<string, string> = {
           class="w-16 h-16 rounded-full object-cover shrink-0"
         />
         <div>
-          <h1 class="vt-page-title text-3xl font-bold tracking-tight leading-tight">
+          <h1 class="vt-page-title text-3xl font-semibold tracking-tight leading-tight">
             {siteMetadata.name}
           </h1>
           <p class="mt-1 text-[var(--color-text-secondary)]">
@@ -77,49 +77,40 @@ const categoryLabels: Record<string, string> = {
         programs for Fall 2027.
       </p>
 
-      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm md:justify-start">
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm md:justify-start">
         <a href="mailto:itgall@mit.edu" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">itgall@mit.edu</a>
-        <span class="text-[var(--color-border)]">&middot;</span>
         <a href="/documents/gallegos-cv.pdf" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">CV</a>
-        <span class="text-[var(--color-border)]">&middot;</span>
         <a href="https://linkedin.com/in/isaactgallegos" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">LinkedIn</a>
-        <span class="text-[var(--color-border)]">&middot;</span>
         <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">GitHub</a>
-        <span class="text-[var(--color-border)]">&middot;</span>
         <a href="https://orcid.org/0009-0007-9290-6289" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">ORCID</a>
-        <span class="text-[var(--color-border)]">&middot;</span>
         <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Google Scholar</a>
       </div>
 
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--color-muted)] font-mono md:justify-start">
-        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Harvard Medical School</span>
-        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">Wellman Center for Photomedicine</span>
-        <span class="px-2.5 py-1 border border-[var(--color-border)] rounded">MIT</span>
-      </div>
+      <p class="mt-4 text-xs text-[var(--color-muted)]">
+        Harvard Medical School · Wellman Center for Photomedicine · MIT
+      </p>
     </section>
 
-    <hr class="border-t border-[var(--color-border)]" />
-
     {/* ─── Selected Work ────────────────────────────────────────── */}
-    <section class="py-12">
-      <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-xl font-bold tracking-tight">Selected work</h2>
+    <section class="py-14">
+      <div class="flex items-baseline justify-between mb-8">
+        <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
         <a href="/projects/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All projects &rarr;</a>
       </div>
       {projects.length > 0 ? (
-        <div class="space-y-1">
+        <div class="space-y-6">
           {projects.map((project) => (
             <a
               href={`/projects/${project.id}/`}
-              class="group block py-3 border-b border-[var(--color-border)] no-underline hover:bg-[var(--color-bg-off)] -mx-3 px-3 rounded transition-colors"
+              class="group block no-underline"
             >
-              <span class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+              <span class="text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
                 {project.data.title}
               </span>
               <p class="mt-1 text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2">
                 {project.data.description}
               </p>
-              <span class="mt-1 text-xs text-[var(--color-muted)] font-mono">{project.data.institution}</span>
+              <span class="mt-1 text-xs text-[var(--color-muted)]">{project.data.institution}</span>
             </a>
           ))}
         </div>
@@ -130,28 +121,26 @@ const categoryLabels: Record<string, string> = {
 
     {/* ─── Recent Writing ───────────────────────────────────────── */}
     {recentPosts.length > 0 && (
-      <>
-        <hr class="border-t border-[var(--color-border)]" />
-        <section class="py-12">
-          <div class="flex items-baseline justify-between mb-6">
-            <h2 class="text-xl font-bold tracking-tight">Recent writing</h2>
+      <section class="py-14">
+          <div class="flex items-baseline justify-between mb-8">
+            <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
             <a href="/blog/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All writing &rarr;</a>
           </div>
-          <div class="space-y-1">
+          <div class="space-y-4">
             {recentPosts.map((post) => {
               const cat = categoryLabels[post.data.category] ?? post.data.category;
               return (
                 <a
                   href={`/blog/${post.id}/`}
-                  class="group flex items-baseline gap-4 py-3 border-b border-[var(--color-border)] no-underline hover:bg-[var(--color-bg-off)] -mx-3 px-3 rounded transition-colors"
+                  class="group flex items-baseline gap-4 no-underline"
                 >
                   <span class="font-mono text-xs text-[var(--color-muted)] shrink-0 w-20">
                     {formatShortDate(post.data.date)}
                   </span>
-                  <span class="flex-1 min-w-0 text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                  <span class="flex-1 min-w-0 text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
                     {post.data.title}
                   </span>
-                  <span class="shrink-0 text-xs text-[var(--color-muted)] font-mono hidden sm:inline">
+                  <span class="shrink-0 text-xs text-[var(--color-muted)] hidden sm:inline">
                     {cat}
                   </span>
                 </a>
@@ -159,15 +148,12 @@ const categoryLabels: Record<string, string> = {
             })}
           </div>
         </section>
-      </>
     )}
 
-    <hr class="border-t border-[var(--color-border)]" />
-
     {/* ─── Research Interests ───────────────────────────────────── */}
-    <section class="py-12">
-      <div class="max-w-2xl">
-        <h2 class="text-xl font-bold tracking-tight mb-4">Research interests</h2>
+    <section class="py-14">
+      <div class="max-w-2xl mx-auto md:mx-0">
+        <h2 class="text-xl font-semibold tracking-tight mb-4">Research interests</h2>
         <p class="text-[var(--color-text-secondary)] leading-relaxed">
           I'm interested in what happens when you shrink an optical table onto a
           chip and let a neural network design it. More specifically: quantum
@@ -177,7 +163,7 @@ const categoryLabels: Record<string, string> = {
           single-photon detection, nonlinear optics, and laser physics, which is
           where I started.
         </p>
-        <a href="/projects/" class="inline-block mt-4 text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">
+        <a href="/publications/" class="inline-block mt-4 text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">
           View publications &rarr;
         </a>
       </div>
