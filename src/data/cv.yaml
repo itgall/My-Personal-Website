@@ -1,7 +1,6 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # Structured CV Data — Single source of truth for the /cv/ page.
 # Publications come from bibliography.bib, not here.
-
 # ═══════════════════════════════════════════════════════════════════════════════
 
 name: "Isaac Gallegos"
@@ -12,12 +11,11 @@ website: "https://isaac-gallegos.com"
 orcid: "0009-0007-9290-6289"
 
 research_interests:
-  - Spectroscopic Optical Coherence Tomography
-  - Intravascular Imaging
-  - NIR-II Photoacoustic Imaging
-  - Inverse Algorithms & Computational Optical Modeling
-  - Quantum Sensing & NV-Center Diamond Magnetometry
-  - Physics-Informed Neural Networks
+  - Quantum optics and quantum information
+  - Physics-informed deep learning
+  - Physics-driven computational modeling and inverse problems in optics
+  - Integrated photonics
+  - Laser physics, ultrafast systems, and nonlinear photonics
 
 education:
   - degree: "B.S. Engineering Physics"
@@ -26,65 +24,104 @@ education:
     dates: "2021–2024"
     gpa: "3.99"
     honors:
-      - "Summa Cum Laude"
+      - "Fields: Quantum Optics, Laser Physics & Engineering, Electrical Engineering"
+      - "Senior Thesis: Emergent Holography from Information Geometry of Ising Models"
 
 experience:
   - title: "Research Engineer"
     organization: "Wellman Center for Photomedicine"
-    parent: "Massachusetts General Hospital / Harvard Medical School"
+    parent: "Harvard Medical School / Massachusetts General Hospital"
     location: "Boston, MA"
-    dates: "2023–Present"
+    dates: "May 2025–Present"
     current: true
     highlights:
-      - "Developing spectroscopic intravascular OCT methods for quantitative coronary tissue characterization"
-      - "Developed NIR-II photoacoustic imaging with physics-informed neural network reconstruction"
-      - "Built Jones matrix polarization simulation framework for swept-source OCT system design"
-      - "Designed confocal gate optimization models for IV-OCT catheters"
-      - "Implemented inverse algorithms for depth-resolved spectroscopic analysis"
+      - "Leading an independent spectroscopic OCT project performing 50+ experiments on a swept-source VCSEL system, developing physics-constrained inverse models to extract tissue optical properties at 5-µm resolution"
+      - "Developing inverse spectroscopic modeling grounded in biological light-matter interactions to recover absorption, scattering, and molecular concentration profiles from OCT data at sub-resolution scales"
+      - "First-authoring a manuscript for Biomedical Optics Express identifying, through first-principles analysis, polarization-induced artifacts that corrupt spectroscopic OCT measurements"
 
-  - title: "Founder"
-    organization: "[Venture Name]"
+  - title: "Research Assistant"
+    organization: "Wellman Center for Photomedicine"
+    parent: "Harvard Medical School / Massachusetts General Hospital"
     location: "Boston, MA"
-    dates: "2025–Present"
-    current: true
+    dates: "Feb 2025–May 2025"
     highlights:
-      - "Translating photonic sensing research into accessible clinical diagnostic tools"
-      - "Building deep-tech venture grounded in spectroscopic OCT and inverse algorithm research"
+      - "Constructed the first micro-LED-based OCT system prototype, building hardware and acquisition software replacing swept-source lasers with individually addressable LEDs for wavelength-selective interferometric measurement"
+      - "Implemented spectral unmixing algorithms for photoacoustic methods, enabling pixel-by-pixel extraction of lipid and collagen concentrations from a custom multi-spectral stimulated Raman scattering system"
+
+  - title: "Research Assistant"
+    organization: "Colorado School of Mines — Physics Department"
+    location: "Golden, CO"
+    dates: "Aug 2023–May 2024"
+    highlights:
+      - "Constructed Fisher information metric tensors for the mean-field Ising model, diagnosing degenerate geometries and identifying parameter-coupling constraints that preclude anti-de Sitter spacetime mappings"
+      - "Developed a Gaussian-smeared spin formulation embedding the classical 1D Ising model, deriving continuous-field partition functions via transfer-matrix eigenvalue decomposition"
+
+  - title: "Research Project Lead"
+    organization: "Colorado School of Mines — Ultrafast Laser Research Laboratory"
+    location: "Golden, CO"
+    dates: "Aug 2023–Dec 2023"
+    highlights:
+      - "Led a team of five undergraduates to design, simulate, and 3D-print prototype micron-scale supersonic jet nozzles for high harmonic generation (HHG) femtosecond laser experiments"
+      - "Simulated 20+ nozzle geometries via CFD in SolidWorks and Mathematica, sweeping throat dimensions and backing pressures to optimize compact nozzle designs for HHG gas targets"
 
 skills:
-  - category: "Programming"
-    items: ["Python", "MATLAB", "C++", "TypeScript", "LaTeX"]
-  - category: "ML & Scientific Computing"
-    items: ["PyTorch", "JAX", "Physics-Informed Neural Networks", "Inverse Problem Solvers"]
-  - category: "Optical & Photonic Design"
-    items: ["Zemax OpticStudio", "COMSOL Multiphysics", "SolidWorks", "FPGA Design"]
-  - category: "Fabrication & Instrumentation"
-    items: ["Cleanroom Fabrication", "Optical System Assembly & Alignment", "Laser Systems", "Photodetector Characterization"]
+  - category: "Optics & Photonics"
+    items: ["Laser Design and Construction", "Free-Space Optical Alignment", "Fiber and Solid-State Lasers", "Nonlinear and Quantum Optics", "Single-Photon Detection", "Interferometry", "Spectroscopy", "Optical Coherence Tomography", "Photoacoustic Methods"]
+  - category: "Computation & Simulation"
+    items: ["Physics-Informed Neural Networks (PINNs)", "PyTorch", "JAX", "TensorFlow", "Python", "MATLAB", "C++", "Mathematica", "TypeScript", "COMSOL Multiphysics", "Zemax OpticStudio", "SolidWorks"]
+  - category: "Electronics & Instrumentation"
+    items: ["PCB and FPGA Design/Fabrication", "Digital and Analog Circuit Design", "Quartus Prime", "Time-to-Digital Converters", "LabVIEW"]
+  - category: "Fabrication & Metrology"
+    items: ["Clean Room Fabrication", "Thin-Film Deposition", "Vacuum Systems", "Ellipsometry", "Scanning Electron Microscopy"]
 
 research:
-  - title: "Quantum Optics — Bell Inequality Violation"
+  - title: "Pr:YLF Solid-State Laser"
     institution: "Colorado School of Mines"
-    dates: "2022–2023"
-    description: "Designed and validated experimental apparatus for Bell inequality tests using polarization-entangled photon pairs via spontaneous parametric down-conversion."
+    dates: "Aug 2024–Dec 2024"
+    description: "Co-designed and constructed a CW diode-pumped Pr³⁺:LiYF₄ laser at 640 nm, integrating a 444 nm InGaN pump diode with a symmetric two-mirror cavity. Characterized pump beam quality (M² = 1.25/5.16) and measured single-pass gain of G = 1.36."
 
-  - title: "Ultrafast Laser Systems"
+  - title: "Quantum Optics & Photon Entanglement"
     institution: "Colorado School of Mines"
-    dates: "2021–2022"
-    description: "Designed and constructed a diode-pumped solid-state Pr:YLF laser. Modeled and tested individual design components."
+    dates: "Aug 2024–Dec 2024"
+    description: "Generated polarization-entangled 810 nm photon pairs via dual-crystal Type I SPDC from a 405 nm diode laser. Verified non-local entanglement through CHSH Bell inequality violation using silicon single-photon avalanche detectors and four-channel coincidence counting."
+
+  - title: "Diode-Pumped Nd:YAG Laser"
+    institution: "Colorado School of Mines"
+    dates: "Aug 2024–Dec 2024"
+    description: "Demonstrated passive Q-switching of a diode-pumped Nd:YAG laser (1064 nm, 808 nm pump) using a Cr:YAG saturable absorber, achieving repetition rates up to 3.5 kHz. Numerically solved coupled rate equations for photon density, population inversion, and absorber saturation."
+
+  - title: "Photon-Counting Circuit"
+    institution: "Colorado School of Mines"
+    dates: "Aug 2023–Dec 2023"
+    description: "Designed and fabricated a photon-counting circuit with gated BCD decade counters, bistable latches, and one-shot latch/reset control logic. Mapped the complete logic network onto an FPGA via Quartus Prime."
 
 teaching:
   - role: "Teaching Assistant"
-    course: "PHGN 462 — Advanced Optics"
+    course: "Electromagnetic Waves and Optical Physics"
     institution: "Colorado School of Mines"
-    dates: "Spring 2023"
+    dates: "Aug 2023–Dec 2024 (2 semesters)"
 
   - role: "Teaching Assistant"
-    course: "PHGN 320 — Optics"
+    course: "Mathematical Physics"
     institution: "Colorado School of Mines"
-    dates: "Fall 2022"
+    dates: "2023–2024"
 
-awards:
-  []
+  - role: "Teaching Assistant"
+    course: "Intermediate Electromagnetism"
+    institution: "Colorado School of Mines"
+    dates: "2023–2024"
 
-service: []
+awards: []
+service:
+  - role: "Member"
+    organization: "SPIE"
+  - role: "Member"
+    organization: "Optica"
+  - role: "Member"
+    organization: "IEEE Photonics Society"
+  - role: "Member"
+    organization: "Materials Research Society"
+  - role: "Member"
+    organization: "Society of Hispanic Professional Engineers (SHPE)"
+
 talks: []
