@@ -1,216 +1,68 @@
 ---
-import { siteMetadata } from "@data/meta";
-
 const currentYear = new Date().getFullYear();
-
-const externalLinks = [
-  { label: "Email", href: "mailto:itgall@mit.edu" },
-  { label: "GitHub", href: siteMetadata.contact.github },
-  { label: "Scholar", href: siteMetadata.contact.googleScholar },
-  { label: "ORCID", href: `https://orcid.org/${siteMetadata.contact.orcid}` },
-  { label: "RSS", href: "/rss.xml" },
-];
-
-const siteLinks = [
-  { label: "About", href: "/about/" },
-  { label: "CV", href: "/documents/gallegos-cv.pdf" },
-  { label: "Contact", href: "/contact/" },
-  { label: "Subscribe", href: "/subscribe/" },
-  { label: "Colophon", href: "/colophon/" },
-];
-
-const exploreLinks = [
-  { label: "Now", href: "/now/" },
-  { label: "Uses", href: "/uses/" },
-  { label: "Bookshelf", href: "/bookshelf/" },
-  { label: "Tags", href: "/tags/" },
-];
 ---
 
 <footer class="site-footer" role="contentinfo" data-pagefind-ignore>
   <div class="full-container">
-
-    {/* Hairline rule */}
-    <div class="footer-rule"></div>
-
-    {/* Three-section asymmetric grid */}
-    <div class="footer-grid">
-
-      {/* Left: name block */}
-      <div>
-        <p class="footer-name">Isaac Gallegos</p>
-        <p class="footer-positioning">Physics · Photonics · Computation</p>
-        <div class="footer-external">
-          {externalLinks.map((link, i) => (
-            <>
-              <a
-                href={link.href}
-                target={link.href.startsWith("http") ? "_blank" : undefined}
-                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                class="footer-ext-link"
-              >
-                {link.label}
-              </a>
-              {i < externalLinks.length - 1 && <span class="footer-ext-sep">&middot;</span>}
-            </>
-          ))}
-        </div>
-      </div>
-
-      {/* Middle column: Site */}
-      <div class="footer-col">
-        <p class="footer-col-header">Site</p>
-        {siteLinks.map((link) => (
-          <a href={link.href} class="footer-col-link">{link.label}</a>
-        ))}
-      </div>
-
-      {/* Right column: Explore */}
-      <div class="footer-col">
-        <p class="footer-col-header">Explore</p>
-        {exploreLinks.map((link) => (
-          <a href={link.href} class="footer-col-link">{link.label}</a>
-        ))}
-      </div>
-
+    <div class="footer-line">
+      <span class="footer-copy">&copy; {currentYear} Isaac Gallegos</span>
+      <span class="footer-links">
+        <a href="mailto:itgall@mit.edu">Email</a>
+        <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a>
+        <a href="/rss.xml">RSS</a>
+      </span>
     </div>
-
-    <p class="footer-meta">
-      &copy; {currentYear} Isaac Gallegos
-    </p>
-
   </div>
 </footer>
 
 <style>
   .site-footer {
     margin-top: 6rem;
+    padding-bottom: 2rem;
   }
 
-  .footer-rule {
-    height: 1px;
-    background: var(--color-text);
-    opacity: 0.08;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 1fr 120px 120px;
-    gap: 2rem;
-    align-items: start;
-    padding-top: 2rem;
-    padding-bottom: 0.5rem;
-  }
-
-  /* ── Name block (left) ── */
-  .footer-name {
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--color-text);
-    letter-spacing: -0.01em;
-  }
-
-  .footer-positioning {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    color: var(--color-muted);
-    margin-top: 3px;
-  }
-
-  .footer-external {
+  .footer-line {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 0;
-    margin-top: 0.75rem;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
   }
 
-  .footer-ext-link {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
+  .footer-copy {
+    font-size: 0.75rem;
     color: var(--color-muted);
-    text-decoration: none;
-    transition: color 0.15s ease;
   }
 
-  .footer-ext-link:hover {
-    color: var(--color-text);
+  .footer-links {
+    display: flex;
+    gap: 1.25rem;
   }
 
-  .footer-ext-sep {
-    font-size: 0.6875rem;
-    color: var(--color-muted);
-    opacity: 0.4;
-    margin: 0 0.4rem;
-  }
-
-  /* ── Link columns ── */
-  .footer-col-header {
-    font-family: var(--font-sans);
-    font-size: 0.625rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-muted);
-    opacity: 0.6;
-    margin-bottom: 0.5rem;
-  }
-
-  .footer-col-link {
-    display: block;
-    font-family: var(--font-sans);
+  .footer-links a {
     font-size: 0.75rem;
     color: var(--color-muted);
     text-decoration: none;
-    padding: 2px 0;
     transition: color 0.15s ease;
   }
 
-  .footer-col-link:hover {
+  .footer-links a:hover {
     color: var(--color-text);
   }
 
-  /* ── Meta line ── */
-  .footer-meta {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    color: var(--color-muted);
-    opacity: 0.5;
-    margin-top: 1.5rem;
-    padding-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  /* ── Mobile ── */
   @media (max-width: 640px) {
     .site-footer {
       margin-top: 4rem;
     }
 
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .footer-col {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0 1rem;
-      align-items: baseline;
-    }
-
-    .footer-col-header {
-      width: 100%;
-      margin-bottom: 0.25rem;
-    }
-
-    .footer-col-link {
-      padding: 1px 0;
+    .footer-line {
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
     }
   }
 
-  /* ── Print ── */
   @media print {
     .site-footer {
       display: none !important;
