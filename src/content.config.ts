@@ -248,16 +248,7 @@ const ventures = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Speaking Collection
- *
- * Talks, panels, and media appearances. Bridges academic and public
- * spheres — essential for KHS "purposeful leadership" criterion.
- *
- * Added in Phase 1 scaling:
- *   - location: venue location for event context
- *   - relatedProjects, relatedEpisodes: cross-referencing
- * ═══════════════════════════════════════════════════════════════════════════ */
+/* ── Speaking Collection ─────────────────────────────────────────────────── */
 
 const speaking = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/speaking" }),

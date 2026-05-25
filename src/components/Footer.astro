@@ -1,25 +1,4 @@
 ---
-/**
- * Footer.astro — Colophon-forward asymmetric footer.
- *
- * Layout:
- *   ─────────────────────────────────────── hairline rule
- *   Name block (left)     │  Site (mid)    │  Explore (right)
- *   Positioning line      │  About         │  Now
- *   Email · GitHub · ...  │  CV            │  Uses
- *                         │  Contact       │  Bookshelf
- *                         │  Subscribe     │  Tags
- *                         │  Colophon      │
- *   ───────────────────────────────────────
- *   © 2019–{year} · stack · license · last updated
- *
- * Design principles (from footer research):
- *   - Accent color withheld — neutrals only
- *   - Monospace reserved for the meta line (engineered feel)
- *   - External links as plaintext, not icons
- *   - Primary nav items (Research, Writing, Publications) excluded
- *   - Empty sections (Podcast, Speaking, Ventures) excluded
- */
 import { siteMetadata } from "@data/meta";
 
 const currentYear = new Date().getFullYear();
@@ -96,9 +75,8 @@ const exploreLinks = [
 
     </div>
 
-    {/* Meta line — monospace, the "engineered" signal */}
     <p class="footer-meta">
-      &copy; 2019&ndash;{currentYear} Isaac Gallegos &middot; Astro &middot; Netlify &middot; Source Serif 4 + Inter &middot; CC BY 4.0
+      &copy; {currentYear} Isaac Gallegos
     </p>
 
   </div>
