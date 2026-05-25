@@ -1,18 +1,18 @@
 {
   "features": {
     "maintenanceMode": false,
-    "defaultAccent": "stanford",
     "sidenotes": true,
+    "defaultAccent": "interferometer",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,
     "searchPage": true,
-    "researchGraph": true,
+    "researchGraph": false,
     "contentMaturityBadges": true,
     "copyCodeButton": true,
     "imageZoom": true,
     "documentViewer": true,
-    "readingProgressBar": true,
+    "readingProgressBar": false,
     "commandPalette": true,
     "visualEffects": false,
     "chatWidget": false,
@@ -27,12 +27,12 @@
     "cv": true,
     "about": true,
     "contact": true,
-    "ventures": true,
-    "speaking": true,
-    "podcast": true
+    "ventures": false,
+    "speaking": false,
+    "podcast": false
   },
   "appearance": {
-    "defaultTheme": "light",
+    "defaultTheme": "system",
     "loadingAnimation": "none",
     "viewTransitions": true,
     "scrollReveal": false,
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "provider": "plausible",
+    "enabled": false,
     "domain": "",
-    "enabled": false
+    "provider": "plausible"
   }
 }
