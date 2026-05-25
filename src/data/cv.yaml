@@ -1,127 +1,137 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# Structured CV Data — Single source of truth for the /cv/ page.
-# Publications come from bibliography.bib, not here.
-# ═══════════════════════════════════════════════════════════════════════════════
-
-name: "Isaac Gallegos"
-title: "Research Engineer"
-affiliation: "Wellman Center for Photomedicine, Massachusetts General Hospital / Harvard Medical School"
-email: "itgall@mit.edu"
-website: "https://isaac-gallegos.com"
-orcid: "0009-0007-9290-6289"
-
+name: Isaac Gallegos
+title: Research Engineer
+affiliation: Wellman Center for Photomedicine, Harvard Medical School
+email: itgall@mit.edu
+website: https://isaac-gallegos.com
+orcid: 0009-0007-9290-6289
 research_interests:
   - Quantum optics and quantum information
   - Physics-informed deep learning
   - Physics-driven computational modeling and inverse problems in optics
   - Integrated photonics
   - Laser physics, ultrafast systems, and nonlinear photonics
-
 education:
-  - degree: "B.S. Engineering Physics"
-    institution: "Colorado School of Mines"
-    location: "Golden, CO"
-    dates: "2021–2024"
-    gpa: "3.99"
+  - degree: B.S. Engineering Physics
+    institution: Colorado School of Mines
+    location: Golden, CO
+    dates: 2021–2024
+    gpa: '3.99'
     honors:
-      - "Fields: Quantum Optics, Laser Physics & Engineering, Electrical Engineering"
-      - "Senior Thesis: Emergent Holography from Information Geometry of Ising Models"
-
+      - 'Fields: Quantum Optics, Laser Physics & Engineering, Electrical Engineering'
+      - 'Senior Thesis: Emergent Holography from Information Geometry of Ising Models'
 experience:
-  - title: "Research Engineer"
-    organization: "Wellman Center for Photomedicine"
-    parent: "Harvard Medical School / Massachusetts General Hospital"
-    location: "Boston, MA"
-    dates: "May 2025–Present"
+  - title: Research Engineer
+    organization: Wellman Center for Photomedicine
+    parent: Harvard Medical School / Massachusetts General Hospital
+    location: Boston, MA
+    dates: May 2025–Present
     current: true
     highlights:
-      - "Leading an independent spectroscopic OCT project performing 50+ experiments on a swept-source VCSEL system, developing physics-constrained inverse models to extract tissue optical properties at 5-µm resolution"
-      - "Developing inverse spectroscopic modeling grounded in biological light-matter interactions to recover absorption, scattering, and molecular concentration profiles from OCT data at sub-resolution scales"
-      - "First-authoring a manuscript for Biomedical Optics Express identifying, through first-principles analysis, polarization-induced artifacts that corrupt spectroscopic OCT measurements"
-
-  - title: "Research Assistant"
-    organization: "Wellman Center for Photomedicine"
-    parent: "Harvard Medical School / Massachusetts General Hospital"
-    location: "Boston, MA"
-    dates: "Feb 2025–May 2025"
+      - Leading an independent spectroscopic OCT project performing 50+ experiments on a swept-source VCSEL system, developing physics-constrained inverse models to extract tissue optical properties at 5-µm resolution
+      - Developing inverse spectroscopic modeling grounded in biological light-matter interactions to recover absorption, scattering, and molecular concentration profiles from OCT data at sub-resolution scales
+      - First-authoring a manuscript for Biomedical Optics Express identifying, through first-principles analysis, polarization-induced artifacts that corrupt spectroscopic OCT measurements
+  - title: Research Assistant
+    organization: Wellman Center for Photomedicine
+    parent: Harvard Medical School / Massachusetts General Hospital
+    location: Boston, MA
+    dates: Feb 2025–May 2025
     highlights:
-      - "Constructed the first micro-LED-based OCT system prototype, building hardware and acquisition software replacing swept-source lasers with individually addressable LEDs for wavelength-selective interferometric measurement"
-      - "Implemented spectral unmixing algorithms for photoacoustic methods, enabling pixel-by-pixel extraction of lipid and collagen concentrations from a custom multi-spectral stimulated Raman scattering system"
-
-  - title: "Research Assistant"
-    organization: "Colorado School of Mines — Physics Department"
-    location: "Golden, CO"
-    dates: "Aug 2023–May 2024"
+      - Constructed the first micro-LED-based OCT system prototype, building hardware and acquisition software replacing swept-source lasers with individually addressable LEDs for wavelength-selective interferometric measurement
+      - Implemented spectral unmixing algorithms for photoacoustic methods, enabling pixel-by-pixel extraction of lipid and collagen concentrations from a custom multi-spectral stimulated Raman scattering system
+  - title: Research Assistant
+    organization: Colorado School of Mines — Physics Department
+    location: Golden, CO
+    dates: Aug 2023–May 2024
     highlights:
-      - "Constructed Fisher information metric tensors for the mean-field Ising model, diagnosing degenerate geometries and identifying parameter-coupling constraints that preclude anti-de Sitter spacetime mappings"
-      - "Developed a Gaussian-smeared spin formulation embedding the classical 1D Ising model, deriving continuous-field partition functions via transfer-matrix eigenvalue decomposition"
-
-  - title: "Research Project Lead"
-    organization: "Colorado School of Mines — Ultrafast Laser Research Laboratory"
-    location: "Golden, CO"
-    dates: "Aug 2023–Dec 2023"
+      - Constructed Fisher information metric tensors for the mean-field Ising model, diagnosing degenerate geometries and identifying parameter-coupling constraints that preclude anti-de Sitter spacetime mappings
+      - Developed a Gaussian-smeared spin formulation embedding the classical 1D Ising model, deriving continuous-field partition functions via transfer-matrix eigenvalue decomposition
+  - title: Research Project Lead
+    organization: Colorado School of Mines — Ultrafast Laser Research Laboratory
+    location: Golden, CO
+    dates: Aug 2023–Dec 2023
     highlights:
-      - "Led a team of five undergraduates to design, simulate, and 3D-print prototype micron-scale supersonic jet nozzles for high harmonic generation (HHG) femtosecond laser experiments"
-      - "Simulated 20+ nozzle geometries via CFD in SolidWorks and Mathematica, sweeping throat dimensions and backing pressures to optimize compact nozzle designs for HHG gas targets"
-
+      - Led a team of five undergraduates to design, simulate, and 3D-print prototype micron-scale supersonic jet nozzles for high harmonic generation (HHG) femtosecond laser experiments
+      - Simulated 20+ nozzle geometries via CFD in SolidWorks and Mathematica, sweeping throat dimensions and backing pressures to optimize compact nozzle designs for HHG gas targets
 skills:
-  - category: "Optics & Photonics"
-    items: ["Laser Design and Construction", "Free-Space Optical Alignment", "Fiber and Solid-State Lasers", "Nonlinear and Quantum Optics", "Single-Photon Detection", "Interferometry", "Spectroscopy", "Optical Coherence Tomography", "Photoacoustic Methods"]
-  - category: "Computation & Simulation"
-    items: ["Physics-Informed Neural Networks (PINNs)", "PyTorch", "JAX", "TensorFlow", "Python", "MATLAB", "C++", "Mathematica", "TypeScript", "COMSOL Multiphysics", "Zemax OpticStudio", "SolidWorks"]
-  - category: "Electronics & Instrumentation"
-    items: ["PCB and FPGA Design/Fabrication", "Digital and Analog Circuit Design", "Quartus Prime", "Time-to-Digital Converters", "LabVIEW"]
-  - category: "Fabrication & Metrology"
-    items: ["Clean Room Fabrication", "Thin-Film Deposition", "Vacuum Systems", "Ellipsometry", "Scanning Electron Microscopy"]
-
+  - category: Optics & Photonics
+    items:
+      - Laser Design and Construction
+      - Free-Space Optical Alignment
+      - Fiber and Solid-State Lasers
+      - Nonlinear and Quantum Optics
+      - Single-Photon Detection
+      - Interferometry
+      - Spectroscopy
+      - Optical Coherence Tomography
+      - Photoacoustic Methods
+  - category: Computation & Simulation
+    items:
+      - Physics-Informed Neural Networks (PINNs)
+      - PyTorch
+      - JAX
+      - TensorFlow
+      - Python
+      - MATLAB
+      - C++
+      - Mathematica
+      - TypeScript
+      - COMSOL Multiphysics
+      - Zemax OpticStudio
+      - SolidWorks
+  - category: Electronics & Instrumentation
+    items:
+      - PCB and FPGA Design/Fabrication
+      - Digital and Analog Circuit Design
+      - Quartus Prime
+      - Time-to-Digital Converters
+      - LabVIEW
+  - category: Fabrication & Metrology
+    items:
+      - Clean Room Fabrication
+      - Thin-Film Deposition
+      - Vacuum Systems
+      - Ellipsometry
+      - Scanning Electron Microscopy
 research:
-  - title: "Pr:YLF Solid-State Laser"
-    institution: "Colorado School of Mines"
-    dates: "Aug 2024–Dec 2024"
-    description: "Co-designed and constructed a CW diode-pumped Pr³⁺:LiYF₄ laser at 640 nm, integrating a 444 nm InGaN pump diode with a symmetric two-mirror cavity. Characterized pump beam quality (M² = 1.25/5.16) and measured single-pass gain of G = 1.36."
-
-  - title: "Quantum Optics & Photon Entanglement"
-    institution: "Colorado School of Mines"
-    dates: "Aug 2024–Dec 2024"
-    description: "Generated polarization-entangled 810 nm photon pairs via dual-crystal Type I SPDC from a 405 nm diode laser. Verified non-local entanglement through CHSH Bell inequality violation using silicon single-photon avalanche detectors and four-channel coincidence counting."
-
-  - title: "Diode-Pumped Nd:YAG Laser"
-    institution: "Colorado School of Mines"
-    dates: "Aug 2024–Dec 2024"
-    description: "Demonstrated passive Q-switching of a diode-pumped Nd:YAG laser (1064 nm, 808 nm pump) using a Cr:YAG saturable absorber, achieving repetition rates up to 3.5 kHz. Numerically solved coupled rate equations for photon density, population inversion, and absorber saturation."
-
-  - title: "Photon-Counting Circuit"
-    institution: "Colorado School of Mines"
-    dates: "Aug 2023–Dec 2023"
-    description: "Designed and fabricated a photon-counting circuit with gated BCD decade counters, bistable latches, and one-shot latch/reset control logic. Mapped the complete logic network onto an FPGA via Quartus Prime."
-
+  - title: Pr:YLF Solid-State Laser
+    institution: Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Co-designed and constructed a CW diode-pumped Pr³⁺:LiYF₄ laser at 640 nm, integrating a 444 nm InGaN pump diode with a symmetric two-mirror cavity. Characterized pump beam quality (M² = 1.25/5.16) and measured single-pass gain of G = 1.36.
+  - title: Quantum Optics & Photon Entanglement
+    institution: Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Generated polarization-entangled 810 nm photon pairs via dual-crystal Type I SPDC from a 405 nm diode laser. Verified non-local entanglement through CHSH Bell inequality violation using silicon single-photon avalanche detectors and four-channel coincidence counting.
+  - title: Diode-Pumped Nd:YAG Laser
+    institution: Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Demonstrated passive Q-switching of a diode-pumped Nd:YAG laser (1064 nm, 808 nm pump) using a Cr:YAG saturable absorber, achieving repetition rates up to 3.5 kHz. Numerically solved coupled rate equations for photon density, population inversion, and absorber saturation.
+  - title: Photon-Counting Circuit
+    institution: Colorado School of Mines
+    dates: Aug 2023–Dec 2023
+    description: Designed and fabricated a photon-counting circuit with gated BCD decade counters, bistable latches, and one-shot latch/reset control logic. Mapped the complete logic network onto an FPGA via Quartus Prime.
 teaching:
-  - role: "Teaching Assistant"
-    course: "Electromagnetic Waves and Optical Physics"
-    institution: "Colorado School of Mines"
-    dates: "Aug 2023–Dec 2024 (2 semesters)"
-
-  - role: "Teaching Assistant"
-    course: "Mathematical Physics"
-    institution: "Colorado School of Mines"
-    dates: "2023–2024"
-
-  - role: "Teaching Assistant"
-    course: "Intermediate Electromagnetism"
-    institution: "Colorado School of Mines"
-    dates: "2023–2024"
-
+  - role: Teaching Assistant
+    course: Electromagnetic Waves and Optical Physics
+    institution: Colorado School of Mines
+    dates: Aug 2023–Dec 2024 (2 semesters)
+  - role: Teaching Assistant
+    course: Mathematical Physics
+    institution: Colorado School of Mines
+    dates: 2023–2024
+  - role: Teaching Assistant
+    course: Intermediate Electromagnetism
+    institution: Colorado School of Mines
+    dates: 2023–2024
 awards: []
 service:
-  - role: "Member"
-    organization: "SPIE"
-  - role: "Member"
-    organization: "Optica"
-  - role: "Member"
-    organization: "IEEE Photonics Society"
-  - role: "Member"
-    organization: "Materials Research Society"
-  - role: "Member"
-    organization: "Society of Hispanic Professional Engineers (SHPE)"
-
+  - role: Member
+    organization: SPIE
+  - role: Member
+    organization: Optica
+  - role: Member
+    organization: IEEE Photonics Society
+  - role: Member
+    organization: Materials Research Society
+  - role: Member
+    organization: Society of Hispanic Professional Engineers (SHPE)
 talks: []
