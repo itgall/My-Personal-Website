@@ -1,6 +1,6 @@
 {
   "features": {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "sidenotes": true,
     "defaultAccent": "interferometer",
     "backlinks": true,
@@ -28,20 +28,20 @@
     "about": true,
     "contact": true,
     "ventures": false,
-    "speaking": false,
+    "speaking": true,
     "podcast": false
   },
   "appearance": {
     "defaultTheme": "system",
     "loadingAnimation": "none",
     "viewTransitions": true,
-    "scrollReveal": false,
+    "scrollReveal": true,
     "customCursor": false,
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   }
 }
