@@ -9,7 +9,7 @@ tags:
   - contrast agents
 highlightTag: "photoacoustic"
 institution: "Wellman Center for Photomedicine, MGH / Harvard Medical School"
-description: "Label-free molecular imaging using a first-of-its-kind all-fiber laser amplifier operating in the 1064nm band with spectral unmixing algorithms for deep tissue characterization."
+description: "A first-of-its-kind all-fiber laser amplifier at 1064nm for photoacoustic imaging. The point: use multiple wavelengths and inverse algorithms to identify molecules deep in tissue without any labels or dyes."
 contentMode: freeform
 techStack:
   - Python
