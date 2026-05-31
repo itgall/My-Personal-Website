@@ -15,7 +15,7 @@ impact: ''
 heroCaption: ''
 videoUrl: ''
 interactiveUrl: ''
-interactiveHeight: null
+interactiveHeight: 0
 techStack:
   - Python
   - LabVIEW

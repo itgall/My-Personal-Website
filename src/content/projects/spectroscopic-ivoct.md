@@ -14,7 +14,7 @@ impact: ''
 heroCaption: ''
 videoUrl: ''
 interactiveUrl: ''
-interactiveHeight: null
+interactiveHeight: 0
 techStack:
   - MATLAB
   - Python
