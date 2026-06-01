@@ -153,6 +153,7 @@ const projects = defineCollection({
     linkText: z.string().default("View presentation →"),
     githubUrl: optionalUrlField,
     published: z.boolean().default(true),
+    featured: z.boolean().default(false),
     /* Cross-references */
     relatedPublications: relatedPublicationsField,
     relatedPosts: relatedPostsField,

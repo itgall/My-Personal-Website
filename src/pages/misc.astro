@@ -1,51 +1,13 @@
 ---
 import PageLayout from "@layouts/PageLayout.astro";
+import MiscGallery from "@components/MiscGallery.astro";
 ---
-
-<PageLayout
-  title="Misc"
-  description="Things outside the lab — travel, caving, languages, and reading that has nothing to do with OCT."
-  subtitle="Things that aren't research."
-  activeNav="misc"
->
-  <div class="space-y-14">
-
-    <section>
-      <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
-        Travel
-      </h2>
-      <p class="text-[var(--color-text-secondary)] leading-relaxed">
-        More here soon.
-      </p>
-    </section>
-
-    <section>
-      <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
-        Caving
-      </h2>
-      <p class="text-[var(--color-text-secondary)] leading-relaxed">
-        More here soon.
-      </p>
-    </section>
-
-    <section>
-      <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
-        Languages
-      </h2>
-      <p class="text-[var(--color-text-secondary)] leading-relaxed">
-        Currently studying Mandarin Chinese.
-      </p>
-    </section>
-
-    <section>
-      <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
-        Outside reading
-      </h2>
-      <p class="text-[var(--color-text-secondary)] leading-relaxed">
-        Topology, differential geometry, and where abstract math meets
-        physics and engineering. Working through this slowly.
-      </p>
-    </section>
-
+<PageLayout title="Misc" description="Things outside the lab — travel, caving, languages, and reading." subtitle="Some things I do when I'm not in the lab." activeNav="misc">
+  <MiscGallery />
+  <div class="mt-14 space-y-14">
+    <section id="travel" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Travel</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">More here soon.</p></section>
+    <section id="caving" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Caving</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">More here soon.</p></section>
+    <section id="languages" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Languages</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">Currently studying Mandarin Chinese.</p></section>
+    <section id="reading" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Reading</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">Topology, differential geometry, and where abstract math meets physics and engineering. Working through this slowly.</p></section>
   </div>
 </PageLayout>

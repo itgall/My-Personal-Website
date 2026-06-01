@@ -24,6 +24,7 @@ linkText: ''
 githubUrl: ''
 relatedPublications: []
 published: true
+featured: true
 description: OCT gives you 3D structure, but not composition. This project adds molecular characterization to interferometric imaging — figuring out what a tissue is made of from how it scatters broadband light.
 ---
 

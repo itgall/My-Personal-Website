@@ -21,7 +21,10 @@ import { getCollection, type CollectionEntry } from "astro:content";
 type Project = CollectionEntry<"projects">;
 
 const projects: Project[] = (await getCollection("projects", ({ data }: Project) => data.published))
-  .sort((a: Project, b: Project) => a.data.number.localeCompare(b.data.number));
+  .sort((a: Project, b: Project) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return a.data.number.localeCompare(b.data.number);
+  });
 
 const allTags = [...new Set(projects.flatMap((p: Project) => p.data.tags))].sort();
 const allStatuses = [...new Set(projects.map((p: Project) => p.data.status))];

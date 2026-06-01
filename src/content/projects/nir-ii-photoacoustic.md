@@ -24,6 +24,7 @@ linkText: ''
 githubUrl: ''
 relatedPublications: []
 published: true
+featured: true
 description: 'A first-of-its-kind all-fiber laser amplifier at 1064nm for photoacoustic imaging. The point: use multiple wavelengths and inverse algorithms to identify molecules deep in tissue without any labels or dyes.'
 ---
 

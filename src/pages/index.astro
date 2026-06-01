@@ -18,6 +18,7 @@
  * of this page touches zero content files.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
+import MiscGallery from "@components/MiscGallery.astro";
 import { siteMetadata } from "@data/meta";
 import { getCollection, type CollectionEntry } from "astro:content";
 
@@ -175,5 +176,12 @@ const categoryLabels: Record<string, string> = {
       </div>
     </section>
 
+    <section class="py-14">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-xl font-semibold tracking-tight">Outside the lab</h2>
+        <a href="/misc/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">More &rarr;</a>
+      </div>
+      <MiscGallery />
+    </section>
   </div>
 </BaseLayout>
