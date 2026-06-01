@@ -5,7 +5,8 @@ date: 2026-05-30
 tags:
   - optical coherence tomography
   - spectroscopy
-  - inverse problems
+  - inverse algorithms
+  - biophotonics
 highlightTag: spectroscopy
 institution: Wellman Center for Photomedicine, Harvard Medical School
 contentMode: freeform
