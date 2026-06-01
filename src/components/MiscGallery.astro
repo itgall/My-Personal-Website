@@ -1,11 +1,6 @@
 ---
-interface MiscItem { label: string; href: string; image?: string; gradient: string; caption: string; }
-const items: MiscItem[] = [
-  { label: "Travel", href: "/misc/#travel", gradient: "linear-gradient(150deg, #8ba3bd, #4a6a8a)", caption: "where I've been" },
-  { label: "Caving", href: "/misc/#caving", gradient: "linear-gradient(150deg, #6b6258, #34302a)", caption: "underground" },
-  { label: "Languages", href: "/misc/#languages", gradient: "linear-gradient(150deg, #b08968, #7a5a3a)", caption: "studying Mandarin" },
-  { label: "Reading", href: "/misc/#reading", gradient: "linear-gradient(150deg, #b57a7a, #8C1515)", caption: "topology & geometry" },
-];
+import { galleryTiles } from "@data/homepage-gallery";
+const items = galleryTiles;
 ---
 <div class="misc-gallery">
   {items.map((item) => (

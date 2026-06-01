@@ -1,0 +1,6 @@
+{
+  "travel": { "label": "Travel", "caption": "where I've been", "image": "" },
+  "caving": { "label": "Caving", "caption": "underground", "image": "" },
+  "languages": { "label": "Languages", "caption": "studying Mandarin", "image": "" },
+  "reading": { "label": "Reading", "caption": "topology & geometry", "image": "" }
+}

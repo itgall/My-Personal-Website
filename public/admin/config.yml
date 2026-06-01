@@ -275,6 +275,35 @@ collections:
         widget: markdown
         required: false
 
+  # Misc (Outside the lab) -- schema: src/content.config.ts -> misc collection
+  - name: misc
+    label: "🏔️ Misc"
+    label_singular: "Entry"
+    folder: src/content/misc
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [order, date, title]
+    summary: "{{title}} -- {{section}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Section
+        name: section
+        widget: select
+        options:
+          - { label: "Travel", value: "travel" }
+          - { label: "Caving", value: "caving" }
+          - { label: "Languages", value: "languages" }
+          - { label: "Reading", value: "reading" }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Location, name: location, widget: string, required: false }
+      - { label: Summary, name: summary, widget: string, required: false, default: "" }
+      - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - { label: Hero Image Caption, name: heroCaption, widget: string, required: false }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Order, name: order, widget: number, required: false, default: 0 }
+      - { label: Published, name: published, widget: boolean, default: true }
+      - { label: Body, name: body, widget: markdown }
+
   # ── Teaching ───────────────────────────────────────────────────────────────
   # Schema: src/content.config.ts → teaching collection
   # Files: src/content/teaching/*.md
@@ -604,6 +633,39 @@ collections:
       # ── Site Settings ──────────────────────────────────────────────────────
       # File: src/data/settings.json
       # Read by: src/data/settings.ts → consumed by layouts and components
+      # Homepage Gallery -- file: src/data/homepage-gallery.json -> MiscGallery.astro
+      - name: homepage_gallery
+        label: "🏞️ Homepage Gallery"
+        file: src/data/homepage-gallery.json
+        fields:
+          - label: "Travel tile"
+            name: travel
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Travel" }
+              - { label: "Caption", name: caption, widget: string, default: "where I've been" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+          - label: "Caving tile"
+            name: caving
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Caving" }
+              - { label: "Caption", name: caption, widget: string, default: "underground" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+          - label: "Languages tile"
+            name: languages
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Languages" }
+              - { label: "Caption", name: caption, widget: string, default: "studying Mandarin" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+          - label: "Reading tile"
+            name: reading
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Reading" }
+              - { label: "Caption", name: caption, widget: string, default: "topology & geometry" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
       - name: settings
         label: "🎛️ Features & Appearance"
         file: src/data/settings.json
