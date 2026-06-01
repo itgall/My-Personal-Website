@@ -357,6 +357,22 @@ const transcripts = defineCollection({
  * Eight content collections + publications from BibTeX = nine content types.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
+const misc = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/misc" }),
+  schema: z.object({
+    title: z.string().min(1, "Entry title is required"),
+    section: z.enum(["travel", "caving", "languages", "reading"]),
+    date: dateField,
+    location: z.string().optional(),
+    summary: z.string().default(""),
+    heroImage: z.string().optional(),
+    heroCaption: z.string().optional(),
+    tags: tagsField,
+    order: z.number().default(0),
+    published: z.boolean().default(true),
+  }),
+});
+
 export const collections = {
   posts,
   projects,
@@ -366,4 +382,5 @@ export const collections = {
   speaking,
   podcast,
   transcripts,
+  misc,
 };

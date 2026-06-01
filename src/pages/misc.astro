@@ -1,13 +1,93 @@
 ---
 import PageLayout from "@layouts/PageLayout.astro";
-import MiscGallery from "@components/MiscGallery.astro";
+import MiscEntryCard from "@components/MiscEntryCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type MiscEntry = CollectionEntry<"misc">;
+
+const SECTIONS = [
+  { id: "travel", label: "Travel", empty: "Trips and places, with photos and notes. More here soon." },
+  { id: "caving", label: "Caving", empty: "Caves I've explored. More here soon." },
+  { id: "languages", label: "Languages", empty: "Currently studying Mandarin Chinese." },
+  { id: "reading", label: "Reading", empty: "Topology, differential geometry, and where abstract math meets physics and engineering." },
+] as const;
+
+const allEntries: MiscEntry[] = await getCollection("misc", ({ data }: MiscEntry) => data.published);
+
+function sortEntries(a: MiscEntry, b: MiscEntry): number {
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  return b.data.date.getTime() - a.data.date.getTime();
+}
+
+const entriesBySection: Record<string, MiscEntry[]> = {};
+for (const section of SECTIONS) {
+  entriesBySection[section.id] = allEntries.filter((e) => e.data.section === section.id).sort(sortEntries);
+}
 ---
-<PageLayout title="Misc" description="Things outside the lab — travel, caving, languages, and reading." subtitle="Some things I do when I'm not in the lab." activeNav="misc">
-  <MiscGallery />
-  <div class="mt-14 space-y-14">
-    <section id="travel" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Travel</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">More here soon.</p></section>
-    <section id="caving" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Caving</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">More here soon.</p></section>
-    <section id="languages" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Languages</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">Currently studying Mandarin Chinese.</p></section>
-    <section id="reading" class="scroll-mt-24"><h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">Reading</h2><p class="text-[var(--color-text-secondary)] leading-relaxed">Topology, differential geometry, and where abstract math meets physics and engineering. Working through this slowly.</p></section>
+
+<PageLayout
+  title="Misc"
+  description="Things outside the lab — travel, caving, languages, and reading that has nothing to do with OCT."
+  subtitle="Some things I do when I'm not in the lab."
+  activeNav="misc"
+>
+  <nav class="misc-nav" aria-label="Misc sections">
+    {SECTIONS.map((section) => (
+      <a href={`#${section.id}`} data-spy-link={section.id}>{section.label}</a>
+    ))}
+  </nav>
+
+  <div class="misc-sections">
+    {SECTIONS.map((section) => {
+      const entries = entriesBySection[section.id];
+      return (
+        <section id={section.id} class="misc-section scroll-mt-24" data-spy-section={section.id}>
+          <h2 class="misc-section-heading">{section.label}</h2>
+          {entries.length > 0 ? (
+            <div class="entry-grid">
+              {entries.map((entry) => (<MiscEntryCard entry={entry} />))}
+            </div>
+          ) : (
+            <p class="misc-empty">{section.empty}</p>
+          )}
+        </section>
+      );
+    })}
   </div>
 </PageLayout>
+
+<style>
+  .misc-nav { display: flex; flex-wrap: wrap; gap: 1.375rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.875rem; margin-bottom: 2.5rem; }
+  .misc-nav a { font-size: 0.875rem; color: var(--color-text-secondary); text-decoration: none; padding-bottom: 0.25rem; border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease; }
+  .misc-nav a:hover { color: var(--color-accent); }
+  .misc-nav a.is-active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+  .misc-sections { display: flex; flex-direction: column; gap: 3.5rem; }
+  .misc-section-heading { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 1.25rem; }
+  .misc-empty { color: var(--color-text-secondary); line-height: 1.7; max-width: 40rem; }
+  .entry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.125rem; }
+  @media (max-width: 900px) { .entry-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .entry-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script is:inline>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll("[data-spy-link]"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("[data-spy-section]"));
+  if (!links.length || !sections.length || !("IntersectionObserver" in window)) return;
+  function setActive(id) {
+    links.forEach(function (a) { a.classList.toggle("is-active", a.getAttribute("data-spy-link") === id); });
+  }
+  var visible = {};
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var id = entry.target.getAttribute("data-spy-section");
+      if (entry.isIntersecting) visible[id] = entry.boundingClientRect.top;
+      else delete visible[id];
+    });
+    var ids = Object.keys(visible);
+    if (ids.length) { ids.sort(function (a, b) { return visible[a] - visible[b]; }); setActive(ids[0]); }
+  }, { rootMargin: "-20% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function (s) { observer.observe(s); });
+  setActive(sections[0].getAttribute("data-spy-section"));
+})();
+</script>
