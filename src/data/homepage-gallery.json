@@ -1,6 +1,22 @@
 {
-  "travel": { "label": "Travel", "caption": "where I've been", "image": "" },
-  "caving": { "label": "Caving", "caption": "underground", "image": "" },
-  "languages": { "label": "Languages", "caption": "studying Mandarin", "image": "" },
-  "reading": { "label": "Reading", "caption": "topology & geometry", "image": "" }
+  "travel": {
+    "label": "Travel",
+    "caption": "where I've been",
+    "image": "/images/uploads/Resized_20250630_125944.jpeg"
+  },
+  "caving": {
+    "label": "Caving",
+    "caption": "underground",
+    "image": "/images/uploads/IMG_5346_Original.jpeg"
+  },
+  "languages": {
+    "label": "Languages",
+    "caption": "studying Mandarin",
+    "image": ""
+  },
+  "reading": {
+    "label": "Reading",
+    "caption": "topology & geometry",
+    "image": ""
+  }
 }
