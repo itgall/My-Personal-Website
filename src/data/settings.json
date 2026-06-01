@@ -28,7 +28,7 @@
     "about": true,
     "contact": true,
     "ventures": false,
-    "speaking": true,
+    "speaking": false,
     "podcast": false
   },
   "appearance": {
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   }
 }
