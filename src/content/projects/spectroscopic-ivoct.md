@@ -11,6 +11,7 @@ institution: Wellman Center for Photomedicine, Harvard Medical School
 contentMode: freeform
 problem: ''
 impact: ''
+heroImage: /images/uploads/IMG_6814.jpeg
 heroCaption: ''
 videoUrl: ''
 interactiveUrl: ''
@@ -24,8 +25,8 @@ linkText: ''
 githubUrl: ''
 relatedPublications: []
 published: true
-featured: true
 description: OCT gives you 3D structure, but not composition. This project adds molecular characterization to interferometric imaging — figuring out what a tissue is made of from how it scatters broadband light.
+featured: true
 ---
 
 ## Overview
