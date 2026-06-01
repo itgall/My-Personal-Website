@@ -1,19 +1,19 @@
 # Astro Academic Site
 
-Production-grade academic website template built on Astro 6 — zero JavaScript by default.
+Academic website template built on Astro 6.
 
 ## Features
 
-- **BibTeX-driven publications engine** — single `.bib` file generates individual pages with Highwire Press meta tags + JSON-LD `ScholarlyArticle` structured data for Google Scholar indexing
-- **Zero JS by default** — every page renders and functions without client-side JavaScript; interactive components use Astro Islands with explicit hydration directives
-- **Tufte-style sidenotes** — margin notes that collapse responsively on mobile
-- **Bidirectional backlinks** — wiki-style `[[links]]` with automatic backlink panels
-- **Research knowledge graph** — interactive force-directed visualization of publication/note connections
-- **Digital garden** — notes with maturity indicators (🌱 seedling → 🌿 budding → 🌲 evergreen)
-- **Pagefind search** — Rust/WASM client-side search with filters by year, type, and topic
-- **Content Collections** — Zod-validated schemas for posts, projects, teaching, and notes
-- **Dark/light theme** — system preference detection with manual toggle and zero FOUC
-- **WCAG 2.2 AA accessible** — MathJax 4.x, proper ARIA roles, 4.5:1 contrast, 24×24px targets
+- **BibTeX-driven publications engine** : single `.bib` file generates individual pages with Highwire Press meta tags + JSON-LD `ScholarlyArticle` structured data for Google Scholar indexing
+- **Zero JS by default** : every page renders and functions without client-side JavaScript; interactive components use Astro Islands with explicit hydration directives
+- **Tufte-style sidenotes** : margin notes that collapse responsively on mobile
+- **Bidirectional backlinks** : wiki-style `[[links]]` with automatic backlink panels
+- **Research knowledge graph** : interactive force-directed visualization of publication/note connections
+- **Digital garden** : notes with maturity indicators (🌱 seedling → 🌿 budding → 🌲 evergreen)
+- **Pagefind search** : Rust/WASM client-side search with filters by year, type, and topic
+- **Content Collections** : Zod-validated schemas for posts, projects, teaching, and notes
+- **Dark/light theme** : system preference detection with manual toggle and zero FOUC
+- **WCAG 2.2 AA accessible** : MathJax 4.x, proper ARIA roles, 4.5:1 contrast, 24×24px targets
 
 ## One-Click Deploy
 
@@ -102,10 +102,10 @@ The site includes a browser-based admin dashboard at `/admin/` powered by Svelti
 2. Navigate to `https://your-site.com/admin/` in your browser.
 3. Authenticate using one of two methods:
 
-**Option A — Personal Access Token (simplest, no backend):**
+**Option A : Personal Access Token (simplest, no backend):**
 Create a fine-grained Personal Access Token at [github.com/settings/tokens](https://github.com/settings/tokens) with **Contents** read/write permission on your repository. Enter the token in the Sveltia CMS login screen. Done.
 
-**Option B — GitHub OAuth (polished login experience):**
+**Option B : GitHub OAuth (polished login experience):**
 Deploy the [Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare Workers (free tier, one-click deploy). Create a GitHub OAuth App at [github.com/settings/developers](https://github.com/settings/developers). Add `base_url: https://your-auth-worker.workers.dev` to the backend section in `config.yml`. Users see a "Login with GitHub" button.
 
 ### CLI Scaffolding
