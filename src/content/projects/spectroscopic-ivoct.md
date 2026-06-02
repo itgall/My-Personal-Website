@@ -12,7 +12,7 @@ institution: Wellman Center for Photomedicine, Harvard Medical School
 contentMode: freeform
 problem: ''
 impact: ''
-heroImage: ''
+heroImage: /images/uploads/IMG_2457.jpeg
 heroCaption: ''
 videoUrl: ''
 interactiveUrl: ''
