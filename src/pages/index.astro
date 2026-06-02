@@ -20,6 +20,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import MiscGallery from "@components/MiscGallery.astro";
 import { siteMetadata } from "@data/meta";
+import { profileImage } from "@data/homepage";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 type Post = CollectionEntry<"posts">;
@@ -74,7 +75,7 @@ const categoryLabels: Record<string, string> = {
       {/* Photo + intro */}
       <div class="flex flex-col items-center gap-7 text-center md:flex-row md:items-start md:gap-8 md:text-left">
         <img
-          src="/images/profile-v2.jpg"
+          src={profileImage}
           alt="Isaac Gallegos"
           loading="eager"
           decoding="async"

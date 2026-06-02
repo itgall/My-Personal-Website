@@ -634,6 +634,13 @@ collections:
       # File: src/data/settings.json
       # Read by: src/data/settings.ts → consumed by layouts and components
       # Homepage Gallery -- file: src/data/homepage-gallery.json -> MiscGallery.astro
+      # Homepage -- file: src/data/homepage.json -> src/pages/index.astro
+      - name: homepage
+        label: "🏠 Homepage"
+        file: src/data/homepage.json
+        fields:
+          - { label: "Profile Photo", name: profileImage, widget: image, required: false, hint: "The large photo in the homepage hero. Leave blank to use the default." }
+
       - name: homepage_gallery
         label: "🏞️ Homepage Gallery"
         file: src/data/homepage-gallery.json
