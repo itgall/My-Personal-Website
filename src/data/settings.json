@@ -2,7 +2,7 @@
   "features": {
     "maintenanceMode": false,
     "sidenotes": true,
-    "defaultAccent": "interferometer",
+    "defaultAccent": "harvard",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "provider": "plausible",
+    "enabled": false,
     "domain": "",
-    "enabled": false
+    "provider": "plausible"
   }
 }
