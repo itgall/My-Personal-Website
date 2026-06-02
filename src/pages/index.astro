@@ -20,7 +20,7 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import MiscGallery from "@components/MiscGallery.astro";
 import { siteMetadata } from "@data/meta";
-import { profileImage } from "@data/homepage";
+import { profileImage, profileFocal } from "@data/homepage";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 type Post = CollectionEntry<"posts">;
@@ -82,6 +82,7 @@ const categoryLabels: Record<string, string> = {
           width="260"
           height="325"
           class="hero-photo shrink-0"
+          style={`object-position: ${profileFocal}`}
         />
         <div class="min-w-0">
           <h1 class="vt-page-title text-3xl font-semibold tracking-tight leading-tight md:text-4xl">

@@ -298,6 +298,21 @@ collections:
       - { label: Location, name: location, widget: string, required: false }
       - { label: Summary, name: summary, widget: string, required: false, default: "" }
       - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - label: "Hero Image Framing"
+        name: heroFocal
+        widget: select
+        default: "center"
+        options:
+          - { label: "Top Left", value: "top left" }
+          - { label: "Top", value: "top" }
+          - { label: "Top Right", value: "top right" }
+          - { label: "Left", value: "left" }
+          - { label: "Center", value: "center" }
+          - { label: "Right", value: "right" }
+          - { label: "Bottom Left", value: "bottom left" }
+          - { label: "Bottom", value: "bottom" }
+          - { label: "Bottom Right", value: "bottom right" }
+        hint: "Which part of the image stays in frame when it is cropped to fit."
       - { label: Hero Image Caption, name: heroCaption, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, required: false, default: [] }
       - { label: Order, name: order, widget: number, required: false, default: 0 }
@@ -640,6 +655,21 @@ collections:
         file: src/data/homepage.json
         fields:
           - { label: "Profile Photo", name: profileImage, widget: image, required: false, hint: "The large photo in the homepage hero. Leave blank to use the default." }
+          - label: "Profile Photo Framing"
+            name: profileFocal
+            widget: select
+            default: "top"
+            options:
+              - { label: "Top Left", value: "top left" }
+              - { label: "Top", value: "top" }
+              - { label: "Top Right", value: "top right" }
+              - { label: "Left", value: "left" }
+              - { label: "Center", value: "center" }
+              - { label: "Right", value: "right" }
+              - { label: "Bottom Left", value: "bottom left" }
+              - { label: "Bottom", value: "bottom" }
+              - { label: "Bottom Right", value: "bottom right" }
+            hint: "Which part of the image stays in frame when it is cropped to fit."
 
       - name: homepage_gallery
         label: "🏞️ Homepage Gallery"
@@ -652,6 +682,21 @@ collections:
               - { label: "Label", name: label, widget: string, default: "Travel" }
               - { label: "Caption", name: caption, widget: string, default: "where I've been" }
               - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
           - label: "Caving tile"
             name: caving
             widget: object
@@ -659,6 +704,21 @@ collections:
               - { label: "Label", name: label, widget: string, default: "Caving" }
               - { label: "Caption", name: caption, widget: string, default: "underground" }
               - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
           - label: "Languages tile"
             name: languages
             widget: object
@@ -666,6 +726,21 @@ collections:
               - { label: "Label", name: label, widget: string, default: "Languages" }
               - { label: "Caption", name: caption, widget: string, default: "studying Mandarin" }
               - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
           - label: "Reading tile"
             name: reading
             widget: object
@@ -673,6 +748,21 @@ collections:
               - { label: "Label", name: label, widget: string, default: "Reading" }
               - { label: "Caption", name: caption, widget: string, default: "topology & geometry" }
               - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
       - name: settings
         label: "🎛️ Features & Appearance"
         file: src/data/settings.json

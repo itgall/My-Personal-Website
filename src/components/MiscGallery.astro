@@ -4,7 +4,7 @@ const items = galleryTiles;
 ---
 <div class="misc-gallery">
   {items.map((item) => (
-    <a class="misc-tile" href={item.href} style={item.image ? `background-image: url('${item.image}')` : item.gradient}>
+    <a class="misc-tile" href={item.href} style={item.image ? `background-image: url('${item.image}'); background-position: ${item.focal}` : item.gradient}>
       <span class="misc-inner">
         <span class="misc-title">{item.label}</span>
         <span class="misc-divider"></span>

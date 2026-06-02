@@ -2,14 +2,14 @@
 import type { CollectionEntry } from "astro:content";
 interface Props { entry: CollectionEntry<"misc">; }
 const { entry } = Astro.props;
-const { title, location, summary, heroImage, heroCaption } = entry.data;
+const { title, location, summary, heroImage, heroCaption, heroFocal } = entry.data;
 const year = entry.data.date.getFullYear();
 const metaParts = [location, String(year)].filter(Boolean);
 ---
 <a href={`/misc/${entry.id}/`} class="entry-card">
   <div class="entry-thumb">
     {heroImage ? (
-      <img src={heroImage} alt={heroCaption || title} loading="lazy" decoding="async" />
+      <img src={heroImage} alt={heroCaption || title} loading="lazy" decoding="async" style={`object-position: ${heroFocal}`} />
     ) : (
       <span class="entry-placeholder font-mono">{title}</span>
     )}

@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as { entry: MiscEntry };
 const { Content } = await render(entry);
-const { title, section, location, heroImage, heroCaption } = entry.data;
+const { title, section, location, heroImage, heroCaption, heroFocal } = entry.data;
 const dateStr = entry.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
 const sectionLabel = SECTION_LABELS[section] ?? "Misc";
 const metaParts = [location, dateStr].filter(Boolean);
@@ -30,7 +30,7 @@ const metaParts = [location, dateStr].filter(Boolean);
     </header>
     {heroImage && (
       <figure class="misc-hero">
-        <img src={heroImage} alt={heroCaption || title} loading="eager" decoding="async" />
+        <img src={heroImage} alt={heroCaption || title} loading="eager" decoding="async" style={`object-position: ${heroFocal}`} />
         {heroCaption && <figcaption>{heroCaption}</figcaption>}
       </figure>
     )}

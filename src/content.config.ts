@@ -367,6 +367,19 @@ const misc = defineCollection({
     summary: z.string().default(""),
     heroImage: z.string().optional(),
     heroCaption: z.string().optional(),
+    heroFocal: z
+      .enum([
+        "top left",
+        "top",
+        "top right",
+        "left",
+        "center",
+        "right",
+        "bottom left",
+        "bottom",
+        "bottom right",
+      ])
+      .default("center"),
     tags: tagsField,
     order: z.number().default(0),
     published: z.boolean().default(true),

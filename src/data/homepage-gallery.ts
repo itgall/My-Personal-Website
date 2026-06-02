@@ -1,14 +1,16 @@
 import rawGallery from "./homepage-gallery.json";
+import { normalizeFocal, type FocalPosition } from "./homepage";
 
 export type GallerySectionId = "travel" | "caving" | "languages" | "reading";
 
-interface RawTile { label?: string; caption?: string; image?: string; }
+interface RawTile { label?: string; caption?: string; image?: string; focal?: string; }
 
 export interface GalleryTile {
   id: GallerySectionId;
   label: string;
   caption: string;
   image: string;
+  focal: FocalPosition;
   href: string;
   gradient: string;
 }
@@ -31,6 +33,7 @@ export const galleryTiles: GalleryTile[] = ORDER.map((id) => {
     label: override.label?.trim() || preset.label,
     caption: override.caption?.trim() || preset.caption,
     image: override.image?.trim() || "",
+    focal: normalizeFocal(override.focal),
     href: `/misc/#${id}`,
     gradient: preset.gradient,
   };
