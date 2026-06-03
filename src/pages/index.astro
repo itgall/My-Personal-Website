@@ -88,7 +88,7 @@ const categoryLabels: Record<string, string> = {
           <h1 class="vt-page-title text-3xl font-semibold tracking-tight leading-tight md:text-4xl">
             {siteMetadata.name}
           </h1>
-          <p class="mt-2 text-base text-[var(--color-text-secondary)]">
+          <p class="mt-2 font-mono text-[12px] tracking-wide uppercase text-[var(--color-muted)]">
             Research Engineer · Harvard Medical School
           </p>
 
@@ -130,7 +130,7 @@ const categoryLabels: Record<string, string> = {
     <section class="py-14">
       <div class="flex items-baseline justify-between mb-8">
         <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
-        <a href="/projects/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All projects &rarr;</a>
+        <a href="/projects/" class="font-mono text-[11px] tracking-wide uppercase text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All projects &rarr;</a>
       </div>
       {projects.length > 0 ? (
         <div class="space-y-6">
@@ -139,13 +139,13 @@ const categoryLabels: Record<string, string> = {
               href={`/projects/${project.id}/`}
               class="group block no-underline"
             >
-              <span class="text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+              <span class="font-display text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
                 {project.data.title}
               </span>
               <p class="mt-1 text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2">
                 {project.data.description}
               </p>
-              <span class="mt-1 text-xs text-[var(--color-muted)]">{project.data.institution}</span>
+              <span class="mt-1 font-mono text-[11px] tracking-wide uppercase text-[var(--color-muted)]">{project.data.institution}</span>
             </a>
           ))}
         </div>
@@ -159,7 +159,7 @@ const categoryLabels: Record<string, string> = {
       <section class="py-14">
           <div class="flex items-baseline justify-between mb-8">
             <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
-            <a href="/blog/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All writing &rarr;</a>
+            <a href="/blog/" class="font-mono text-[11px] tracking-wide uppercase text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">All writing &rarr;</a>
           </div>
           <div class="space-y-4">
             {recentPosts.map((post) => {
@@ -172,7 +172,7 @@ const categoryLabels: Record<string, string> = {
                   <span class="font-mono text-xs text-[var(--color-muted)] shrink-0 w-20">
                     {formatShortDate(post.data.date)}
                   </span>
-                  <span class="flex-1 min-w-0 text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+                  <span class="flex-1 min-w-0 font-display text-[15px] font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
                     {post.data.title}
                   </span>
                   <span class="shrink-0 text-xs text-[var(--color-muted)] hidden sm:inline">
@@ -198,7 +198,7 @@ const categoryLabels: Record<string, string> = {
           single-photon detection, nonlinear optics, and laser physics, which is
           where I started.
         </p>
-        <a href="/publications/" class="inline-block mt-4 text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">
+        <a href="/publications/" class="inline-block mt-4 font-mono text-[11px] tracking-wide uppercase text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">
           View publications &rarr;
         </a>
       </div>
@@ -207,7 +207,7 @@ const categoryLabels: Record<string, string> = {
     <section class="py-14">
       <div class="flex items-baseline justify-between mb-6">
         <h2 class="text-xl font-semibold tracking-tight">Outside the lab</h2>
-        <a href="/misc/" class="text-sm text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">More &rarr;</a>
+        <a href="/misc/" class="font-mono text-[11px] tracking-wide uppercase text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">More &rarr;</a>
       </div>
       <MiscGallery />
     </section>

@@ -2,7 +2,7 @@
   "features": {
     "maintenanceMode": false,
     "sidenotes": true,
-    "defaultAccent": "coherence",
+    "defaultAccent": "forest",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,

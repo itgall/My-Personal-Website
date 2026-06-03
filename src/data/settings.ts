@@ -113,7 +113,7 @@ export interface AnalyticsSettings {
 
 const defaultFeatures: FeatureSettings = {
   maintenanceMode: false,
-  defaultAccent: "mint",
+  defaultAccent: "forest",
   backlinks: true,
   tableOfContents: true,
   linkPreviews: true,

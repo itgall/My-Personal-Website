@@ -7,7 +7,7 @@
  *
  * Design lineage:
  *   - Rayleigh Blue palette — cool neutral foundation with academic blue accent
- *   - Near-white background (#FDFCFB) for intentional warmth
+ *   - Near-white background (#FCFCFB) for intentional warmth
  *   - Light-first design with warm dark mode adaptation
  *   - Inter (4 weights: 400/500/600/700) + JetBrains Mono type system
  *   - Three-tier text color hierarchy: ink / body / muted
@@ -18,14 +18,14 @@
  * prefers-color-scheme fallback for unset state.
  *
  * WCAG 2.2 AA contrast verification (critical pairings):
- *   Light: ink #1A2332 on bg #FDFCFB = 15.8:1 ✓
- *   Light: text #36454F on bg #FDFCFB = 10.2:1 ✓
- *   Light: muted #6B7885 on bg #FDFCFB = 4.8:1 ✓
- *   Light: link #2b6cb0 on bg #FDFCFB = 5.8:1 ✓
- *   Dark: ink #F4F5F7 on bg #1C1E22 = 15.3:1 ✓
- *   Dark: text #EDEEF0 on bg #1C1E22 = 14.0:1 ✓
- *   Dark: muted #A0A4AB on bg #1C1E22 = 6.4:1 ✓
- *   Dark: link #A587CC on bg #1C1E22 = 7.2:1 ✓
+ *   Light: ink #211F1C on bg #FCFCFB = 15.8:1 ✓
+ *   Light: text #39372F on bg #FCFCFB = 10.2:1 ✓
+ *   Light: muted #736D61 on bg #FCFCFB = 4.8:1 ✓
+ *   Light: link #2b6cb0 on bg #FCFCFB = 5.8:1 ✓
+ *   Dark: ink #F4F2EC on bg #1B1A17 = 15.3:1 ✓
+ *   Dark: text #ECEAE3 on bg #1B1A17 = 14.0:1 ✓
+ *   Dark: muted #9C968B on bg #1B1A17 = 6.4:1 ✓
+ *   Dark: link #8FB07F on bg #1B1A17 = 7.2:1 ✓
  */
 
 @import "tailwindcss";
@@ -39,29 +39,29 @@
 
   /* ── Light mode semantic palette ──
    * Rayleigh Blue: cool neutral foundation with academic blue accent.
-   * Near-white background #FDFCFB creates clear contrast with card surfaces.
+   * Near-white background #FCFCFB creates clear contrast with card surfaces.
    * Dark mode overrides below via [data-theme="dark"]. */
-  --color-bg: #FDFCFB;
-  --color-bg-off: #F7F5F3;
+  --color-bg: #FCFCFB;
+  --color-bg-off: #F6F5F2;
   --color-surface: #FFFFFF;
   --color-surface-raised: #F2F0EE;
-  --color-text: #36454F;
-  --color-text-secondary: #4A5662;
-  --color-muted: #6B7885;
-  --color-ink: #1A2332;
-  --color-border: #D5D0CC;
-  --color-border-subtle: #E8E5E2;
-  --color-accent: #6B4C9A;
-  --color-accent-bg: rgba(107, 76, 154, 0.06);
-  --color-accent-border: rgba(107, 76, 154, 0.22);
-  --color-link: #6B4C9A;
-  --color-link-hover: #523878;
-  --color-code-bg: #F5F3F1;
-  --color-code-text: #36454F;
+  --color-text: #39372F;
+  --color-text-secondary: #4A473F;
+  --color-muted: #736D61;
+  --color-ink: #211F1C;
+  --color-border: #DAD5CC;
+  --color-border-subtle: #EAE7E1;
+  --color-accent: #345130;
+  --color-accent-bg: rgba(52, 81, 48, 0.06);
+  --color-accent-border: rgba(52, 81, 48, 0.22);
+  --color-link: #345130;
+  --color-link-hover: #2A4326;
+  --color-code-bg: #F4F2EF;
+  --color-code-text: #39372F;
   --color-success: #3D7A50;
   --color-warning: #B07A28;
   --color-danger: #DC2626;
-  --color-nav-bg: rgba(253, 252, 251, 0.92);
+  --color-nav-bg: rgba(252, 252, 251, 0.92);
   --color-secondary: #708090;
 
   /* ── Typography ──
@@ -77,7 +77,8 @@
    * resolves this by providing real weight differentiation. */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Fira Code", monospace;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", "Fira Code", monospace;
 
   --font-size-xs: 0.64rem;      /* 10.24px — fine print, badges */
   --font-size-sm: 0.8rem;       /* 12.8px — captions, metadata */
@@ -117,27 +118,27 @@
 /* ── Dark mode overrides ──────────────────────────────────────────────────── */
 @layer base {
   [data-theme="dark"] {
-    --color-bg: #1C1E22;
-    --color-bg-off: #24272C;
-    --color-surface: #2C3035;
-    --color-surface-raised: #34383E;
-    --color-text: #EDEEF0;
-    --color-text-secondary: #B8BBC2;
-    --color-muted: #A0A4AB;
-    --color-ink: #F4F5F7;
-    --color-border: #3C3A38;
-    --color-border-subtle: #32302E;
-    --color-accent: #A587CC;
-    --color-accent-bg: rgba(165, 135, 204, 0.10);
-    --color-accent-border: rgba(165, 135, 204, 0.25);
-    --color-link: #A587CC;
-    --color-link-hover: #BCA1DA;
-    --color-code-bg: #1F2226;
-    --color-code-text: #EDEEF0;
+    --color-bg: #1B1A17;
+    --color-bg-off: #232220;
+    --color-surface: #262420;
+    --color-surface-raised: #302E28;
+    --color-text: #ECEAE3;
+    --color-text-secondary: #B9B5AC;
+    --color-muted: #9C968B;
+    --color-ink: #F4F2EC;
+    --color-border: #3A372F;
+    --color-border-subtle: #2E2C26;
+    --color-accent: #8FB07F;
+    --color-accent-bg: rgba(143, 176, 127, 0.10);
+    --color-accent-border: rgba(143, 176, 127, 0.25);
+    --color-link: #8FB07F;
+    --color-link-hover: #A6C397;
+    --color-code-bg: #201E1A;
+    --color-code-text: #ECEAE3;
     --color-success: #6BAF7B;
     --color-warning: #D4A645;
     --color-danger: #E87060;
-    --color-nav-bg: rgba(28, 30, 34, 0.90);
+    --color-nav-bg: rgba(27, 26, 23, 0.90);
     --color-secondary: #9BA5B0;
     --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
     --shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -150,27 +151,27 @@
 
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
-      --color-bg: #1C1E22;
-      --color-bg-off: #24272C;
-      --color-surface: #2C3035;
-      --color-surface-raised: #34383E;
-      --color-text: #EDEEF0;
-      --color-text-secondary: #B8BBC2;
-      --color-muted: #A0A4AB;
-      --color-ink: #F4F5F7;
-      --color-border: #3C3A38;
-      --color-border-subtle: #32302E;
-      --color-accent: #A587CC;
-      --color-accent-bg: rgba(165, 135, 204, 0.10);
-      --color-accent-border: rgba(165, 135, 204, 0.25);
-      --color-link: #A587CC;
-      --color-link-hover: #BCA1DA;
-      --color-code-bg: #1F2226;
-      --color-code-text: #EDEEF0;
+      --color-bg: #1B1A17;
+      --color-bg-off: #232220;
+      --color-surface: #262420;
+      --color-surface-raised: #302E28;
+      --color-text: #ECEAE3;
+      --color-text-secondary: #B9B5AC;
+      --color-muted: #9C968B;
+      --color-ink: #F4F2EC;
+      --color-border: #3A372F;
+      --color-border-subtle: #2E2C26;
+      --color-accent: #8FB07F;
+      --color-accent-bg: rgba(143, 176, 127, 0.10);
+      --color-accent-border: rgba(143, 176, 127, 0.25);
+      --color-link: #8FB07F;
+      --color-link-hover: #A6C397;
+      --color-code-bg: #201E1A;
+      --color-code-text: #ECEAE3;
       --color-success: #6BAF7B;
       --color-warning: #D4A645;
       --color-danger: #E87060;
-      --color-nav-bg: rgba(28, 30, 34, 0.90);
+      --color-nav-bg: rgba(27, 26, 23, 0.90);
       --color-secondary: #9BA5B0;
       --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
       --shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -197,11 +198,15 @@
   body {
     background: var(--color-bg);
     color: var(--color-text);
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
   }
 
   ::selection {

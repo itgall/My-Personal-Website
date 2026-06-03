@@ -31,6 +31,28 @@ export interface AccentPreset {
 
 export const accentPresets: AccentPreset[] = [
   {
+    id: "forest",
+    label: "Forest",
+    swatch: "#8FB07F",
+    light: {
+      accent: "#345130",
+      accentBg: "rgba(52, 81, 48, 0.06)",
+      accentBorder: "rgba(52, 81, 48, 0.22)",
+      link: "#345130",
+      linkHover: "#2A4326",
+      selection: "rgba(52, 81, 48, 0.16)",
+      print: "#2A4326",
+    },
+    dark: {
+      accent: "#8FB07F",
+      accentBg: "rgba(143, 176, 127, 0.10)",
+      accentBorder: "rgba(143, 176, 127, 0.25)",
+      link: "#8FB07F",
+      linkHover: "#A6C397",
+      selection: "rgba(143, 176, 127, 0.18)",
+    },
+  },
+  {
     id: "violet",
     label: "405nm Violet",
     swatch: "#A587CC",
@@ -406,7 +428,7 @@ export const accentPresets: AccentPreset[] = [
   },
 ];
 
-export const defaultAccentId = "violet";
+export const defaultAccentId = "forest";
 
 export function getAccentPreset(id: string): AccentPreset {
   return (
