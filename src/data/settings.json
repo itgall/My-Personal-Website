@@ -2,7 +2,7 @@
   "features": {
     "maintenanceMode": false,
     "sidenotes": true,
-    "defaultAccent": "harvard",
+    "defaultAccent": "stanford",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,
@@ -32,7 +32,7 @@
     "podcast": false
   },
   "appearance": {
-    "defaultTheme": "dark",
+    "defaultTheme": "light",
     "loadingAnimation": "none",
     "viewTransitions": true,
     "scrollReveal": true,
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "provider": "plausible",
+    "enabled": false,
     "domain": "",
-    "enabled": false
+    "provider": "plausible"
   }
 }
