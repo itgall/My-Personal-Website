@@ -384,7 +384,7 @@
   :root {
     --color-border: #999999;
     --color-border-subtle: #999999;
-    --color-accent-bg: rgba(226, 114, 91, 0.15);
+    --color-accent-bg: rgba(52, 81, 48, 0.15);
   }
 
   [data-theme="dark"] {

@@ -30,10 +30,19 @@ const { pub } = Astro.props;
 const authorHtml = formatAuthors(pub.authors, siteMetadata.name);
 const venue = pub.journal ?? pub.booktitle ?? "";
 
-const venueDetail = [
-  venue,
+const enDash = String.fromCharCode(0x2013);
+const pageRange = pub.firstpage && pub.lastpage
+  ? `${pub.firstpage}${enDash}${pub.lastpage}`
+  : (pub.pages ?? "");
+const venueRest = [
   pub.volume ? `${pub.volume}${pub.number ? `(${pub.number})` : ""}` : "",
-  pub.pages ?? "",
+  pageRange,
+].filter(Boolean).join(", ");
+const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const venueHtml = [
+  venue ? `<em class="featured-pub-venue">${escHtml(venue)}</em>` : "",
+  venueRest ? escHtml(venueRest) : "",
+  `${pub.year}`,
 ].filter(Boolean).join(", ");
 ---
 
@@ -50,11 +59,7 @@ const venueDetail = [
   <p class="featured-pub-meta">
     <span class="featured-pub-authors" set:html={authorHtml} />
     {" · "}
-    {venueDetail && (
-      <em class="featured-pub-venue">{venueDetail}</em>
-    )}
-    {venueDetail && ", "}
-    <span>{pub.year}</span>
+    <span set:html={venueHtml} />
     {pub.status === "preprint" && (
       <span class="featured-pub-status">Preprint</span>
     )}

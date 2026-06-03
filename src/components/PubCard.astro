@@ -26,13 +26,26 @@ interface Props {
 const { pub, showAbstract = false } = Astro.props;
 
 const authorHtml = formatAuthors(pub.authors, siteMetadata.name);
+const authorsPlain = authorHtml.replace(/<[^>]+>/g, "").trimEnd();
+const authorSep = (authorsPlain === "" || authorsPlain.endsWith(".")) ? "" : ".";
 const venue = pub.journal ?? pub.booktitle ?? "";
 
-const venueDetail = [
-  venue,
+const enDash = String.fromCharCode(0x2013);
+const pageRange = pub.firstpage && pub.lastpage
+  ? `${pub.firstpage}${enDash}${pub.lastpage}`
+  : (pub.pages ?? "");
+const venueRest = [
   pub.volume ? `${pub.volume}${pub.number ? `(${pub.number})` : ""}` : "",
-  pub.pages ?? "",
+  pageRange,
 ].filter(Boolean).join(", ");
+const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const venueHtml = [
+  venue ? `<em>${escHtml(venue)}</em>` : "",
+  venueRest ? escHtml(venueRest) : "",
+  `${pub.year}.`,
+].filter(Boolean).join(", ");
+
+const titleDisplay = /[.?!]$/.test(pub.title) ? pub.title : `${pub.title}.`;
 
 const vtName = `pub-${pub.slug}`;
 ---
@@ -57,22 +70,18 @@ const vtName = `pub-${pub.slug}`;
     {/* Citation entry — single flowing paragraph */}
     <p class="text-sm leading-relaxed">
       {/* Authors */}
-      <span class="text-[var(--color-muted)]" set:html={authorHtml} />
+      <span class="text-[var(--color-muted)]" set:html={authorHtml} />{authorSep}
       {" "}
       {/* Title as link */}
       <a
         href={`/publications/${pub.slug}/`}
         class="font-medium text-[var(--color-link)] no-underline hover:underline hover:underline-offset-2"
       >
-        {pub.title}.
+        {titleDisplay}
       </a>
       {" "}
-      {/* Venue */}
-      {venueDetail && (
-        <em class="text-[var(--color-muted)]">{venueDetail},</em>
-      )}
-      {" "}
-      <span class="text-[var(--color-muted)]">{pub.year}.</span>
+      {/* Venue: journal name italic; volume, pages, year roman */}
+      <span class="text-[var(--color-muted)]" set:html={venueHtml} />
       {pub.status === "preprint" && (
         <span class="ml-1 rounded bg-[var(--color-accent-bg)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-accent)]">
           Preprint
