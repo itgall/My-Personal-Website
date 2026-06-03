@@ -92,6 +92,11 @@ const vtName = `pub-${pub.slug}`;
           Under Review
         </span>
       )}
+      {pub.status === "in-preparation" && (
+        <span class="ml-1 rounded bg-[var(--color-bg-off)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
+          In Preparation
+        </span>
+      )}
       {pub.type === "misc" && pub.subtype && (
         <span class="ml-1 rounded bg-[var(--color-bg-off)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
           {pubTypeLabel(pub.type, pub.subtype)}

@@ -42,7 +42,7 @@ import { resolve } from "node:path";
 /* ── Type definitions (matches cv.yaml schema) ─────────────────── */
 interface CVSkill { category: string; items: string[]; }
 interface CVEducation { degree: string; institution: string; location?: string; dates: string; gpa?: string; honors?: string[]; }
-interface CVExperience { title: string; organization: string; parent?: string; location?: string; dates: string; current?: boolean; highlights?: string[]; }
+interface CVExperience { title: string; organization: string; parent?: string; location?: string; dates: string; current?: boolean; advisors?: string; highlights?: string[]; }
 interface CVResearch { title: string; institution: string; dates: string; description: string; }
 interface CVTeaching { role: string; course: string; institution: string; dates: string; }
 interface CVData {
@@ -261,14 +261,14 @@ const personJsonLd = {
                 <div class="cv-entry-header">
                   <div>
                     <span class="cv-entry-title">{exp.title}</span>
-                    <span class="cv-entry-org">
-                      {exp.organization}
-                      {exp.parent && `, ${exp.parent}`}
-                    </span>
+                    <span class="cv-entry-org">{exp.parent ? `${exp.organization}, ${exp.parent}` : exp.organization}</span>
                     {exp.location && <span class="cv-entry-detail">{exp.location}</span>}
                   </div>
                   <span class="cv-entry-dates">{exp.dates}</span>
                 </div>
+                {exp.advisors && (
+                  <p class="cv-entry-detail">{exp.advisors.includes(",") ? "Advisors" : "Advisor"}: {exp.advisors}</p>
+                )}
                 {exp.highlights && exp.highlights.length > 0 && (
                   <ul class="cv-highlights">
                     {exp.highlights.map((h) => (

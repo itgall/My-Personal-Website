@@ -74,7 +74,7 @@ export const siteMetadata: SiteMetadata = {
   role: "Research Engineer",
   subtitle: "Wellman Center for Photomedicine · Harvard Medical School · MIT",
   description:
-    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Optical systems, inverse algorithms, quantum photonics, integrated photonic devices, and physics-informed deep learning.",
+    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Photonics, quantum optics, and quantum networks: spin-photon interfaces, entanglement distribution, and physics-driven optical modeling.",
   siteUrl: "https://isaac-gallegos.com",
   image: "/images/profile-v2.jpg",
   language: "en",
@@ -120,16 +120,16 @@ export const siteMetadata: SiteMetadata = {
   ],
 
   knowsAbout: [
-    "Quantum Photonics",
+    "Quantum Information",
+    "Quantum Networks",
+    "Photonic Interconnects",
+    "Entanglement Distribution",
     "Spin-Photon Interfaces",
-    "Integrated Photonic Systems",
-    "Computational Inverse Design",
-    "Physics-Informed Deep Learning",
+    "Many-Body Quantum Systems",
     "Optical Coherence Tomography",
-    "Photoacoustic Imaging",
     "Laser Physics",
-    "Nonlinear Optics",
     "Single-Photon Detection",
+    "Physics-Constrained Inverse Problems",
   ],
 
   footer: {

@@ -66,6 +66,9 @@ const venueHtml = [
     {pub.status === "under-review" && (
       <span class="featured-pub-status featured-pub-status-muted">Under Review</span>
     )}
+    {pub.status === "in-preparation" && (
+      <span class="featured-pub-status featured-pub-status-muted">In Preparation</span>
+    )}
   </p>
 
   {/* Featured note — 2–3 sentences of context */}
