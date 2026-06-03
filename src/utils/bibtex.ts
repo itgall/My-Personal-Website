@@ -347,6 +347,40 @@ export async function parseBibliography(): Promise<Publication[]> {
   return publications;
 }
 
+/** Ellipsis marking authors omitted at a position in the list. */
+const AUTHOR_ELLIPSIS = String.fromCharCode(0x2026);
+
+/**
+ * Map an author list to display tokens, collapsing BibTeX "and others"
+ * sentinels. A sentinel between named authors becomes an ellipsis (authors
+ * omitted at that position); a trailing sentinel becomes "et al.". Consecutive
+ * duplicate markers collapse. `render` formats a real (non-sentinel) author.
+ */
+function buildAuthorTokens(
+  authors: Author[],
+  render: (a: Author) => string,
+): string[] {
+  const tokens: string[] = [];
+  authors.forEach((a, i) => {
+    if (a.full === "et al." || a.last === "et al.") {
+      const marker = i === authors.length - 1 ? "et al." : AUTHOR_ELLIPSIS;
+      if (tokens[tokens.length - 1] !== marker) tokens.push(marker);
+      return;
+    }
+    tokens.push(render(a));
+  });
+  return tokens;
+}
+
+/**
+ * Real (named) authors only -- drops "and others"/"et al." sentinels. Use for
+ * structured data (JSON-LD, Highwire citation_author) and SEO; "et al." must
+ * never be listed as an author name.
+ */
+export function namedAuthors(authors: Author[]): Author[] {
+  return authors.filter((a) => a.full !== "et al." && a.last !== "et al.");
+}
+
 /**
  * Format an author list for display. If highlightName is provided,
  * the matching author is wrapped in <strong> tags for visual emphasis.
@@ -389,17 +423,20 @@ export function formatAuthors(authors: Author[], highlightName?: string): string
     return false;
   }
 
-  const names = authors.map((a) => {
+  const tokens = buildAuthorTokens(authors, (a) => {
     const display = a.full || `${a.first} ${a.last}`.trim();
-    if (isHighlighted(a)) {
-      return `<strong>${display}</strong>`;
-    }
-    return display;
+    return isHighlighted(a) ? `<strong>${display}</strong>` : display;
   });
 
-  if (names.length === 1) return names[0];
-  if (names.length === 2) return `${names[0]} and ${names[1]}`;
-  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+  /* With an et al./ellipsis marker, academic style is a comma list with no
+     "and" before the final element. */
+  if (tokens.includes("et al.") || tokens.includes(AUTHOR_ELLIPSIS)) {
+    return tokens.join(", ");
+  }
+
+  if (tokens.length === 1) return tokens[0];
+  if (tokens.length === 2) return `${tokens[0]} and ${tokens[1]}`;
+  return `${tokens.slice(0, -1).join(", ")}, and ${tokens[tokens.length - 1]}`;
 }
 
 /**
@@ -416,23 +453,21 @@ export function formatCitation(
 ): string {
   if (style === "bibtex") return pub.bibtexRaw;
 
-  const authorStr = pub.authors.map((a) => a.full).join(", ");
+  const authorStr = buildAuthorTokens(pub.authors, (a) => a.full).join(", ");
   const venue = pub.journal ?? pub.booktitle ?? "";
 
   if (style === "apa") {
     const parts: string[] = [];
 
     /* Authors */
-    const apaAuthors = pub.authors
-      .map((a) => {
-        if (!a.first) return a.last;
-        const initials = a.first
-          .split(/\s+/)
-          .map((n) => `${n[0]}.`)
-          .join(" ");
-        return `${a.last}, ${initials}`;
-      })
-      .join(", ");
+    const apaAuthors = buildAuthorTokens(pub.authors, (a) => {
+      if (!a.first) return a.last;
+      const initials = a.first
+        .split(/\s+/)
+        .map((n) => `${n[0]}.`)
+        .join(" ");
+      return `${a.last}, ${initials}`;
+    }).join(", ");
     parts.push(`${apaAuthors} (${pub.year}).`);
 
     /* Title */

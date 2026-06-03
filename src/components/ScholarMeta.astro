@@ -14,7 +14,7 @@
  * This component renders inside <head> via BaseLayout's named "head" slot.
  */
 import type { Publication } from "@utils/bibtex";
-import { formatScholarDate } from "@utils/bibtex";
+import { formatScholarDate, namedAuthors } from "@utils/bibtex";
 import { siteMetadata } from "@data/meta";
 
 interface Props {
@@ -42,7 +42,7 @@ const pdfUrl = pub.pdfPath
 <meta name="citation_title" content={pub.title} />
 
 {/* One <meta> per author, in "Last, First" format (Scholar requirement) */}
-{pub.authors.map((a) => (
+{namedAuthors(pub.authors).map((a) => (
   <meta name="citation_author" content={formatScholarAuthor(a)} />
 ))}
 
