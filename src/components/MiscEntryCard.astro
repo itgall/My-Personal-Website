@@ -21,15 +21,15 @@ const metaParts = [location, String(year)].filter(Boolean);
   </div>
 </a>
 <style>
-  .entry-card { display: flex; flex-direction: column; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; text-decoration: none; background: var(--color-bg); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-  .entry-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+  .entry-card { display: flex; flex-direction: column; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; text-decoration: none; background: var(--color-bg); }
   .entry-thumb { aspect-ratio: 4 / 3; background: linear-gradient(135deg, var(--color-surface), var(--color-border)); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .entry-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .entry-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
   .entry-placeholder { font-size: 0.6875rem; color: var(--color-muted); letter-spacing: 0.03em; padding: 0 0.75rem; text-align: center; }
   .entry-body { padding: 0.75rem 0.875rem 0.9375rem; }
   .entry-title { font-size: 0.9375rem; font-weight: 600; color: var(--color-ink); line-height: 1.3; transition: color 0.15s ease; }
   .entry-card:hover .entry-title { color: var(--color-accent); }
+  .entry-card:hover .entry-thumb img { transform: scale(1.04); }
   .entry-meta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-muted); margin-top: 0.25rem; }
   .entry-summary { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.5; margin-top: 0.4375rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  @media (prefers-reduced-motion: reduce) { .entry-card, .entry-title { transition: none; } .entry-card:hover { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .entry-card, .entry-title, .entry-thumb img { transition: none; } .entry-card:hover .entry-thumb img { transform: none; } }
 </style>
