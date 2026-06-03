@@ -2,7 +2,7 @@
   "features": {
     "maintenanceMode": false,
     "sidenotes": true,
-    "defaultAccent": "stanford",
+    "defaultAccent": "coherence",
     "backlinks": true,
     "tableOfContents": true,
     "linkPreviews": false,
@@ -40,8 +40,8 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   }
 }
