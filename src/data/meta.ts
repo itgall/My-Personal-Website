@@ -72,9 +72,9 @@ export const siteMetadata: SiteMetadata = {
   title: "Isaac Gallegos",
   name: "Isaac Gallegos",
   role: "Research Engineer",
-  subtitle: "Wellman Center for Photomedicine · Harvard Medical School · MIT",
+  subtitle: "Wellman Center for Photomedicine · Harvard Medical School",
   description:
-    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Photonics, quantum optics, and quantum networks: spin-photon interfaces, entanglement distribution, and physics-driven optical modeling.",
+    "Isaac Gallegos — Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes.",
   siteUrl: "https://isaac-gallegos.com",
   image: "/images/profile-v2.jpg",
   language: "en",
@@ -95,16 +95,11 @@ export const siteMetadata: SiteMetadata = {
       parent: "Massachusetts General Hospital / Harvard Medical School",
       url: "https://wellman.massgeneral.org",
     },
-    {
-      name: "Research Affiliate",
-      parent: "Massachusetts Institute of Technology",
-      url: "https://www.mit.edu",
-    },
   ],
 
   education: [
     {
-      degree: "B.S. Engineering Physics",
+      degree: "B.S. Engineering Physics, summa cum laude",
       school: "Colorado School of Mines",
       dates: "2021–2024",
     },
@@ -114,7 +109,7 @@ export const siteMetadata: SiteMetadata = {
     {
       title: "Research Engineer",
       org: "Wellman Center for Photomedicine, MGH / Harvard Medical School",
-      dates: "2023–Present",
+      dates: "2025–Present",
       current: true,
     },
   ],
