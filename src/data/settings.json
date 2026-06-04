@@ -43,5 +43,10 @@
     "provider": "plausible",
     "domain": "",
     "enabled": false
+  },
+  "newsletter": {
+    "provider": "buttondown",
+    "buttondownUsername": "",
+    "enabled": false
   }
 }

@@ -98,6 +98,7 @@ export interface SiteSettings {
   sections: SectionSettings;
   appearance: AppearanceSettings;
   analytics: AnalyticsSettings;
+  newsletter: NewsletterSettings;
 }
 
 export interface AnalyticsSettings {
@@ -106,6 +107,15 @@ export interface AnalyticsSettings {
   /** Domain to track (e.g., "isaac-gallegos.com") — empty string disables */
   domain: string;
   /** Master enable/disable switch */
+  enabled: boolean;
+}
+
+export interface NewsletterSettings {
+  /** Email provider for the owned subscriber list */
+  provider: "buttondown" | "none";
+  /** Buttondown username (from your buttondown.com/USERNAME URL). Empty = not configured. */
+  buttondownUsername: string;
+  /** Master switch: keep false until you are ready to accept live signups */
   enabled: boolean;
 }
 
@@ -158,6 +168,12 @@ const defaultAnalytics: AnalyticsSettings = {
   enabled: false,
 };
 
+const defaultNewsletter: NewsletterSettings = {
+  provider: "buttondown",
+  buttondownUsername: "",
+  enabled: false,
+};
+
 /* ── Merge raw JSON with defaults (handles missing keys gracefully) ───── */
 
 const raw = rawSettings as Partial<SiteSettings>;
@@ -182,10 +198,16 @@ export const analytics: AnalyticsSettings = {
   ...(raw.analytics ?? {}),
 };
 
+export const newsletter: NewsletterSettings = {
+  ...defaultNewsletter,
+  ...(raw.newsletter ?? {}),
+};
+
 /** Full settings object for components that need everything */
 export const settings: SiteSettings = {
   features,
   sections,
   appearance,
   analytics,
+  newsletter,
 };

@@ -1,0 +1,101 @@
+---
+/**
+ * newsletter.astro -- The newsletter's permanent on-site home.
+ *
+ * Lists published dispatch-category posts (the canonical issues) and carries
+ * the owned subscribe form. This is the hub; email delivery is a separate,
+ * deliberately deferred concern. Until issues exist, a neutral empty state
+ * is shown. Not yet linked from the primary nav by design.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import PostCard from "@components/PostCard.astro";
+import NewsletterSignup from "@components/NewsletterSignup.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Post = CollectionEntry<"posts">;
+
+const issues: Post[] = (
+  await getCollection(
+    "posts",
+    ({ data }: Post) => data.published && data.category === "dispatch",
+  )
+).sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime());
+
+const issuesByYear = new Map<number, Post[]>();
+for (const issue of issues) {
+  const year = issue.data.date.getFullYear();
+  if (!issuesByYear.has(year)) issuesByYear.set(year, []);
+  issuesByYear.get(year)!.push(issue);
+}
+---
+
+<PageLayout
+  title="Newsletter"
+  subtitle="Dispatches on photonics, quantum systems, and what I am building and reading. Published here first."
+  description="Subscribe to Isaac Gallegos's newsletter: dispatches on photonics, quantum systems, and research, published canonically at isaac-gallegos.com."
+>
+  <div class="newsletter-page">
+    <NewsletterSignup
+      heading="Subscribe"
+      description="New issues are published here first and go out by email. Each one links back to the full piece on this site. No spam; unsubscribe in one click."
+    />
+
+    <section class="newsletter-archive">
+      <h2 class="newsletter-archive-heading">Past issues</h2>
+      {issues.length === 0 ? (
+        <p class="newsletter-empty">
+          The first issue is on its way. Subscribe above and it will reach your inbox
+          when it is published &mdash; or read <a href="/blog/">essays</a> and
+          <a href="/notes/">notes</a> in the meantime.
+        </p>
+      ) : (
+        <div class="newsletter-list">
+          {[...issuesByYear.entries()].map(([year, yearIssues]) => (
+            <section data-year-group={year}>
+              <h3 class="newsletter-year">{year}</h3>
+              <div class="newsletter-year-entries">
+                {yearIssues.map((issue) => (
+                  <PostCard post={issue} showTags={false} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .newsletter-page {
+    max-width: 740px;
+  }
+  .newsletter-archive {
+    margin-top: 2.5rem;
+  }
+  .newsletter-archive-heading {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+  .newsletter-year {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin: 1.5rem 0 0.75rem;
+  }
+  .newsletter-year-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .newsletter-empty {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+  .newsletter-empty a {
+    color: var(--color-link);
+  }
+</style>
