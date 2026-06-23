@@ -1,13 +1,13 @@
 {
   "travel": {
     "label": "Travel",
-    "caption": "where I've been",
+    "caption": "Where I've been",
     "image": "/images/uploads/IMG_1395.jpeg",
     "focal": "center"
   },
   "caving": {
-    "label": "Caving",
-    "caption": "underground",
+    "label": "Climbing & Caving",
+    "caption": "My time underground",
     "image": "/images/uploads/IMG_5346_Original.jpeg",
     "focal": "center"
   },
