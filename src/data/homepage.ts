@@ -3,6 +3,20 @@ import rawHomepage from "./homepage.json";
 const DEFAULT_PROFILE_IMAGE = "/images/profile-v2.jpg";
 
 /**
+ * Default homepage prose. These mirror the wording previously hardcoded in
+ * src/pages/index.astro and act as a safe fallback whenever the matching field
+ * in homepage.json is missing.
+ */
+const DEFAULT_BIO =
+  "I build interferometric optical systems and the physics-constrained inverse models that turn broadband measurements into physical quantities, at the Wellman Center for Photomedicine (Harvard Medical School). My work runs from solid-state lasers and entangled-photon experiments to spectroscopic OCT, and I'm increasingly focused on quantum optics and quantum networks \u2014 spin-based quantum nodes, photonic interconnects, and entanglement distribution. Applying to physics PhD programs for Fall 2027. Outside the lab, I travel when I can and go caving.";
+
+const DEFAULT_CURRENTLY =
+  "finishing a laser safety calculator for tissue exposure limits, and reading about topology and differential geometry.";
+
+const DEFAULT_RESEARCH_INTERESTS =
+  "I'm increasingly focused on quantum optics and quantum networks: the physics of spin-based quantum nodes, photonic interconnects, and distributing entanglement between them, alongside many-body quantum systems and statistical physics. I also care about single-photon detection, nonlinear optics, and laser physics, which is where I started.";
+
+/**
  * The nine valid CSS object-position / background-position keyword pairs.
  * These strings ARE valid CSS values -- no translation layer needed.
  * Shared across the homepage profile photo, the homepage gallery tiles,
@@ -37,7 +51,13 @@ export function normalizeFocal(value: unknown): FocalPosition {
   return "center";
 }
 
-interface RawHomepage { profileImage?: string; profileFocal?: string; }
+interface RawHomepage {
+  profileImage?: string;
+  profileFocal?: string;
+  bio?: string;
+  currentlyText?: string;
+  researchInterests?: string;
+}
 
 const raw = rawHomepage as RawHomepage;
 
@@ -45,3 +65,18 @@ export const profileImage: string =
   raw.profileImage?.trim() || DEFAULT_PROFILE_IMAGE;
 
 export const profileFocal: FocalPosition = normalizeFocal(raw.profileFocal);
+
+/** Hero bio paragraph. Falls back to the default wording when blank. */
+export const bio: string = raw.bio?.trim() || DEFAULT_BIO;
+
+/**
+ * Optional "Currently:" status text (the label itself is fixed in the
+ * template). An explicit empty string hides the line; a missing key falls
+ * back to the default wording.
+ */
+export const currentlyText: string =
+  typeof raw.currentlyText === "string" ? raw.currentlyText.trim() : DEFAULT_CURRENTLY;
+
+/** Research-interests paragraph. Falls back to the default wording when blank. */
+export const researchInterests: string =
+  raw.researchInterests?.trim() || DEFAULT_RESEARCH_INTERESTS;

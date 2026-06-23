@@ -650,6 +650,20 @@ collections:
       # Read by: src/data/settings.ts → consumed by layouts and components
       # Homepage Gallery -- file: src/data/homepage-gallery.json -> MiscGallery.astro
       # Homepage -- file: src/data/homepage.json -> src/pages/index.astro
+      - name: identity
+        label: "Identity & Contact"
+        file: src/data/identity.json
+        fields:
+          - { label: "Name", name: name, widget: string, hint: "Your full name. Appears in the homepage hero, the browser title, and structured data across the site." }
+          - { label: "Role", name: role, widget: string, hint: "Your primary role, e.g. Research Engineer. Shown in the hero role line and used as your job title in structured data." }
+          - { label: "Affiliation", name: affiliation, widget: string, hint: "Institution as you want it displayed, e.g. Harvard Medical School. Shown after your role in the hero." }
+          - { label: "Email", name: email, widget: string, hint: "Contact email. Drives every mailto link and the contact page." }
+          - { label: "LinkedIn URL", name: linkedin, widget: string, hint: "Full URL, e.g. https://linkedin.com/in/yourhandle" }
+          - { label: "GitHub URL", name: github, widget: string, hint: "Full URL, e.g. https://github.com/yourhandle" }
+          - { label: "Google Scholar URL", name: googleScholar, widget: string, hint: "Full URL to your Google Scholar profile." }
+          - { label: "ORCID iD", name: orcid, widget: string, hint: "Just the iD, e.g. 0009-0007-9290-6289 (not the full URL)." }
+          - { label: "CV file path", name: cvPath, widget: string, hint: "Path to your CV PDF under public/, e.g. /documents/gallegos-cv.pdf" }
+
       - name: homepage
         label: "🏠 Homepage"
         file: src/data/homepage.json
@@ -670,6 +684,9 @@ collections:
               - { label: "Bottom", value: "bottom" }
               - { label: "Bottom Right", value: "bottom right" }
             hint: "Which part of the image stays in frame when it is cropped to fit."
+          - { label: "Hero bio", name: bio, widget: text, required: false, hint: "The intro paragraph in the homepage hero. Leave blank to use the default text." }
+          - { label: "Currently line", name: currentlyText, widget: string, required: false, hint: "Short status shown after a fixed 'Currently:' label. Leave blank to hide the whole line." }
+          - { label: "Research interests", name: researchInterests, widget: text, required: false, hint: "The paragraph in the Research interests section. Leave blank to use the default text." }
 
       - name: homepage_gallery
         label: "🏞️ Homepage Gallery"
