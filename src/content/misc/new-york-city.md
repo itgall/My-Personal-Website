@@ -3,7 +3,7 @@ title: New York City
 section: travel
 date: 2023-08-02
 location: New York
-summary: ''
+summary: New York City
 heroImage: /images/uploads/Resized_20180624_161414.jpeg
 heroFocal: center
 heroCaption: ''
