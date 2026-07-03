@@ -3,8 +3,8 @@ title: Introduction to Mathematical Physics
 courseCode: PHGN 311
 role: ta
 institution: Colorado School of Mines
-semester: 2023-2024
-year: 2024
+semester: Fall 2023
+year: 2023
 description: Methods course connecting mechanics, quantum mechanics, optics, and electromagnetism through linear algebra, complex variables, Fourier transforms, and vector calculus.
 tags:
   - mathematical physics
