@@ -3,7 +3,7 @@ title: Electromagnetic Waves and Optical Physics
 courseCode: PHGN 462
 role: ta
 institution: Colorado School of Mines
-semester: 2023-2024 (two semesters)
+semester: Spring 2024
 year: 2024
 description: Upper-division course on solutions of the electromagnetic wave equation and their applications across optics including plane and guided waves, refraction, interference, diffraction, and polarization.
 tags:
