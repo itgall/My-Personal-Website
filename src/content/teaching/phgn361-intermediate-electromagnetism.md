@@ -1,14 +1,15 @@
 ---
-title: "Intermediate Electromagnetism"
-courseCode: "PHGN 361"
+title: Intermediate Electromagnetism
+courseCode: PHGN 361
 role: ta
-institution: "Colorado School of Mines"
-semester: "2023-2024"
+institution: Colorado School of Mines
+semester: 2023-2024
 year: 2024
-description: "Intermediate treatment of static electric and magnetic fields, potentials, and the laws of Gauss, Laplace, Ampere, and Faraday in free space and in materials."
+description: Intermediate treatment of static electric and magnetic fields, potentials, and the laws of Gauss, Laplace, Ampere, and Faraday in free space and in materials.
 tags:
   - electromagnetism
   - fields
+syllabusUrl: ''
 published: true
 ---
 
@@ -18,4 +19,4 @@ PHGN 361 covers static electric and magnetic fields in free space and in dielect
 
 ## My role
 
-Across a 2023-2024 teaching-assistant appointment in the Mines Physics Department, I provided supplemental lectures, review sessions, and office hours, wrote original exam and problem-set material, and mentored more than fifty undergraduates over four semesters of upper-division physics.
+I provided supplemental lectures, review sessions, and office hours, wrote original exam and problem-set material, and mentored more than fifty undergraduates.
