@@ -3,7 +3,7 @@ title: Intermediate Electromagnetism
 courseCode: PHGN 361
 role: ta
 institution: Colorado School of Mines
-semester: 2023-2024
+semester: '2024'
 year: 2024
 description: Intermediate treatment of static electric and magnetic fields, potentials, and the laws of Gauss, Laplace, Ampere, and Faraday in free space and in materials.
 tags:
