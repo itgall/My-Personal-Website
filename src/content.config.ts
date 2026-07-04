@@ -179,7 +179,7 @@ const teaching = defineCollection({
     year: z.number(),
     description: z.string().default(""),
     tags: tagsField,
-    syllabusUrl: z.string().url().optional(),
+    syllabusUrl: optionalUrlField,
     published: z.boolean().default(true),
   }),
 });
