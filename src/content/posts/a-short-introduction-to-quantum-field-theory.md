@@ -5,11 +5,9 @@ updatedDate: 2026-07-06
 category: essay
 description: A very short and high level introduction to Quantum Field Theory for those with little to no exposure.
 tags: []
-published: true
+published: false
 featured: false
 ogImage: ''
 ---
-
-# Quantum Field Theory
 
 ## What is Quantum Field Theory?
