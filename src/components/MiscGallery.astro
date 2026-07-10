@@ -6,7 +6,8 @@
  * no text on the image) with a small-caps serif caption beneath it, like a
  * plate in a monograph. Labels and captions are CMS-edited via
  * src/data/homepage-gallery.json; tiles without an image fall back to a
- * quiet preset gradient swatch.
+ * quiet preset gradient swatch. Plates share the site's 12px
+ * photograph radius (hero portrait, cards).
  */
 import { galleryTiles } from "@data/homepage-gallery";
 const items = galleryTiles;
@@ -48,7 +49,7 @@ const items = galleryTiles;
     aspect-ratio: 4 / 5;
     background-size: cover;
     background-position: center;
-    border-radius: 2px;
+    border-radius: 12px;
   }
 
   .plate-label {
