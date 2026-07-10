@@ -1,28 +1,85 @@
 ---
+/**
+ * MiscGallery.astro -- the "Outside the lab" plates on the homepage.
+ *
+ * Gallery-plate treatment: the photograph is shown untouched (no overlay,
+ * no text on the image) with a small-caps serif caption beneath it, like a
+ * plate in a monograph. Labels and captions are CMS-edited via
+ * src/data/homepage-gallery.json; tiles without an image fall back to a
+ * quiet preset gradient swatch.
+ */
 import { galleryTiles } from "@data/homepage-gallery";
 const items = galleryTiles;
 ---
-<div class="misc-gallery">
-  {items.map((item) => (
-    <a class="misc-tile" href={item.href} style={item.image ? `background-image: url('${item.image}'); background-position: ${item.focal}` : item.gradient}>
-      <span class="misc-inner">
-        <span class="misc-title">{item.label}</span>
-        <span class="misc-divider"></span>
-        <span class="misc-cta">{item.caption} →</span>
-      </span>
-    </a>
-  ))}
+
+<div class="plate-gallery">
+  {
+    items.map((item) => (
+      <a class="plate" href={item.href}>
+        <span
+          class="plate-image"
+          style={
+            item.image
+              ? `background-image: url('${item.image}'); background-position: ${item.focal}`
+              : `background: ${item.gradient}`
+          }
+        />
+        <span class="plate-label">{item.label}</span>
+        <span class="plate-caption">{item.caption}</span>
+      </a>
+    ))
+  }
 </div>
+
 <style>
-  .misc-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.875rem; }
-  .misc-tile { position: relative; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; text-decoration: none; background-size: cover; background-position: center; transition: transform 0.3s ease; }
-  .misc-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.08)); z-index: 1; }
-  .misc-tile:hover { transform: scale(1.03); }
-  .misc-inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 0.75rem; }
-  .misc-title { font-family: var(--font-display, Georgia, serif); font-size: 1.1875rem; line-height: 1.1; letter-spacing: 0.01em; }
-  .misc-divider { width: 42px; height: 1px; background: rgba(255,255,255,0.65); margin: 0.625rem 0; transition: width 0.22s ease; }
-  .misc-tile:hover .misc-divider { width: 68px; }
-  .misc-cta { font-size: 0.6875rem; opacity: 0.9; letter-spacing: 0.02em; }
-  @media (max-width: 640px) { .misc-gallery { grid-template-columns: 1fr 1fr; } }
-  @media (prefers-reduced-motion: reduce) { .misc-tile { transition: none; } .misc-tile:hover { transform: none; } .misc-tile:hover .misc-divider { width: 42px; } }
+  .plate-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .plate {
+    display: block;
+    text-decoration: none;
+  }
+
+  .plate-image {
+    display: block;
+    aspect-ratio: 4 / 5;
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+  }
+
+  .plate-label {
+    display: block;
+    margin-top: 0.7rem;
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-text);
+    transition: color 0.15s ease;
+  }
+
+  .plate-caption {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--font-serif);
+    font-size: 0.8125rem;
+    text-align: center;
+    color: var(--color-muted);
+  }
+
+  .plate:hover .plate-label {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .plate-gallery {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+  }
 </style>
