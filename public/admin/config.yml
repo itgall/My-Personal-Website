@@ -176,6 +176,40 @@ collections:
                   - { label: "Bottom Right", value: "bottom right" }
                 hint: "Which part of the image stays in frame when it is cropped to fit."
 
+      # -- About --------------------------------------------------------------------
+      # File: src/data/about.json
+      # Read by src/data/about.ts -> src/pages/about.astro
+      - name: about
+        label: "\U0001F9D1 About"
+        file: src/data/about.json
+        fields:
+          - label: Meta description
+            name: metaDescription
+            widget: text
+            hint: "The page description search engines show. Aim for under 160 characters."
+
+          - label: Tagline
+            name: tagline
+            widget: string
+            hint: "The large italic line at the top of the page."
+
+          - label: Bio
+            name: bio
+            widget: markdown
+            hint: "One paragraph. Links like [text](https://example.com) open in a new tab."
+
+          - label: Trajectory
+            name: timeline
+            widget: list
+            summary: "{{fields.period}} \u2014 {{fields.role}}"
+            fields:
+              - { label: Period, name: period, widget: string, hint: "e.g. 2025 \u2014 present" }
+              - { label: Role, name: role, widget: string }
+              - { label: Institution, name: institution, widget: string }
+              - { label: Description, name: description, widget: text, required: false }
+              - { label: Current, name: current, widget: boolean, default: false, hint: "Shows a small Current badge next to the role." }
+              - { label: "Future / target", name: future, widget: boolean, default: false, hint: "Renders the entry with a dashed border (a planned step, not history)." }
+
       # -- Now ----------------------------------------------------------------------
       # File: src/data/now.json
       # Read by src/data/now.ts -> src/pages/now.astro

@@ -1,6 +1,6 @@
 ---
 /**
- * about.astro — About page (Pattern 1: hero + chronological timeline).
+ * about.astro -- About page (Pattern 1: hero + chronological timeline).
  *
  * Architecture:
  *   Full-width alternating background sections with constrained content width.
@@ -9,181 +9,153 @@
  *   problem on wide screens while keeping reading line length optimal.
  *
  * Structure:
- *   1. Hero — photo, identity, tagline, affiliations, social links
- *   2. Bio — one concise paragraph of current work (replaces the essay)
- *   3. Trajectory — reverse-chronological career timeline with institutional detail
- *   4. Learn more — compact CV / publications / research links row
+ *   1. Hero -- fixed "About" label + editable tagline
+ *   2. Bio -- one editable paragraph (inline markdown) + identity link row
+ *   3. Trajectory -- editable reverse-chronological timeline
+ *   4. Learn more -- fixed CV / publications / research links row
  *
- * This replaces the previous ~320-line essay-style About page which contained
- * a "Research focus" section, a "Why it matters" section with two long
- * paragraphs, a "Path" narrative, a "Research direction" callout, a
- * "Research interests" grid, a "Leadership & community" section with four
- * sub-sections, a "Trajectory" timeline, and an "Awards" section.
+ * Content lives in src/data/about.json (edited in the CMS under
+ * Pages -> About, read defensively by src/data/about.ts). The social links
+ * come from the site-wide identity source in src/data/meta.ts, so a change
+ * there propagates here automatically.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
-
-interface TimelineEntry {
-  period: string;
-  role: string;
-  institution: string;
-  description?: string;
-  current?: boolean;
-  future?: boolean;
-}
-
-const timeline: TimelineEntry[] = [
-  {
-    period: "2027 (target)",
-    role: "PhD program",
-    institution: "Physics, Fall 2027 (applying)",
-    description:
-      "Pursuing a physics PhD in quantum information and quantum networks: photonic interconnects and entanglement distribution between spin-based quantum nodes.",
-    future: true,
-  },
-  {
-    period: "2025 — present",
-    role: "Research Engineer",
-    institution: "Wellman Center for Photomedicine · Harvard Medical School · MGH",
-    description:
-      "I build swept-source interferometric systems, write inverse models for spectral measurements, and prototype broadband micro-LED imaging hardware. First-author manuscript in preparation.",
-  },
-  {
-    period: "2023 — 2024",
-    role: "Research Assistant & Project Lead",
-    institution: "Colorado School of Mines — Physics Department & Ultrafast Laser Lab",
-    description:
-      "Computed Fisher information metrics for Ising models to test holographic duality conjectures. Also led a five-person team designing supersonic gas nozzles for high harmonic generation.",
-  },
-  {
-    period: "2021 — 2024",
-    role: "B.S. Engineering Physics",
-    institution: "Colorado School of Mines · 3.99 GPA",
-    description:
-      "Three years of quantum optics, laser physics, and electronics. Built solid-state lasers (Pr:YLF and Nd:YAG), measured Bell inequality violations with entangled photons, and designed a gated photon-counting circuit on an FPGA.",
-  },
-];
+import { bio, metaDescription, tagline, timeline } from "@data/about";
+import { identity } from "@data/meta";
+import { renderInlineMarkdown } from "@utils/markdown";
 ---
 
-<BaseLayout title="About" activeNav="about" description="Isaac Gallegos builds interferometric imaging systems and spectral inverse models at the Wellman Center for Photomedicine. Applying to PhD programs for Fall 2027.">
-
-  {/* ═══════ HERO: identity, tagline, affiliations, links ═══════════ */}
+<BaseLayout title="About" activeNav="about" description={metaDescription}>
+  {/* ======= HERO: identity, tagline ======= */}
   <section class="about-section">
     <div class="about-inner">
-
       <div class="max-w-2xl">
-        <h1 class="vt-page-title font-mono text-[11px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
+        <h1
+          class="vt-page-title font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase"
+        >
           About
         </h1>
 
-        <p class="mt-4 italic text-[22px] leading-[1.5] text-[var(--color-text-secondary)] md:text-[24px]">
-          I build optical systems. Lately I've been learning to build quantum ones too.
+        <p
+          class="mt-4 text-[22px] leading-[1.5] text-[var(--color-text-secondary)] italic md:text-[24px]"
+        >
+          {tagline}
         </p>
       </div>
-
     </div>
   </section>
 
-  {/* ═══════ BIO: one concise paragraph ═════════════════════════════ */}
+  {/* ======= BIO: one paragraph + identity links ======= */}
   <section class="about-section about-section-alt">
     <div class="about-inner">
-
-      <p class="text-[16px] leading-[1.78] text-[var(--color-text-secondary)]">
-        I work at the Wellman Center for Photomedicine, where I build swept-source
-        interferometric systems and write inverse models that try to figure out what
-        a sample is made of from how it scatters light. I've also built spectral
-        unmixing pipelines for photoacoustic data and prototyped a broadband imaging
-        system that uses individually addressable micro-LEDs instead of a swept laser.
-        Before coming to Harvard I spent three years at Colorado School of Mines studying
-        engineering physics, where I got to build solid-state lasers from scratch, violate
-        the Bell inequality with entangled photon pairs, and design photon-counting
-        circuits on an FPGA. These days I'm reading a lot about quantum information, quantum networks and photonic
-        interconnects, and entanglement distribution between spin-based quantum
-        nodes, and I'm applying to physics PhD programs for Fall 2027.
-      </p>
+      <p
+        class="text-[16px] leading-[1.78] text-[var(--color-text-secondary)]"
+        set:html={renderInlineMarkdown(bio)}
+      />
 
       <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Google Scholar</a>
-        <a href="https://orcid.org/0009-0007-9290-6289" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">ORCID</a>
-        <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">GitHub</a>
-        <a href="https://linkedin.com/in/isaactgallegos" target="_blank" rel="noopener noreferrer" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">LinkedIn</a>
-        <a href="mailto:itgall@mit.edu" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">Email</a>
+        <a
+          href={identity.googleScholar}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          >Google Scholar</a
+        >
+        <a
+          href={`https://orcid.org/${identity.orcid}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          >ORCID</a
+        >
+        <a
+          href={identity.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          >GitHub</a
+        >
+        <a
+          href={identity.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          >LinkedIn</a
+        >
+        <a
+          href={`mailto:${identity.email}`}
+          class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          >Email</a
+        >
       </div>
-
     </div>
   </section>
 
-  {/* ═══════ TRAJECTORY: reverse-chronological timeline ═════════════ */}
+  {/* ======= TRAJECTORY: reverse-chronological timeline ======= */}
   <section class="about-section">
     <div class="about-inner">
-
-      <h2 class="mb-8 font-mono text-[11px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
+      <h2
+        class="mb-8 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase"
+      >
         Trajectory
       </h2>
 
       <ol class="timeline">
-        {timeline.map((entry) => (
-          <li class:list={["timeline-entry", entry.future && "timeline-entry-future"]}>
-            <div class="timeline-period font-mono">
-              {entry.period}
-            </div>
-            <div class="timeline-content">
-              <h3 class="timeline-role">
-                {entry.role}
-                {entry.current && <span class="timeline-badge">Current</span>}
-              </h3>
-              <p class="timeline-institution">
-                {entry.institution}
-              </p>
-              {entry.description && (
-                <p class="timeline-description">
-                  {entry.description}
-                </p>
-              )}
-            </div>
-          </li>
-        ))}
+        {
+          timeline.map((entry) => (
+            <li class:list={["timeline-entry", entry.future && "timeline-entry-future"]}>
+              <div class="timeline-period font-mono">{entry.period}</div>
+              <div class="timeline-content">
+                <h3 class="timeline-role">
+                  {entry.role}
+                  {entry.current && <span class="timeline-badge">Current</span>}
+                </h3>
+                <p class="timeline-institution">{entry.institution}</p>
+                {entry.description && <p class="timeline-description">{entry.description}</p>}
+              </div>
+            </li>
+          ))
+        }
       </ol>
-
     </div>
   </section>
 
-  {/* ═══════ LEARN MORE: compact link row ═══════════════════════════ */}
+  {/* ======= LEARN MORE: compact link row ======= */}
   <section class="about-section about-section-alt">
     <div class="about-inner">
-
-      <h2 class="mb-5 font-mono text-[11px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
+      <h2
+        class="mb-5 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase"
+      >
         Learn more
       </h2>
       <div class="flex flex-wrap gap-3">
         <a
           href="/cv/"
-          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-accent-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent-bg)] no-underline"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-accent-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-accent)] no-underline transition-colors hover:bg-[var(--color-accent-bg)]"
         >
-          View CV →
+          View CV &rarr;
         </a>
         <a
           href="/publications/"
-          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] no-underline transition-colors hover:bg-[var(--color-bg-off)]"
         >
-          Publications →
+          Publications &rarr;
         </a>
         <a
           href="/projects/"
-          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] no-underline transition-colors hover:bg-[var(--color-bg-off)]"
         >
-          Research →
+          Research &rarr;
         </a>
         <a
           href="/blog/"
-          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-off)] no-underline"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] px-5 py-2.5 font-mono text-sm text-[var(--color-text-secondary)] no-underline transition-colors hover:bg-[var(--color-bg-off)]"
         >
-          Essays →
+          Essays &rarr;
         </a>
       </div>
-
     </div>
   </section>
-
 </BaseLayout>
 
 <style>
@@ -193,8 +165,8 @@ const timeline: TimelineEntry[] = [
    * Each <section class="about-section"> spans the full viewport width.
    * The background color alternates (default / off) to create visual rhythm
    * between sections. Content is constrained to 760px inside each section
-   * via .about-inner. This technique — the highest-impact whitespace solution
-   * identified in the research — makes the narrow reading column feel
+   * via .about-inner. This technique -- the highest-impact whitespace solution
+   * identified in the research -- makes the narrow reading column feel
    * intentional within a larger visual system rather than sparse.
    */
   .about-section {
@@ -297,7 +269,7 @@ const timeline: TimelineEntry[] = [
     line-height: 1.65;
   }
 
-  /* ── Mobile: single block, MUST come last to win the cascade ── */
+  /* -- Mobile: single block, MUST come last to win the cascade -- */
   @media (max-width: 640px) {
     .timeline-entry {
       grid-template-columns: 1fr;
