@@ -312,6 +312,75 @@ collections:
             widget: markdown
             hint: "The whole page body. Blank paragraphs separate sections; links like [text](https://example.com) open in a new tab."
 
+      # -- Contact ------------------------------------------------------------------
+      # File: src/data/contact.json
+      # Read by src/data/contact.ts -> src/pages/contact.astro
+      # Email address and profile links come from Identity & Contact, not here.
+      - name: contact
+        label: "\u2709\uFE0F Contact"
+        file: src/data/contact.json
+        fields:
+          - label: Meta description
+            name: metaDescription
+            widget: text
+            hint: "The page description search engines show. Aim for under 160 characters."
+
+          - label: Intro
+            name: intro
+            widget: string
+            hint: "The line under the Contact heading."
+
+          - label: Role line
+            name: roleLine
+            widget: string
+            required: false
+            hint: "The small line under the email, e.g. role and affiliation. Leave blank to hide."
+
+          - label: Availability note
+            name: availability
+            widget: string
+            required: false
+            hint: "The italic line at the bottom. Leave blank to hide."
+
+      # -- Subscribe ----------------------------------------------------------------
+      # File: src/data/subscribe.json
+      # Read by src/data/subscribe.ts -> src/pages/subscribe.astro
+      - name: subscribe
+        label: "\U0001F4EC Subscribe"
+        file: src/data/subscribe.json
+        fields:
+          - label: Meta description
+            name: metaDescription
+            widget: text
+            hint: "The page description search engines show. Aim for under 160 characters."
+
+          - label: Subtitle
+            name: subtitle
+            widget: text
+            hint: "The line under the Subscribe heading."
+
+          - label: Substack publication
+            name: publication
+            widget: string
+            hint: "Just the domain, e.g. yourname.substack.com. Drives the embedded form and the fallback link."
+
+          - label: What to expect
+            name: whatToExpect
+            widget: text
+            hint: "The paragraph under the What to expect heading."
+
+      # -- 404 ----------------------------------------------------------------------
+      # File: src/data/not-found.json
+      # Read by src/data/not-found.ts -> src/pages/404.astro
+      - name: notfound
+        label: "\U0001F6A7 404 Page"
+        file: src/data/not-found.json
+        fields:
+          - label: Message
+            name: message
+            widget: text
+            hint: "The line under the big 404."
+
   - divider: true
 
   # ============================================================================

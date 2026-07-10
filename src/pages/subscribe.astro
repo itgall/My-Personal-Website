@@ -1,44 +1,33 @@
 ---
 /**
- * subscribe.astro — Newsletter signup page.
+ * subscribe.astro -- Newsletter signup page.
  *
  * Embeds a Substack signup form via their official iframe endpoint.
- * The iframe is cross-origin and cannot be styled internally — all
+ * The iframe is cross-origin and cannot be styled internally -- all
  * design work is done on the surrounding card and page copy.
  *
- * Publication: isaactgallegos.substack.com
- * Embed URL: https://isaactgallegos.substack.com/embed
- *
- * Content-structure separation: the publication subdomain is the only
- * hardcoded value. If the newsletter moves to a different platform,
- * only this file needs to change.
+ * The publication domain and page copy are editable in the CMS under
+ * Pages -> Subscribe (src/data/subscribe.json). If the newsletter moves
+ * to a different Substack, that is a one-field change.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { metaDescription, publication, subtitle, whatToExpect } from "@data/subscribe";
 
-const publication = "isaactgallegos.substack.com";
 const embedUrl = `https://${publication}/embed`;
-const archiveUrl = `https://${publication}/archive`;
 const directSubscribeUrl = `https://${publication}/subscribe`;
 ---
 
-<BaseLayout
-  title="Subscribe"
-  description="Subscribe to Isaac Gallegos's newsletter. Photonics, quantum sensing, optics, and whatever I'm reading or building."
->
+<BaseLayout title="Subscribe" description={metaDescription}>
   <div class="subscribe-page">
-
-    {/* ─── Header ─────────────────────────────────────────── */}
+    {/* --- Header --- */}
     <header class="subscribe-header">
-      <h1 class="vt-page-title text-3xl font-bold tracking-tight">
-        Subscribe
-      </h1>
+      <h1 class="vt-page-title text-3xl font-bold tracking-tight">Subscribe</h1>
       <p class="subscribe-subtitle">
-        Occasional notes on photonics, quantum sensing, optics, and whatever
-        I'm reading or building.
+        {subtitle}
       </p>
     </header>
 
-    {/* ─── Embed card ─────────────────────────────────────── */}
+    {/* --- Embed card --- */}
     <div class="subscribe-card" aria-label="Newsletter signup">
       <iframe
         title="Newsletter signup form"
@@ -48,17 +37,14 @@ const directSubscribeUrl = `https://${publication}/subscribe`;
         style="border:0; background:white; display:block;"
         frameborder="0"
         scrolling="no"
-        loading="lazy"
-      ></iframe>
+        loading="lazy"></iframe>
     </div>
 
-    {/* ─── What to expect ─────────────────────────────────── */}
+    {/* --- What to expect --- */}
     <div class="subscribe-details">
       <h2 class="subscribe-details-heading">What to expect</h2>
       <p class="subscribe-details-text">
-        Papers I'm reading, code I'm writing, things I'm building in the lab,
-        and sometimes personal essays. Short and infrequent. No spam. Unsubscribe
-        in one click.
+        {whatToExpect}
       </p>
       <p class="subscribe-fallback">
         Form not loading?
@@ -67,7 +53,6 @@ const directSubscribeUrl = `https://${publication}/subscribe`;
         </a>
       </p>
     </div>
-
   </div>
 </BaseLayout>
 

@@ -1,45 +1,45 @@
 ---
 /**
- * contact.astro — Minimal contact page.
+ * contact.astro -- Minimal contact page.
  *
- * Uses BaseLayout with prose-container (720px) to right-size
- * the minimal content. No forms, no cards, no over-engineering.
+ * Uses BaseLayout with prose-container (720px) to right-size the minimal
+ * content. No forms, no cards, no over-engineering. The email address and
+ * profile links come from the site-wide identity source (src/data/meta.ts);
+ * the prose is editable in the CMS under Pages -> Contact.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { siteMetadata } from "@data/meta";
+import { availability, intro, metaDescription, roleLine } from "@data/contact";
 ---
 
-<BaseLayout title="Contact" activeNav="contact" description="Get in touch with Isaac Gallegos. Email, LinkedIn, GitHub, and ORCID.">
+<BaseLayout title="Contact" activeNav="contact" description={metaDescription}>
   <div class="prose-container py-16">
-
     <header class="mb-12 border-b border-[var(--color-border)] pb-8">
-      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+      <h1 class="vt-page-title text-3xl leading-tight font-bold tracking-tight md:text-4xl">
         Contact
       </h1>
-      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed">
-        The best way to reach me is by email.
+      <p class="mt-3 text-base leading-relaxed text-[var(--color-muted)]">
+        {intro}
       </p>
     </header>
 
-    {/* Email — prominent, direct */}
+    {/* Email -- prominent, direct */}
     <a
       href={`mailto:${siteMetadata.contact.professionalEmail}`}
-      class="text-lg font-medium text-[var(--color-link)] hover:underline hover:underline-offset-2 transition-colors no-underline"
+      class="text-lg font-medium text-[var(--color-link)] no-underline transition-colors hover:underline hover:underline-offset-2"
     >
       {siteMetadata.contact.professionalEmail}
     </a>
 
-    <p class="mt-3 text-sm text-[var(--color-muted)]">
-      Research Engineer · Wellman Center for Photomedicine · Harvard Medical School
-    </p>
+    {roleLine && <p class="mt-3 text-sm text-[var(--color-muted)]">{roleLine}</p>}
 
-    {/* Profile links — simple row */}
+    {/* Profile links -- simple row */}
     <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
       <a
         href={siteMetadata.contact.linkedin}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+        class="text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-text)]"
       >
         LinkedIn
       </a>
@@ -47,7 +47,7 @@ import { siteMetadata } from "@data/meta";
         href={siteMetadata.contact.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+        class="text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-text)]"
       >
         GitHub
       </a>
@@ -55,26 +55,25 @@ import { siteMetadata } from "@data/meta";
         href={`https://orcid.org/${siteMetadata.contact.orcid}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
+        class="text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-text)]"
       >
         ORCID
       </a>
-      {siteMetadata.contact.googleScholar && (
-        <a
-          href={siteMetadata.contact.googleScholar}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors no-underline"
-        >
-          Google Scholar
-        </a>
-      )}
+      {
+        siteMetadata.contact.googleScholar && (
+          <a
+            href={siteMetadata.contact.googleScholar}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-text)]"
+          >
+            Google Scholar
+          </a>
+        )
+      }
     </div>
 
     {/* Availability */}
-    <p class="mt-8 text-sm text-[var(--color-muted)] italic">
-      I'll do my best to get back to you quickly.
-    </p>
-
+    {availability && <p class="mt-8 text-sm text-[var(--color-muted)] italic">{availability}</p>}
   </div>
 </BaseLayout>
