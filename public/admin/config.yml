@@ -176,6 +176,108 @@ collections:
                   - { label: "Bottom Right", value: "bottom right" }
                 hint: "Which part of the image stays in frame when it is cropped to fit."
 
+      # -- Now ----------------------------------------------------------------------
+      # File: src/data/now.json
+      # Read by src/data/now.ts -> src/pages/now.astro
+      - name: now
+        label: "\U0001F570\uFE0F Now"
+        file: src/data/now.json
+        fields:
+          - label: Subtitle
+            name: subtitle
+            widget: string
+            hint: "Shown under the page title."
+
+          - label: Last updated
+            name: updated
+            widget: string
+            required: false
+            hint: "Shown as 'Last updated: ...'. Leave blank to hide the line."
+
+          - label: Sections
+            name: sections
+            widget: list
+            summary: "{{fields.heading}}"
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: markdown, hint: "Links like [text](https://example.com) open in a new tab." }
+
+      # -- Uses ---------------------------------------------------------------------
+      # File: src/data/uses.json
+      # Read by src/data/uses.ts -> src/pages/uses.astro
+      - name: uses
+        label: "\U0001F9F0 Uses"
+        file: src/data/uses.json
+        fields:
+          - label: Subtitle
+            name: subtitle
+            widget: string
+            hint: "Shown under the page title."
+
+          - label: Last updated
+            name: updated
+            widget: string
+            required: false
+            hint: "Appended to the footer as 'Last updated ...'. Leave blank to hide."
+
+          - label: Sections
+            name: sections
+            widget: list
+            summary: "{{fields.heading}}"
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: markdown, hint: "Bold tool names like **MATLAB**; links like [text](https://example.com)." }
+
+      # -- Bookshelf ------------------------------------------------------------------
+      # File: src/data/bookshelf.json
+      # Read by src/data/bookshelf.ts -> src/pages/bookshelf.astro
+      - name: bookshelf
+        label: "\U0001F4D6 Bookshelf"
+        file: src/data/bookshelf.json
+        fields:
+          - label: Subtitle
+            name: subtitle
+            widget: string
+            hint: "Shown under the page title."
+
+          - label: Footer note
+            name: footerNote
+            widget: string
+            required: false
+            hint: "Small note at the bottom of the page. Leave blank to hide."
+
+          - label: Shelves
+            name: sections
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: Shelf label, name: label, widget: string }
+              - label: Books
+                name: books
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Author, name: author, widget: string, required: false }
+                  - { label: Note, name: note, widget: text, required: false }
+
+      # -- Colophon -------------------------------------------------------------------
+      # File: src/data/colophon.json
+      # Read by src/data/colophon.ts -> src/pages/colophon.astro
+      - name: colophon
+        label: "\U0001F58B\uFE0F Colophon"
+        file: src/data/colophon.json
+        fields:
+          - label: Subtitle
+            name: subtitle
+            widget: string
+            hint: "Shown under the page title."
+
+          - label: Body
+            name: body
+            widget: markdown
+            hint: "The whole page body. Blank paragraphs separate sections; links like [text](https://example.com) open in a new tab."
+
   - divider: true
 
   # ============================================================================

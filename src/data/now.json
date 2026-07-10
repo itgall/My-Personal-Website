@@ -1,0 +1,26 @@
+{
+  "subtitle": "What I'm focused on right now.",
+  "updated": "June 2026 \u00b7 Boston, MA",
+  "sections": [
+    {
+      "heading": "Research",
+      "body": "Working at the [Wellman Center for Photomedicine](https://octresearch.org) (Harvard Medical School / MGH). Building interferometric imaging systems, writing inverse models, and prototyping a broadband micro-LED source."
+    },
+    {
+      "heading": "PhD applications",
+      "body": "Preparing applications for Fall 2027. Looking at groups working on quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes."
+    },
+    {
+      "heading": "Podcast",
+      "body": "Developing a science podcast exploring how fundamental physics innovation translates into technologies that solve grand challenges in health, energy, and information. Currently in pre-production: building the guest pipeline, production stack, and first episode scripts."
+    },
+    {
+      "heading": "Ventures",
+      "body": "Thinking about deep-tech companies in photonics, quantum sensing, and AI. Nothing to announce yet."
+    },
+    {
+      "heading": "Learning",
+      "body": "Quantum computing fundamentals, Lean 4 theorem proving, advanced fiber optics, and the business mechanics of deep-tech company formation."
+    }
+  ]
+}

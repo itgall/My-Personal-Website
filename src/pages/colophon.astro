@@ -1,32 +1,11 @@
 ---
 import PageLayout from "@layouts/PageLayout.astro";
+import { body, subtitle } from "@data/colophon";
+import { renderMarkdown } from "@utils/markdown";
 ---
 
-<PageLayout
-  title="Colophon"
-  subtitle="How this site is built."
-  activeNav=""
->
+<PageLayout title="Colophon" subtitle={subtitle} activeNav="">
   <div class="prose max-w-none">
-    <p>
-      Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
-      and <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer">Tailwind CSS</a>,
-      hosted on <a href="https://netlify.com" target="_blank" rel="noopener noreferrer">Netlify</a>.
-      Everything is statically generated — no server, no database. The few interactive
-      pieces (search, command palette) use Astro's Islands architecture so they hydrate
-      independently without loading a full framework.
-    </p>
-
-    <p>
-      Typography is Inter for UI and headings, Source Serif 4 for long-form reading,
-      and JetBrains Mono for code. Search is handled by
-      <a href="https://pagefind.app" target="_blank" rel="noopener noreferrer">Pagefind</a>,
-      which builds its index at compile time so there is nothing to load at runtime.
-      Publications are parsed from BibTeX.
-    </p>
-
-    <p>
-      The source is on <a href="https://github.com/itgall/My-Personal-Website" target="_blank" rel="noopener noreferrer">GitHub</a>.
-    </p>
+    <Fragment set:html={renderMarkdown(body)} />
   </div>
 </PageLayout>
