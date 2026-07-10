@@ -1,22 +1,32 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# Sveltia CMS Configuration — Git-backed content management.
+# ==============================================================================
+# Sveltia CMS configuration -- the admin UI at /admin/.
 #
-# This config defines the admin UI at /admin/ for managing all site content.
-# Every collection and field mirrors the Zod schemas in src/content.config.ts
-# exactly. Field names, types, defaults, and enums must stay in sync.
+# Layout: three groups, separated by sidebar dividers.
+#
+#   Pages    -- one screen per site page. If it appears on that page, it is
+#               edited here. Each screen writes one JSON file in src/data/,
+#               read by a matching .ts module with safe fallbacks.
+#   Content  -- the repeating things: writing, projects, notes, teaching,
+#               publications, misc, ventures, speaking, podcast, transcripts.
+#               Folder collections map 1:1 to src/content/ and must mirror
+#               the Zod schemas in src/content.config.ts exactly.
+#   Site     -- global data that appears everywhere: identity and contact,
+#               navigation, the CV, and feature toggles.
+#
+# Conventions:
+#   - Emoji in labels are written as YAML \U escapes so this file stays ASCII.
+#   - Every optional URL field pairs with optionalUrlField in the Zod schema,
+#     which accepts a valid URL or an empty string.
+#   - Collection folders each contain a .gitkeep so deleting the last entry
+#     never removes the folder from git (that causes loader warnings on CI).
 #
 # Authentication:
 #   Option 1 (simplest): GitHub Personal Access Token (PAT)
 #     - Create a fine-grained PAT at github.com/settings/tokens with repo access
-#     - Enter it in the Sveltia CMS login screen — no backend needed
-#
-#   Option 2 (polished): GitHub OAuth via Sveltia CMS Authenticator
-#     - Deploy sveltia/sveltia-cms-auth to Cloudflare Workers
-#     - Add base_url to the backend config below
-#     - Users see a "Login with GitHub" button
-#
-# ⚠️  Repo is configured below as itgall/My-Personal-Website.
-# ═══════════════════════════════════════════════════════════════════════════════
+#     - Enter it on the Sveltia login screen; no backend needed
+#   Option 2 (polished): GitHub OAuth via sveltia/sveltia-cms-auth on
+#     Cloudflare Workers; set base_url under backend below.
+# ==============================================================================
 
 backend:
   name: github
@@ -28,31 +38,162 @@ backend:
 media_folder: public/images/uploads
 public_folder: /images/uploads
 
-# ── Slug configuration ────────────────────────────────────────────────────────
+# -- Slug configuration --------------------------------------------------------
 slug:
   encoding: ascii
   clean_accents: true
   sanitize_replacement: "-"
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# CONTENT COLLECTIONS
-# Each folder collection maps to an Astro Content Collection in src/content/.
-# Fields must match the Zod schema in src/content.config.ts exactly.
-# ═══════════════════════════════════════════════════════════════════════════════
-
 collections:
 
-  # ── Blog Posts ─────────────────────────────────────────────────────────────
-  # Schema: src/content.config.ts → posts collection
+  # ============================================================================
+  # PAGES
+  # ============================================================================
+
+  - name: pages
+    label: "\U0001F4C4 Pages"
+    files:
+      # -- Homepage -----------------------------------------------------------------
+      # File: src/data/homepage.json
+      # Read by src/data/homepage.ts -> rendered by src/pages/index.astro
+      - name: homepage
+        label: "\U0001F3E0 Homepage"
+        file: src/data/homepage.json
+        fields:
+          - { label: "Profile Photo", name: profileImage, widget: image, required: false, hint: "The large photo in the homepage hero. Leave blank to use the default." }
+          - label: "Profile Photo Framing"
+            name: profileFocal
+            widget: select
+            default: "top"
+            options:
+              - { label: "Top Left", value: "top left" }
+              - { label: "Top", value: "top" }
+              - { label: "Top Right", value: "top right" }
+              - { label: "Left", value: "left" }
+              - { label: "Center", value: "center" }
+              - { label: "Right", value: "right" }
+              - { label: "Bottom Left", value: "bottom left" }
+              - { label: "Bottom", value: "bottom" }
+              - { label: "Bottom Right", value: "bottom right" }
+            hint: "Which part of the image stays in frame when it is cropped to fit."
+          - { label: "Hero bio", name: bio, widget: text, required: false, hint: "The intro paragraph in the homepage hero. Leave blank to use the default text." }
+          - { label: "Currently line", name: currentlyText, widget: string, required: false, hint: "Short status shown after a fixed 'Currently:' label. Leave blank to hide the whole line." }
+          - { label: "Research interests", name: researchInterests, widget: text, required: false, hint: "The paragraph in the Research interests section. Leave blank to use the default text." }
+
+      # -- Homepage Gallery ---------------------------------------------------------
+      # File: src/data/homepage-gallery.json
+      # Read by src/data/homepage-gallery.ts -> MiscGallery.astro on the homepage
+      - name: homepage_gallery
+        label: "\U0001F3DE\uFE0F Homepage Gallery"
+        file: src/data/homepage-gallery.json
+        fields:
+          - label: "Travel tile"
+            name: travel
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Travel" }
+              - { label: "Caption", name: caption, widget: string, default: "where I've been" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
+          - label: "Caving tile"
+            name: caving
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Caving" }
+              - { label: "Caption", name: caption, widget: string, default: "underground" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
+          - label: "Languages tile"
+            name: languages
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Languages" }
+              - { label: "Caption", name: caption, widget: string, default: "studying Mandarin" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
+          - label: "Reading tile"
+            name: reading
+            widget: object
+            fields:
+              - { label: "Label", name: label, widget: string, default: "Reading" }
+              - { label: "Caption", name: caption, widget: string, default: "topology & geometry" }
+              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
+              - label: "Tile Image Framing"
+                name: focal
+                widget: select
+                default: "center"
+                options:
+                  - { label: "Top Left", value: "top left" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Top Right", value: "top right" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Center", value: "center" }
+                  - { label: "Right", value: "right" }
+                  - { label: "Bottom Left", value: "bottom left" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Bottom Right", value: "bottom right" }
+                hint: "Which part of the image stays in frame when it is cropped to fit."
+
+  - divider: true
+
+  # ============================================================================
+  # CONTENT
+  # ============================================================================
+
+
+  # -- Blog Posts -------------------------------------------------------------
+  # Schema: src/content.config.ts -> posts collection
   # Files: src/content/posts/*.md
   - name: posts
-    label: "✍️ Essays"
+    label: "\u270D\uFE0F Writing"
     label_singular: "Post"
     folder: src/content/posts
     create: true
     slug: "{{slug}}"
     sortable_fields: [date, title, category]
-    summary: "{{title}} — {{category}} — {{date}}"
+    summary: "{{title}} \u2014 {{category}} \u2014 {{date}}"
     fields:
       - label: Title
         name: title
@@ -89,7 +230,7 @@ collections:
       - label: Description
         name: description
         widget: text
-        hint: "Short summary for SEO meta description and listings (≤160 chars)."
+        hint: "Short summary for SEO meta description and listings (\u2264160 chars)."
 
       - label: Tags
         name: tags
@@ -119,17 +260,18 @@ collections:
         name: body
         widget: markdown
 
-  # ── Research Projects ──────────────────────────────────────────────────────
-  # Schema: src/content.config.ts → projects collection
+
+  # -- Research Projects ------------------------------------------------------
+  # Schema: src/content.config.ts -> projects collection
   # Files: src/content/projects/*.md
   - name: projects
-    label: "🔬 Projects"
+    label: "\U0001F52C Projects"
     label_singular: "Project"
     folder: src/content/projects
     create: true
     slug: "{{slug}}"
     sortable_fields: [date, title, number]
-    summary: "[{{number}}] {{title}} — {{institution}}"
+    summary: "[{{number}}] {{title}} \u2014 {{institution}}"
     fields:
       - label: Title
         name: title
@@ -174,7 +316,7 @@ collections:
         default: "structured"
         hint: "Structured = three fixed sections. Freeform = single rich editor."
 
-      # ── Structured content fields (used when contentMode = structured) ──
+      # -- Structured content fields (used when contentMode = structured) --
       - label: "The Problem"
         name: problem
         widget: markdown
@@ -192,7 +334,7 @@ collections:
         widget: markdown
         required: false
 
-      # ── Media ──
+      # -- Media --
       - label: Hero Image
         name: heroImage
         widget: image
@@ -231,7 +373,7 @@ collections:
           - { label: "Image", name: image, widget: image }
           - { label: "Caption", name: caption, widget: string, required: false, default: "" }
 
-      # ── Links & Tech ──
+      # -- Links & Tech --
       - label: Tech Stack
         name: techStack
         widget: list
@@ -249,7 +391,7 @@ collections:
         name: linkText
         widget: string
         required: false
-        default: "View presentation →"
+        default: "View presentation \u2192"
 
       - label: GitHub URL
         name: githubUrl
@@ -275,61 +417,109 @@ collections:
         widget: markdown
         required: false
 
-  # Misc (Outside the lab) -- schema: src/content.config.ts -> misc collection
-  - name: misc
-    label: "🏔️ Misc"
-    label_singular: "Entry"
-    folder: src/content/misc
+  - name: publications
+    label: "\U0001F4DA Publications"
+    files:
+      # -- Publications (BibTeX) ----------------------------------------------------
+      # File: src/data/bibliography.bib
+      # Parsed at build time; one entry per publication
+      - name: bibliography
+        label: "\U0001F4DA Publications (BibTeX)"
+        file: src/data/bibliography.bib
+        extension: bib
+        format: raw
+        fields:
+          - label: BibTeX Entries
+            name: body
+            widget: code
+            default_language: bibtex
+            output_code_only: true
+            hint: "Edit BibTeX entries directly. Each @article{...}, @inproceedings{...}, etc. generates a publication page with Highwire Press meta tags."
+
+
+  # -- Digital Garden Notes ---------------------------------------------------
+  # Schema: src/content.config.ts -> notes collection
+  # Files: src/content/notes/*.md
+  - name: notes
+    label: "\U0001F331 Notes"
+    label_singular: "Note"
+    folder: src/content/notes
     create: true
     slug: "{{slug}}"
-    sortable_fields: [order, date, title]
-    summary: "{{title}} -- {{section}}"
+    sortable_fields: [date, title, maturity]
+    summary: "{{title}} \u2014 {{maturity}}"
     fields:
-      - { label: Title, name: title, widget: string }
-      - label: Section
-        name: section
-        widget: select
-        options:
-          - { label: "Travel", value: "travel" }
-          - { label: "Caving", value: "caving" }
-          - { label: "Languages", value: "languages" }
-          - { label: "Reading", value: "reading" }
-      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: Location, name: location, widget: string, required: false }
-      - { label: Summary, name: summary, widget: string, required: false, default: "" }
-      - { label: Hero Image, name: heroImage, widget: image, required: false }
-      - label: "Hero Image Framing"
-        name: heroFocal
-        widget: select
-        default: "center"
-        options:
-          - { label: "Top Left", value: "top left" }
-          - { label: "Top", value: "top" }
-          - { label: "Top Right", value: "top right" }
-          - { label: "Left", value: "left" }
-          - { label: "Center", value: "center" }
-          - { label: "Right", value: "right" }
-          - { label: "Bottom Left", value: "bottom left" }
-          - { label: "Bottom", value: "bottom" }
-          - { label: "Bottom Right", value: "bottom right" }
-        hint: "Which part of the image stays in frame when it is cropped to fit."
-      - { label: Hero Image Caption, name: heroCaption, widget: string, required: false }
-      - { label: Tags, name: tags, widget: list, required: false, default: [] }
-      - { label: Order, name: order, widget: number, required: false, default: 0 }
-      - { label: Published, name: published, widget: boolean, default: true }
-      - { label: Body, name: body, widget: markdown }
+      - label: Title
+        name: title
+        widget: string
 
-  # ── Teaching ───────────────────────────────────────────────────────────────
-  # Schema: src/content.config.ts → teaching collection
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: Updated Date
+        name: updatedDate
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: false
+
+      - label: Maturity
+        name: maturity
+        widget: select
+        options:
+          - { label: "\U0001F331 Seedling", value: "seedling" }
+          - { label: "\U0001F33F Budding", value: "budding" }
+          - { label: "\U0001F333 Evergreen", value: "evergreen" }
+        default: "seedling"
+        hint: "Seedling = early idea. Budding = developing. Evergreen = mature and maintained."
+
+      - label: Description
+        name: description
+        widget: text
+        required: false
+        default: ""
+
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        default: []
+
+      - label: Backlinks
+        name: backlinks
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of other notes that link to this one (typically auto-computed at build time)."
+        field: { label: "Slug", name: slug, widget: string }
+
+      - label: Published
+        name: published
+        widget: boolean
+        default: true
+
+      - label: Body
+        name: body
+        widget: markdown
+        hint: "Use [[double brackets]] to create wiki-links to other notes."
+
+
+  # -- Teaching ---------------------------------------------------------------
+  # Schema: src/content.config.ts -> teaching collection
   # Files: src/content/teaching/*.md
   - name: teaching
-    label: "🎓 Teaching"
+    label: "\U0001F393 Teaching"
     label_singular: "Course"
     folder: src/content/teaching
     create: true
     slug: "{{slug}}"
     sortable_fields: [year, title]
-    summary: "{{title}} — {{semester}} {{year}}"
+    summary: "{{title}} \u2014 {{semester}} {{year}}"
     fields:
       - label: Title
         name: title
@@ -393,46 +583,213 @@ collections:
         widget: markdown
         required: false
 
-  # ── Digital Garden Notes ───────────────────────────────────────────────────
-  # Schema: src/content.config.ts → notes collection
-  # Files: src/content/notes/*.md
-  - name: notes
-    label: "🌱 Notes"
-    label_singular: "Note"
-    folder: src/content/notes
+
+  # Misc (Outside the lab) -- schema: src/content.config.ts -> misc collection
+  - name: misc
+    label: "\U0001F3D4\uFE0F Misc"
+    label_singular: "Entry"
+    folder: src/content/misc
     create: true
     slug: "{{slug}}"
-    sortable_fields: [date, title, maturity]
-    summary: "{{title}} — {{maturity}}"
+    sortable_fields: [order, date, title]
+    summary: "{{title}} -- {{section}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Section
+        name: section
+        widget: select
+        options:
+          - { label: "Travel", value: "travel" }
+          - { label: "Caving", value: "caving" }
+          - { label: "Languages", value: "languages" }
+          - { label: "Reading", value: "reading" }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Location, name: location, widget: string, required: false }
+      - { label: Summary, name: summary, widget: string, required: false, default: "" }
+      - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - label: "Hero Image Framing"
+        name: heroFocal
+        widget: select
+        default: "center"
+        options:
+          - { label: "Top Left", value: "top left" }
+          - { label: "Top", value: "top" }
+          - { label: "Top Right", value: "top right" }
+          - { label: "Left", value: "left" }
+          - { label: "Center", value: "center" }
+          - { label: "Right", value: "right" }
+          - { label: "Bottom Left", value: "bottom left" }
+          - { label: "Bottom", value: "bottom" }
+          - { label: "Bottom Right", value: "bottom right" }
+        hint: "Which part of the image stays in frame when it is cropped to fit."
+      - { label: Hero Image Caption, name: heroCaption, widget: string, required: false }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Order, name: order, widget: number, required: false, default: 0 }
+      - { label: Published, name: published, widget: boolean, default: true }
+      - { label: Body, name: body, widget: markdown }
+
+  # -- Ventures ---------------------------------------------------------------
+  # Schema: src/content.config.ts -> ventures collection
+  # Files: src/content/ventures/*.md  (rendered at /ventures/)
+  # Section is hidden until settings.json -> sections.ventures is true.
+
+  - name: ventures
+    label: "\U0001F680 Ventures"
+    label_singular: "Venture"
+    folder: src/content/ventures
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    summary: "{{title}} \u2014 {{status}}"
     fields:
       - label: Title
         name: title
         widget: string
+        hint: "Venture name."
+
+      - label: Tagline
+        name: tagline
+        widget: string
+        hint: "One-line description, shown on cards."
+
+      - label: Role
+        name: role
+        widget: string
+        default: "Founder"
+
+      - label: Status
+        name: status
+        widget: select
+        options:
+          - { label: "Active", value: "active" }
+          - { label: "In Development", value: "in-development" }
+          - { label: "Stealth", value: "stealth" }
+        default: "in-development"
 
       - label: Date
         name: date
         widget: datetime
         format: "YYYY-MM-DD"
         date_format: "YYYY-MM-DD"
-        time_format: false
 
-      - label: Updated Date
-        name: updatedDate
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        default: []
+
+      - label: Problem
+        name: problem
+        widget: text
+        required: false
+        hint: "What problem does this venture solve?"
+
+      - label: Research Foundation
+        name: researchFoundation
+        widget: text
+        required: false
+        hint: "The research or technical insight the venture is built on."
+
+      - label: Tech Stack
+        name: techStack
+        widget: list
+        required: false
+        default: []
+
+      - label: Website URL
+        name: websiteUrl
+        widget: string
+        required: false
+
+      - label: Hero Image
+        name: heroImage
+        widget: image
+        required: false
+
+      - label: Published
+        name: published
+        widget: boolean
+        default: true
+
+      - label: Related Publications
+        name: relatedPublications
+        widget: list
+        required: false
+        default: []
+        hint: "Citation keys from the bibliography."
+
+      - label: Related Projects
+        name: relatedProjects
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related projects."
+
+      - label: Related Posts
+        name: relatedPosts
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related writing."
+
+      - label: Related Episodes
+        name: relatedEpisodes
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related podcast episodes."
+
+      - label: Body
+        name: body
+        widget: markdown
+
+  # -- Speaking ---------------------------------------------------------------
+  # Schema: src/content.config.ts -> speaking collection
+  # Files: src/content/speaking/*.md  (listed at /speaking/)
+  # Section is hidden until settings.json -> sections.speaking is true.
+
+  - name: speaking
+    label: "\U0001F3A4 Speaking"
+    label_singular: "Talk"
+    folder: src/content/speaking
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title, event]
+    summary: "{{title}} \u2014 {{event}} \u2014 {{date}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: "Talk title."
+
+      - label: Event
+        name: event
+        widget: string
+        hint: "Event or venue name."
+
+      - label: Location
+        name: location
+        widget: string
+        required: false
+        hint: "City, country, or 'Remote'."
+
+      - label: Date
+        name: date
         widget: datetime
         format: "YYYY-MM-DD"
         date_format: "YYYY-MM-DD"
-        time_format: false
-        required: false
 
-      - label: Maturity
-        name: maturity
+      - label: Type
+        name: type
         widget: select
         options:
-          - { label: "🌱 Seedling", value: "seedling" }
-          - { label: "🌿 Budding", value: "budding" }
-          - { label: "🌳 Evergreen", value: "evergreen" }
-        default: "seedling"
-        hint: "Seedling = early idea. Budding = developing. Evergreen = mature and maintained."
+          - { label: "Talk", value: "talk" }
+          - { label: "Panel", value: "panel" }
+          - { label: "Keynote", value: "keynote" }
+          - { label: "Guest Lecture", value: "guest-lecture" }
+          - { label: "Podcast", value: "podcast" }
+          - { label: "Media", value: "media" }
+        default: "talk"
 
       - label: Description
         name: description
@@ -446,37 +803,290 @@ collections:
         required: false
         default: []
 
-      - label: Backlinks
-        name: backlinks
-        widget: list
+      - label: Video URL
+        name: videoUrl
+        widget: string
         required: false
-        default: []
-        hint: "Slugs of other notes that link to this one (typically auto-computed at build time)."
-        field: { label: "Slug", name: slug, widget: string }
+
+      - label: Slides URL
+        name: slidesUrl
+        widget: string
+        required: false
+
+      - label: Event URL
+        name: eventUrl
+        widget: string
+        required: false
+
+      - label: Featured
+        name: featured
+        widget: boolean
+        default: false
 
       - label: Published
         name: published
         widget: boolean
         default: true
 
+      - label: Related Projects
+        name: relatedProjects
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related projects."
+
+      - label: Related Episodes
+        name: relatedEpisodes
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related podcast episodes."
+
       - label: Body
         name: body
         widget: markdown
-        hint: "Use [[double brackets]] to create wiki-links to other notes."
+        required: false
+        hint: "Optional notes. Not shown on the site yet."
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # DATA FILES
-  # File collections for structured data that isn't Markdown content.
-  # ═══════════════════════════════════════════════════════════════════════════
+  # -- Podcast ----------------------------------------------------------------
+  # Schema: src/content.config.ts -> podcast collection
+  # Files: src/content/podcast/*.md  (rendered at /podcast/)
+  # Section is hidden until settings.json -> sections.podcast is true.
+  # Note: episodes default to unpublished so drafts never go live by accident.
 
-  # ── CV Data ────────────────────────────────────────────────────────────────
-  # File: src/data/cv.yaml
-  # Rendered by: src/pages/cv.astro
-  - name: data
-    label: "⚙️ Site Data"
+  - name: podcast
+    label: "\U0001F399\uFE0F Podcast"
+    label_singular: "Episode"
+    folder: src/content/podcast
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, episodeNumber, title]
+    summary: "{{title}} \u2014 {{date}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: "Episode title."
+
+      - label: Episode Number
+        name: episodeNumber
+        widget: number
+        value_type: int
+        required: false
+
+      - label: Season
+        name: season
+        widget: number
+        value_type: int
+        required: false
+
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+
+      - label: Description
+        name: description
+        widget: text
+        hint: "Required. Used for SEO and episode cards."
+
+      - label: Episode Type
+        name: episodeType
+        widget: select
+        options:
+          - { label: "Solo", value: "solo" }
+          - { label: "Interview", value: "interview" }
+          - { label: "Panel", value: "panel" }
+          - { label: "Journal Club", value: "journal-club" }
+          - { label: "AMA", value: "ama" }
+          - { label: "Case Study", value: "case-study" }
+        default: "interview"
+
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        default: []
+
+      - label: Guests
+        name: guests
+        widget: list
+        required: false
+        default: []
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "Name", name: name, widget: string }
+          - { label: "Title", name: title, widget: string, required: false }
+          - { label: "URL", name: url, widget: string, required: false }
+
+      - label: Chapters
+        name: chapters
+        widget: list
+        required: false
+        default: []
+        summary: "{{fields.time}} {{fields.title}}"
+        fields:
+          - { label: "Time", name: time, widget: string, hint: "e.g., 12:34" }
+          - { label: "Title", name: title, widget: string }
+
+      - label: YouTube URL
+        name: youtubeUrl
+        widget: string
+        required: false
+
+      - label: Spotify URL
+        name: spotifyUrl
+        widget: string
+        required: false
+
+      - label: Apple Podcasts URL
+        name: appleUrl
+        widget: string
+        required: false
+
+      - label: Duration
+        name: duration
+        widget: string
+        required: false
+        hint: "e.g., 47:32"
+
+      - label: Has Transcript
+        name: hasTranscript
+        widget: boolean
+        default: false
+        hint: "Turn on once a matching transcript entry exists."
+
+      - label: Featured
+        name: featured
+        widget: boolean
+        default: false
+
+      - label: Published
+        name: published
+        widget: boolean
+        default: false
+        hint: "Off by default. Turn on to publish the episode."
+
+      - label: Related Projects
+        name: relatedProjects
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related projects."
+
+      - label: Related Publications
+        name: relatedPublications
+        widget: list
+        required: false
+        default: []
+        hint: "Citation keys from the bibliography."
+
+      - label: Related Posts
+        name: relatedPosts
+        widget: list
+        required: false
+        default: []
+        hint: "Slugs of related writing."
+
+      - label: Show Notes
+        name: body
+        widget: markdown
+
+  # -- Transcripts ------------------------------------------------------------
+  # Schema: src/content.config.ts -> transcripts collection
+  # Files: src/content/transcripts/*.md  (rendered at /podcast/transcripts/)
+  # Each transcript pairs with one episode via episodeSlug.
+
+  - name: transcripts
+    label: "\U0001F4DD Transcripts"
+    label_singular: "Transcript"
+    folder: src/content/transcripts
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    summary: "{{title}} \u2014 {{episodeSlug}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: "e.g., Episode 12 \u2014 Full Transcript."
+
+      - label: Episode Slug
+        name: episodeSlug
+        widget: string
+        hint: "Filename of the matching episode, without .md."
+
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+
+      - label: Published
+        name: published
+        widget: boolean
+        default: false
+
+      - label: Transcript
+        name: body
+        widget: markdown
+
+  - divider: true
+
+  # ============================================================================
+  # SITE
+  # ============================================================================
+
+  - name: site
+    label: "\u2699\uFE0F Site"
     files:
+      # -- Identity & Contact -------------------------------------------------------
+      # File: src/data/identity.json
+      # Read by src/data/meta.ts -> hero, meta tags, structured data, contact page
+      - name: identity
+        label: "\U0001F464 Identity & Contact"
+        file: src/data/identity.json
+        fields:
+          - { label: "Name", name: name, widget: string, hint: "Your full name. Appears in the homepage hero, the browser title, and structured data across the site." }
+          - { label: "Role", name: role, widget: string, hint: "Your primary role, e.g. Research Engineer. Shown in the hero role line and used as your job title in structured data." }
+          - { label: "Affiliation", name: affiliation, widget: string, hint: "Institution as you want it displayed, e.g. Harvard Medical School. Shown after your role in the hero." }
+          - { label: "Email", name: email, widget: string, hint: "Contact email. Drives every mailto link and the contact page." }
+          - { label: "LinkedIn URL", name: linkedin, widget: string, hint: "Full URL, e.g. https://linkedin.com/in/yourhandle" }
+          - { label: "GitHub URL", name: github, widget: string, hint: "Full URL, e.g. https://github.com/yourhandle" }
+          - { label: "Google Scholar URL", name: googleScholar, widget: string, hint: "Full URL to your Google Scholar profile." }
+          - { label: "ORCID iD", name: orcid, widget: string, hint: "Just the iD, e.g. 0009-0007-9290-6289 (not the full URL)." }
+          - { label: "CV file path", name: cvPath, widget: string, hint: "Path to your CV PDF under public/, e.g. /documents/gallegos-cv.pdf" }
+
+      # -- Navigation ---------------------------------------------------------------
+      # File: src/data/navigation.json
+      # Read by src/data/navigation.ts -> header nav
+      - name: navigation
+        label: "\U0001F9ED Navigation"
+        file: src/data/navigation.json
+        fields:
+          - label: "Primary Navigation"
+            name: primaryNav
+            widget: list
+            hint: "Items shown in the top navigation bar. Drag to reorder. Recommended: 3\u20135 items."
+            fields:
+              - { label: "Label", name: label, widget: string, hint: "Display text shown in the nav bar." }
+              - { label: "URL", name: href, widget: string, hint: "Path like /projects/ or /publications/. Must start with /." }
+              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item. E.g. '/projects|/publications' highlights for both paths." }
+          - label: "More Navigation"
+            name: moreNav
+            widget: list
+            hint: "Overflow items accessible via the 'More' dropdown on desktop and the mobile menu."
+            fields:
+              - { label: "Label", name: label, widget: string, hint: "Display text shown in the menu." }
+              - { label: "URL", name: href, widget: string, hint: "Path like /podcast/ or /notes/. Must start with /." }
+              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item when active." }
+
+      # -- CV / Resume --------------------------------------------------------------
+      # File: src/data/cv.yaml
+      # Read by src/pages/cv.astro
       - name: cv
-        label: "📄 CV / Resume"
+        label: "\U0001F4C4 CV / Resume"
         file: src/data/cv.yaml
         fields:
           - label: Full Name
@@ -605,190 +1215,18 @@ collections:
               - { label: "Venue", name: venue, widget: string, required: false }
               - { label: "Dates", name: dates, widget: string, required: false }
 
-      # ── Publications (BibTeX) ──────────────────────────────────────────────
-      # File: src/data/bibliography.bib
-      # Parsed by: src/utils/bibtex.ts
-      - name: bibliography
-        label: "📚 Publications (BibTeX)"
-        file: src/data/bibliography.bib
-        extension: bib
-        format: raw
-        fields:
-          - label: BibTeX Entries
-            name: body
-            widget: code
-            default_language: bibtex
-            output_code_only: true
-            hint: "Edit BibTeX entries directly. Each @article{...}, @inproceedings{...}, etc. generates a publication page with Highwire Press meta tags."
-
-      # ── Navigation ────────────────────────────────────────────────────────
-      # File: src/data/navigation.json
-      # Read by: src/data/navigation.ts → consumed by Nav.astro
-      - name: navigation
-        label: "🧭 Navigation"
-        file: src/data/navigation.json
-        fields:
-          - label: "Primary Navigation"
-            name: primaryNav
-            widget: list
-            hint: "Items shown in the top navigation bar. Drag to reorder. Recommended: 3–5 items."
-            fields:
-              - { label: "Label", name: label, widget: string, hint: "Display text shown in the nav bar." }
-              - { label: "URL", name: href, widget: string, hint: "Path like /projects/ or /publications/. Must start with /." }
-              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item. E.g. '/projects|/publications' highlights for both paths." }
-          - label: "More Navigation"
-            name: moreNav
-            widget: list
-            hint: "Overflow items accessible via the 'More' dropdown on desktop and the mobile menu."
-            fields:
-              - { label: "Label", name: label, widget: string, hint: "Display text shown in the menu." }
-              - { label: "URL", name: href, widget: string, hint: "Path like /podcast/ or /notes/. Must start with /." }
-              - { label: "Active Match Pattern", name: activeMatch, widget: string, required: false, hint: "Regex pattern to highlight this item when active." }
-
-      # ── Site Settings ──────────────────────────────────────────────────────
+      # -- Site Settings ------------------------------------------------------------
       # File: src/data/settings.json
-      # Read by: src/data/settings.ts → consumed by layouts and components
-      # Homepage Gallery -- file: src/data/homepage-gallery.json -> MiscGallery.astro
-      # Homepage -- file: src/data/homepage.json -> src/pages/index.astro
-      - name: identity
-        label: "Identity & Contact"
-        file: src/data/identity.json
-        fields:
-          - { label: "Name", name: name, widget: string, hint: "Your full name. Appears in the homepage hero, the browser title, and structured data across the site." }
-          - { label: "Role", name: role, widget: string, hint: "Your primary role, e.g. Research Engineer. Shown in the hero role line and used as your job title in structured data." }
-          - { label: "Affiliation", name: affiliation, widget: string, hint: "Institution as you want it displayed, e.g. Harvard Medical School. Shown after your role in the hero." }
-          - { label: "Email", name: email, widget: string, hint: "Contact email. Drives every mailto link and the contact page." }
-          - { label: "LinkedIn URL", name: linkedin, widget: string, hint: "Full URL, e.g. https://linkedin.com/in/yourhandle" }
-          - { label: "GitHub URL", name: github, widget: string, hint: "Full URL, e.g. https://github.com/yourhandle" }
-          - { label: "Google Scholar URL", name: googleScholar, widget: string, hint: "Full URL to your Google Scholar profile." }
-          - { label: "ORCID iD", name: orcid, widget: string, hint: "Just the iD, e.g. 0009-0007-9290-6289 (not the full URL)." }
-          - { label: "CV file path", name: cvPath, widget: string, hint: "Path to your CV PDF under public/, e.g. /documents/gallegos-cv.pdf" }
-
-      - name: homepage
-        label: "🏠 Homepage"
-        file: src/data/homepage.json
-        fields:
-          - { label: "Profile Photo", name: profileImage, widget: image, required: false, hint: "The large photo in the homepage hero. Leave blank to use the default." }
-          - label: "Profile Photo Framing"
-            name: profileFocal
-            widget: select
-            default: "top"
-            options:
-              - { label: "Top Left", value: "top left" }
-              - { label: "Top", value: "top" }
-              - { label: "Top Right", value: "top right" }
-              - { label: "Left", value: "left" }
-              - { label: "Center", value: "center" }
-              - { label: "Right", value: "right" }
-              - { label: "Bottom Left", value: "bottom left" }
-              - { label: "Bottom", value: "bottom" }
-              - { label: "Bottom Right", value: "bottom right" }
-            hint: "Which part of the image stays in frame when it is cropped to fit."
-          - { label: "Hero bio", name: bio, widget: text, required: false, hint: "The intro paragraph in the homepage hero. Leave blank to use the default text." }
-          - { label: "Currently line", name: currentlyText, widget: string, required: false, hint: "Short status shown after a fixed 'Currently:' label. Leave blank to hide the whole line." }
-          - { label: "Research interests", name: researchInterests, widget: text, required: false, hint: "The paragraph in the Research interests section. Leave blank to use the default text." }
-
-      - name: homepage_gallery
-        label: "🏞️ Homepage Gallery"
-        file: src/data/homepage-gallery.json
-        fields:
-          - label: "Travel tile"
-            name: travel
-            widget: object
-            fields:
-              - { label: "Label", name: label, widget: string, default: "Travel" }
-              - { label: "Caption", name: caption, widget: string, default: "where I've been" }
-              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
-              - label: "Tile Image Framing"
-                name: focal
-                widget: select
-                default: "center"
-                options:
-                  - { label: "Top Left", value: "top left" }
-                  - { label: "Top", value: "top" }
-                  - { label: "Top Right", value: "top right" }
-                  - { label: "Left", value: "left" }
-                  - { label: "Center", value: "center" }
-                  - { label: "Right", value: "right" }
-                  - { label: "Bottom Left", value: "bottom left" }
-                  - { label: "Bottom", value: "bottom" }
-                  - { label: "Bottom Right", value: "bottom right" }
-                hint: "Which part of the image stays in frame when it is cropped to fit."
-          - label: "Caving tile"
-            name: caving
-            widget: object
-            fields:
-              - { label: "Label", name: label, widget: string, default: "Caving" }
-              - { label: "Caption", name: caption, widget: string, default: "underground" }
-              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
-              - label: "Tile Image Framing"
-                name: focal
-                widget: select
-                default: "center"
-                options:
-                  - { label: "Top Left", value: "top left" }
-                  - { label: "Top", value: "top" }
-                  - { label: "Top Right", value: "top right" }
-                  - { label: "Left", value: "left" }
-                  - { label: "Center", value: "center" }
-                  - { label: "Right", value: "right" }
-                  - { label: "Bottom Left", value: "bottom left" }
-                  - { label: "Bottom", value: "bottom" }
-                  - { label: "Bottom Right", value: "bottom right" }
-                hint: "Which part of the image stays in frame when it is cropped to fit."
-          - label: "Languages tile"
-            name: languages
-            widget: object
-            fields:
-              - { label: "Label", name: label, widget: string, default: "Languages" }
-              - { label: "Caption", name: caption, widget: string, default: "studying Mandarin" }
-              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
-              - label: "Tile Image Framing"
-                name: focal
-                widget: select
-                default: "center"
-                options:
-                  - { label: "Top Left", value: "top left" }
-                  - { label: "Top", value: "top" }
-                  - { label: "Top Right", value: "top right" }
-                  - { label: "Left", value: "left" }
-                  - { label: "Center", value: "center" }
-                  - { label: "Right", value: "right" }
-                  - { label: "Bottom Left", value: "bottom left" }
-                  - { label: "Bottom", value: "bottom" }
-                  - { label: "Bottom Right", value: "bottom right" }
-                hint: "Which part of the image stays in frame when it is cropped to fit."
-          - label: "Reading tile"
-            name: reading
-            widget: object
-            fields:
-              - { label: "Label", name: label, widget: string, default: "Reading" }
-              - { label: "Caption", name: caption, widget: string, default: "topology & geometry" }
-              - { label: "Image", name: image, widget: image, required: false, hint: "Leave blank to use the default gradient." }
-              - label: "Tile Image Framing"
-                name: focal
-                widget: select
-                default: "center"
-                options:
-                  - { label: "Top Left", value: "top left" }
-                  - { label: "Top", value: "top" }
-                  - { label: "Top Right", value: "top right" }
-                  - { label: "Left", value: "left" }
-                  - { label: "Center", value: "center" }
-                  - { label: "Right", value: "right" }
-                  - { label: "Bottom Left", value: "bottom left" }
-                  - { label: "Bottom", value: "bottom" }
-                  - { label: "Bottom Right", value: "bottom right" }
-                hint: "Which part of the image stays in frame when it is cropped to fit."
+      # Read by src/data/settings.ts -> feature toggles, sections, appearance
       - name: settings
-        label: "🎛️ Features & Appearance"
+        label: "\U0001F39B\uFE0F Features & Appearance"
         file: src/data/settings.json
         fields:
           - label: Features
             name: features
             widget: object
             fields:
-              - { label: "⚠️ Maintenance Mode", name: maintenanceMode, widget: boolean, default: false, hint: "Block all site content with an 'under construction' overlay. Bypass with ?preview=true in the URL." }
+              - { label: "\u26A0\uFE0F Maintenance Mode", name: maintenanceMode, widget: boolean, default: false, hint: "Block all site content with an 'under construction' overlay. Bypass with ?preview=true in the URL." }
               - { label: "Sidenotes", name: sidenotes, widget: boolean, default: true, hint: "Transform footnotes into Tufte-style margin notes." }
               - label: "Default Accent Color"
                 name: defaultAccent
@@ -823,10 +1261,10 @@ collections:
               - { label: "Image Zoom", name: imageZoom, widget: boolean, default: true, hint: "Click-to-zoom on images inside article content." }
               - { label: "Document Viewer", name: documentViewer, widget: boolean, default: true, hint: "Inline PDF/document preview overlay. Links with data-doc-viewer open in an overlay instead of navigating away." }
               - { label: "Reading Progress Bar", name: readingProgressBar, widget: boolean, default: false, hint: "Show reading progress bar on article pages." }
-              - { label: "Command Palette (⌘K)", name: commandPalette, widget: boolean, default: false, hint: "Enable ⌘K / Ctrl+K keyboard shortcut for quick navigation." }
+              - { label: "Command Palette (\u2318K)", name: commandPalette, widget: boolean, default: false, hint: "Enable \u2318K / Ctrl+K keyboard shortcut for quick navigation." }
               - { label: "Visual Effects", name: visualEffects, widget: boolean, default: false, hint: "Enable ambient canvas visual effects (particles, dust)." }
               - { label: "AI Chat Widget", name: chatWidget, widget: boolean, default: false, hint: "Enable AI-powered chat widget for visitor questions." }
-              - { label: "Document Request Modal", name: documentRequestModal, widget: boolean, default: true, hint: "Enable gated CV/resume access — visitors submit a form to request documents." }
+              - { label: "Document Request Modal", name: documentRequestModal, widget: boolean, default: true, hint: "Enable gated CV/resume access \u2014 visitors submit a form to request documents." }
 
           - label: Sections
             name: sections
