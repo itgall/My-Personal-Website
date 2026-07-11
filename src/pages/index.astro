@@ -2,6 +2,15 @@
 /**
  * index.astro -- Homepage (content-forward layout).
  *
+ * VERTICAL RHYTHM -- one boundary, one gap:
+ *   Between any two neighboring page regions there is exactly ONE source of
+ *   space. The container owns it: pt-12/md:pt-16 at the page top,
+ *   space-y-16/md:space-y-24 between sections. Sections carry no vertical
+ *   padding of their own. The exit gap is the footer's own margin-top
+ *   (6rem desktop / 4rem mobile), which matches the same scale. Do not add
+ *   py/mt/mb to top-level sections here -- that reintroduces stacked
+ *   boundaries.
+ *
  * Design philosophy: engineer-like restraint. Modeled after Geoffrey Litt,
  * Andrej Karpathy, and Patrick Collison -- content is the feature, decoration
  * is limited to horizontal rules and blue links.
@@ -48,9 +57,9 @@ const categoryLabels: Record<string, string> = {
 ---
 
 <BaseLayout activeNav="home" pageType="home" ogImage="/og/index.png">
-  <div class="wide-container py-16 md:py-24">
+  <div class="wide-container space-y-16 pt-12 md:space-y-24 md:pt-16">
     {/* --- Hero --------------------------------------------------- */}
-    <section class="hero-section mb-16">
+    <section class="hero-section">
       {/* Photo + intro */}
       <div
         class="flex flex-col items-center gap-7 text-center md:flex-row md:items-start md:gap-8 md:text-left"
@@ -119,7 +128,7 @@ const categoryLabels: Record<string, string> = {
     </style>
 
     {/* --- Selected Work ------------------------------------------ */}
-    <section class="py-14">
+    <section>
       <div class="mb-8 flex items-baseline justify-between">
         <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
         <a
@@ -154,7 +163,7 @@ const categoryLabels: Record<string, string> = {
     {/* --- Recent Writing ----------------------------------------- */}
     {
       recentPosts.length > 0 && (
-        <section class="py-14">
+        <section>
           <div class="mb-8 flex items-baseline justify-between">
             <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
             <a
@@ -187,7 +196,7 @@ const categoryLabels: Record<string, string> = {
     }
 
     {/* --- Research Interests ------------------------------------- */}
-    <section class="py-14">
+    <section>
       <div class="mx-auto max-w-2xl md:mx-0">
         <h2 class="mb-4 text-xl font-semibold tracking-tight">Research interests</h2>
         <p class="leading-relaxed text-[var(--color-text-secondary)]">
@@ -202,7 +211,7 @@ const categoryLabels: Record<string, string> = {
       </div>
     </section>
 
-    <section class="py-14">
+    <section>
       <div class="mb-6 flex items-baseline justify-between">
         <h2 class="text-xl font-semibold tracking-tight">Outside the lab</h2>
         <a
