@@ -1,6 +1,6 @@
 name: Isaac Gallegos
-title: Research Engineer
-affiliation: Wellman Center for Photomedicine, Harvard Medical School
+title: Doctoral researcher
+affiliation: University of Colorado Boulder
 email: itgall@mit.edu
 website: https://isaac-gallegos.com
 orcid: 0009-0007-9290-6289
@@ -24,48 +24,35 @@ experience:
     location: Boston, MA
     dates: May 2025–Present
     current: true
-    advisors: D. Veysset, N. Uribe-Patarroyo, B.E. Bouma
     highlights:
       - Leading a polarization-resolved spectroscopic OCT project on a 1310 nm swept-source VCSEL system (100 nm bandwidth, 5 µm axial resolution), acquiring and spectrally post-processing data from 20+ fabricated biomaterial phantoms
       - Wrote physics-constrained inverse models in Python to recover wavelength-dependent optical properties from depth-resolved spectra
       - Built the first comprehensive open-source library and software tool for laser safety evaluation; first author on a manuscript targeting the Journal of Open Source Software
+    advisors: D. Veysset, N. Uribe-Patarroyo, B.E. Bouma
   - title: Research Assistant
     organization: Wellman Center for Photomedicine (Bouma Lab)
     parent: Harvard Medical School / Massachusetts General Hospital
     location: Boston, MA
     dates: Feb 2025–May 2025
-    advisors: D. Veysset, B.E. Bouma
     highlights:
       - Built the first micro-LED-based OCT system prototype, replacing swept-source lasers with individually addressable narrowband LEDs, and wrote its hardware control and acquisition software
       - Applied spectral unmixing to multi-spectral photoacoustic data from a custom all-fiber stimulated Raman scattering optical amplifier, determining per-pixel lipid and collagen concentrations from imaged samples
+    advisors: D. Veysset, B.E. Bouma
   - title: Undergraduate Research Assistant
     organization: Colorado School of Mines — Physics Department
     location: Golden, CO
     dates: Aug 2023–May 2024
-    advisors: L. Haddad
     highlights:
       - Developed an information-geometry approach to emergent holography, reparameterizing the 1D Ising model through a Gaussian dressing whose Fisher metric yields an emergent AdS₂ metric
       - Evaluated the partition function by transfer-matrix methods and worked out the dressing's two limiting regimes as dual descriptions of the lattice; first author on a manuscript in preparation for JHEP
+    advisors: L. Haddad
   - title: Undergraduate Research Project Lead
     organization: Colorado School of Mines — Ultrafast Laser Research Laboratory
     location: Golden, CO
     dates: Aug 2023–Dec 2023
-    advisors: C. Durfee
     highlights:
       - Led a five-person undergraduate team designing micron-scale, supersonic gas-jet nozzles for high-harmonic generation experiments, designing 5+ converging-diverging geometries in SolidWorks and Mathematica toward an optimized configuration
-research:
-  - title: Polarization-Entangled Photon Pair Generation & Bell-Inequality Measurement
-    institution: Graduate Quantum Optics Laboratory, Colorado School of Mines
-    dates: Aug 2024–Dec 2024
-    description: Produced polarization-entangled 810 nm photon pairs from dual-crystal Type-I SPDC under a 405 nm diode pump, using a YVO₄ crystal to compensate birefringent walk-off. Measured a CHSH violation of S = 2.51 ± 0.04 with silicon SPADs and four-channel FPGA coincidence counting with nanosecond gating.
-  - title: Solid-State Laser Construction and Rate-Equation Modeling
-    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
-    dates: Aug 2024–Dec 2024
-    description: Designed, built, and characterized a CW diode-pumped Pr³⁺:LiYF₄ laser (640 nm, 35 mW, 18% slope efficiency). Checked four-level rate-equation models against the measured pulse trains, fluorescence spectra, and output power.
-  - title: Diode-Pumped Q-Switched Nd:YAG Laser
-    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
-    dates: Aug 2024–Dec 2024
-    description: Demonstrated short-pulse generation by passively Q-switching an Nd:YAG laser (1064 nm, Cr:YAG saturable absorber, repetition rates to 3.5 kHz). Computationally modeled the Q-switching dynamics in Mathematica to verify the experimental results.
+    advisors: C. Durfee
 skills:
   - category: Quantum Optics
     items:
@@ -109,6 +96,19 @@ skills:
       - Vacuum systems
       - Ellipsometry
       - Scanning electron microscopy
+research:
+  - title: Polarization-Entangled Photon Pair Generation & Bell-Inequality Measurement
+    institution: Graduate Quantum Optics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Produced polarization-entangled 810 nm photon pairs from dual-crystal Type-I SPDC under a 405 nm diode pump, using a YVO₄ crystal to compensate birefringent walk-off. Measured a CHSH violation of S = 2.51 ± 0.04 with silicon SPADs and four-channel FPGA coincidence counting with nanosecond gating.
+  - title: Solid-State Laser Construction and Rate-Equation Modeling
+    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Designed, built, and characterized a CW diode-pumped Pr³⁺:LiYF₄ laser (640 nm, 35 mW, 18% slope efficiency). Checked four-level rate-equation models against the measured pulse trains, fluorescence spectra, and output power.
+  - title: Diode-Pumped Q-Switched Nd:YAG Laser
+    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Demonstrated short-pulse generation by passively Q-switching an Nd:YAG laser (1064 nm, Cr:YAG saturable absorber, repetition rates to 3.5 kHz). Computationally modeled the Q-switching dynamics in Mathematica to verify the experimental results.
 teaching:
   - role: Teaching Assistant
     course: Electromagnetic Waves and Optical Physics
