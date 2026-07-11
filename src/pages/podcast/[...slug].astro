@@ -97,7 +97,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
     guests={episode.data.guests.map((g: { name: string }) => g.name)}
     youtubeUrl={episode.data.youtubeUrl || undefined}
   />
-  <div class="full-container py-16" data-pagefind-body>
+  <div class="full-container pt-12 md:pt-16" data-pagefind-body>
 
     {/* ─── Breadcrumb navigation ─────────────────────────────────── */}
     <Breadcrumbs items={[

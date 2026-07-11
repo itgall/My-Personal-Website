@@ -22,7 +22,7 @@ const metaParts = [location, dateStr].filter(Boolean);
 ---
 
 <BaseLayout title={title} description={entry.data.summary || `${title} — ${sectionLabel}`} activeNav="misc">
-  <article class="wide-container py-16">
+  <article class="wide-container pt-12 md:pt-16">
     <a href={`/misc/#${section}`} class="misc-back">&larr; {sectionLabel}</a>
     <header class="misc-detail-header">
       <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">{title}</h1>
