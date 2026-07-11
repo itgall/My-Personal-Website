@@ -156,7 +156,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
 
     {/* ─── Listen on other platforms ───────────────────────────────── */}
     <div class="mb-10 flex flex-wrap items-center gap-3">
-      <span class="font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Listen on</span>
+      <span class="sc-label text-[11px] text-[var(--color-muted)]">Listen on</span>
       {episode.data.youtubeUrl && (
         <a href={episode.data.youtubeUrl} target="_blank" rel="noopener noreferrer"
           class="inline-flex items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors">
@@ -180,7 +180,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
     {/* ─── Chapter markers ─────────────────────────────────────────── */}
     {episode.data.chapters.length > 0 && (
       <section class="mb-10">
-        <h2 class="mb-3 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        <h2 class="mb-3 sc-label text-[12px] text-[var(--color-muted)]">
           Chapters
         </h2>
         <div class="space-y-1">
@@ -258,7 +258,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
     {/* ─── Related content ─────────────────────────────────────────── */}
     {hasRelated && (
       <section class="mb-10 pt-8 border-t border-[var(--color-border)]">
-        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
           Related content
         </h2>
         <div class="space-y-6">

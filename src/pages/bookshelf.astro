@@ -8,9 +8,7 @@ import { footerNote, sections, subtitle } from "@data/bookshelf";
     {
       sections.map((section) => (
         <section>
-          <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
-            {section.label}
-          </h2>
+          <h2 class="sc-label mb-4 text-[12px] text-[var(--color-muted)]">{section.label}</h2>
           <div class="space-y-4">
             {section.books.map((book) => (
               <div class="border-b border-[var(--color-border-subtle)] pb-4 last:border-0 last:pb-0">

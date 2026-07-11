@@ -28,6 +28,15 @@
  * Uses @layer to keep cascade priority below Tailwind utilities.
  */
 @layer components {
+  /* Editorial small-caps voice: serif letterspaced caps (plates, kickers,
+     nav, CTAs). Mono is reserved for data -- dates, venues, identifiers,
+     code. See the typography rule in the design notes. */
+  .sc-label {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
   .prose {
     max-width: var(--max-width-prose);
     color: var(--color-text-secondary);

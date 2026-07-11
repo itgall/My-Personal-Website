@@ -81,7 +81,7 @@ const totalTagUsages = groups.reduce(
     <div class="space-y-10">
       {groups.map((group) => (
         <section>
-          <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+          <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
             {group.label}
             <span class="ml-2 text-[var(--color-border)]">
               {group.tags.size} tag{group.tags.size === 1 ? "" : "s"}
@@ -121,7 +121,7 @@ const totalTagUsages = groups.reduce(
 
         return crossType.length > 0 ? (
           <section class="pt-8 border-t border-[var(--color-border)]">
-            <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+            <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
               Cross-type tags
               <span class="ml-2 text-[var(--color-border)]">
                 Tags appearing in multiple content types

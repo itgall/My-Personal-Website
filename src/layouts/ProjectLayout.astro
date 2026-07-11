@@ -101,7 +101,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
     {/* Cross-referenced publications from BibTeX */}
     {linkedPubs.length > 0 && (
       <section class="mt-12 border-t border-[var(--color-border)] pt-8">
-        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
           Related Publications
         </h2>
         <div class="space-y-3">
@@ -115,7 +115,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
     {/* Cross-referenced posts from Phase 1 schema */}
     {linkedPosts.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
-        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
           Related Essays
         </h2>
         <div class="space-y-2">
@@ -131,7 +131,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
     {/* Cross-referenced episodes from Phase 1 schema */}
     {linkedEpisodes.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
-        <h2 class="mb-4 font-mono text-[11px] font-medium tracking-wider text-[var(--color-muted)] uppercase">
+        <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
           Discussed in Podcast
         </h2>
         <div class="space-y-2">

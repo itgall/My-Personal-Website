@@ -78,7 +78,7 @@ const categoryLabels: Record<string, string> = {
           <h1 class="vt-page-title text-3xl leading-tight font-semibold tracking-tight md:text-4xl">
             {identity.name}
           </h1>
-          <p class="mt-2 font-mono text-[12px] tracking-wide text-[var(--color-muted)] uppercase">
+          <p class="sc-label mt-2 text-[12px] text-[var(--color-muted)]">
             {identity.role} &middot; {identity.affiliation}
           </p>
 
@@ -133,8 +133,8 @@ const categoryLabels: Record<string, string> = {
         <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
         <a
           href="/projects/"
-          class="font-mono text-[11px] tracking-wide text-[var(--color-link)] uppercase no-underline transition-colors hover:text-[var(--color-link-hover)]"
-          >All projects &rarr;</a
+          class="sc-label text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
+          >All projects</a
         >
       </div>
       {
@@ -148,7 +148,7 @@ const categoryLabels: Record<string, string> = {
                 <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   {project.data.description}
                 </p>
-                <span class="mt-1 font-mono text-[11px] tracking-wide text-[var(--color-muted)] uppercase">
+                <span class="mt-1 font-mono text-[11px] text-[var(--color-muted)]">
                   {project.data.institution}
                 </span>
               </a>
@@ -168,9 +168,9 @@ const categoryLabels: Record<string, string> = {
             <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
             <a
               href="/blog/"
-              class="font-mono text-[11px] tracking-wide text-[var(--color-link)] uppercase no-underline transition-colors hover:text-[var(--color-link-hover)]"
+              class="sc-label text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
             >
-              All writing &rarr;
+              All writing
             </a>
           </div>
           <div class="space-y-4">
@@ -204,9 +204,9 @@ const categoryLabels: Record<string, string> = {
         </p>
         <a
           href="/publications/"
-          class="mt-4 inline-block font-mono text-[11px] tracking-wide text-[var(--color-link)] uppercase no-underline transition-colors hover:text-[var(--color-link-hover)]"
+          class="sc-label mt-4 inline-block text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
         >
-          View publications &rarr;
+          View publications
         </a>
       </div>
     </section>

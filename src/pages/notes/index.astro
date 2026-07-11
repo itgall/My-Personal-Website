@@ -44,7 +44,7 @@ const maturityLabels: Record<string, string> = {
   <div id="notes-filters" class="mb-8 space-y-3">
     {/* Maturity filter */}
     <div class="flex flex-wrap items-center gap-1.5">
-      <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Maturity</span>
+      <span class="mr-1 sc-label text-[11px] text-[var(--color-muted)]">Maturity</span>
       <button class="filter-btn active" data-filter="maturity" data-value="all">All</button>
       {allMaturities.map((m) => (
         <button class="filter-btn" data-filter="maturity" data-value={m}>
@@ -56,7 +56,7 @@ const maturityLabels: Record<string, string> = {
     {/* Tag filter */}
     {allTags.length > 0 && (
       <div class="flex flex-wrap items-center gap-1.5">
-        <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">Topic</span>
+        <span class="mr-1 sc-label text-[11px] text-[var(--color-muted)]">Topic</span>
         <button class="filter-btn active" data-filter="tag" data-value="all">All</button>
         {allTags.map((tag) => (
           <button class="filter-btn" data-filter="tag" data-value={tag}>{tag}</button>

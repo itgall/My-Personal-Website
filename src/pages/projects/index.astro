@@ -61,9 +61,7 @@ const statusLabels: Record<string, string> = {
           {/* Status filter */}
           {allStatuses.length > 1 && (
             <div class="flex flex-wrap items-center gap-1.5">
-              <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">
-                Status
-              </span>
+              <span class="sc-label mr-1 text-[11px] text-[var(--color-muted)]">Status</span>
               <button class="filter-btn active" data-filter="status" data-value="all">
                 All
               </button>
@@ -78,9 +76,7 @@ const statusLabels: Record<string, string> = {
           {/* Tag filter */}
           {allTags.length > 0 && (
             <div class="flex flex-wrap items-center gap-1.5">
-              <span class="mr-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)] uppercase">
-                Topic
-              </span>
+              <span class="sc-label mr-1 text-[11px] text-[var(--color-muted)]">Topic</span>
               <button class="filter-btn active" data-filter="tag" data-value="all">
                 All
               </button>
