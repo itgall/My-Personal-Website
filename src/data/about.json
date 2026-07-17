@@ -1,6 +1,6 @@
 {
-  "metaDescription": "Isaac Gallegos builds interferometric imaging systems and spectral inverse models at the Wellman Center for Photomedicine. Applying to PhD programs for Fall 2027.",
-  "tagline": "I build optical systems. Lately I've been learning to build quantum ones too.",
+  "metaDescription": "Isaac Gallegos is a doctoral research at CU Boulder and JILA working on quantum photonics.",
+  "tagline": "I build various types of optical systems. Lately I've been learning to build quantum ones too.",
   "bio": "I work at the Wellman Center for Photomedicine, where I build swept-source interferometric systems and write inverse models that try to figure out what a sample is made of from how it scatters light. I've also built spectral unmixing pipelines for photoacoustic data and prototyped a broadband imaging system that uses individually addressable micro-LEDs instead of a swept laser. Before coming to Harvard I spent three years at Colorado School of Mines studying engineering physics, where I got to build solid-state lasers from scratch, violate the Bell inequality with entangled photon pairs, and design photon-counting circuits on an FPGA. These days I'm reading a lot about quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes, and I'm applying to physics PhD programs for Fall 2027.",
   "timeline": [
     {
@@ -12,25 +12,25 @@
       "future": true
     },
     {
-      "period": "2025 \u2014 present",
+      "period": "2025 — present",
       "role": "Research Engineer",
-      "institution": "Wellman Center for Photomedicine \u00b7 Harvard Medical School \u00b7 MGH",
+      "institution": "Wellman Center for Photomedicine · Harvard Medical School · MGH",
       "description": "I build swept-source interferometric systems, write inverse models for spectral measurements, and prototype broadband micro-LED imaging hardware. First-author manuscript in preparation.",
       "current": false,
       "future": false
     },
     {
-      "period": "2023 \u2014 2024",
+      "period": "2023 — 2024",
       "role": "Research Assistant & Project Lead",
-      "institution": "Colorado School of Mines \u2014 Physics Department & Ultrafast Laser Lab",
+      "institution": "Colorado School of Mines — Physics Department & Ultrafast Laser Lab",
       "description": "Computed Fisher information metrics for Ising models to test holographic duality conjectures. Also led a five-person team designing supersonic gas nozzles for high harmonic generation.",
       "current": false,
       "future": false
     },
     {
-      "period": "2021 \u2014 2024",
+      "period": "2021 — 2024",
       "role": "B.S. Engineering Physics",
-      "institution": "Colorado School of Mines \u00b7 3.99 GPA",
+      "institution": "Colorado School of Mines · 3.99 GPA",
       "description": "Three years of quantum optics, laser physics, and electronics. Built solid-state lasers (Pr:YLF and Nd:YAG), measured Bell inequality violations with entangled photons, and designed a gated photon-counting circuit on an FPGA.",
       "current": false,
       "future": false
