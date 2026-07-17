@@ -4,15 +4,11 @@
   "sections": [
     {
       "heading": "Research",
-      "body": "Working at the [Wellman Center for Photomedicine](https://octresearch.org) (Harvard Medical School / MGH). Building interferometric imaging systems, writing inverse models, and prototyping a broadband micro-LED source."
-    },
-    {
-      "heading": "PhD applications",
-      "body": "Preparing applications for Fall 2027. Looking at groups working on quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes."
+      "body": "Working as a graduate student at CU Boulder investigating quantum photonics, neuromorphic computing, and photonic integrated circuits."
     },
     {
       "heading": "Podcast",
-      "body": "Developing a science podcast exploring how fundamental physics innovation translates into technologies that solve grand challenges in health, energy, and information. Currently in pre-production: building the guest pipeline, production stack, and first episode scripts."
+      "body": "Developing a science podcast exploring how fundamental physics innovation translates into technologies that solve grand challenges in health, energy, and information. Currently in pre-production: building the guest list, production sequencing, and first episode scripts."
     },
     {
       "heading": "Ventures",
@@ -20,7 +16,7 @@
     },
     {
       "heading": "Learning",
-      "body": "Quantum computing fundamentals, Lean 4 theorem proving, advanced fiber optics, and the business mechanics of deep-tech company formation."
+      "body": "Quantum computing, machine and deep learning fundamentals, Lean 4, fiber optics, and the business mechanics of deep-tech company formation."
     }
   ]
 }
