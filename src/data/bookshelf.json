@@ -1,5 +1,5 @@
 {
-  "subtitle": "Books that have shaped how I think about physics, technology, and building.",
+  "subtitle": "Books that have shaped how I think about physics, technology, philosophy, human behavior & psychology, and building.",
   "footerNote": "Updated as I read.",
   "sections": [
     {
@@ -33,7 +33,7 @@
         {
           "title": "Zero to One",
           "author": "Peter Thiel",
-          "note": "Short and opinionated. The best part is the framing around secrets \u2014 what important truths do few people agree with you on."
+          "note": "Short and opinionated. The best part is the framing around secrets, what important truths do few people agree with you on."
         },
         {
           "title": "The Innovator's Dilemma",
@@ -51,7 +51,7 @@
           "note": "Made me realize how much of what we call 'normal science' is puzzle-solving within assumptions nobody questions."
         },
         {
-          "title": "G\u00f6del, Escher, Bach",
+          "title": "Gödel, Escher, Bach",
           "author": "Douglas Hofstadter",
           "note": "Changed how I think about self-reference and formal systems. Dense and worth rereading."
         },
