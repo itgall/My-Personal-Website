@@ -1,6 +1,6 @@
 {
   "features": {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "sidenotes": true,
     "defaultAccent": "forest",
     "backlinks": true,
