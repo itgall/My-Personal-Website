@@ -1,8 +1,9 @@
 {
-  "name": "astro-academic-site",
+  "name": "isaac-gallegos-website",
   "version": "1.0.0",
   "type": "module",
-  "description": "Production-grade academic website built on Astro 6 \u2014 zero JS by default, BibTeX-driven publications engine, Google Scholar meta tags, sidenotes, backlinks, research graph.",
+  "private": true,
+  "description": "Source for isaac-gallegos.com, my personal and academic website.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && npx pagefind --site dist",
