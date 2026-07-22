@@ -34,7 +34,7 @@
     "@types/react-dom": "^19.2.3",
     "astro": "6.4.8",
     "d3": "^7.9.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^5.2.1",
     "marked": "^18.0.6",
     "netlify-plugin-cache": "^1.0.3",
     "react": "^19.2.4",
