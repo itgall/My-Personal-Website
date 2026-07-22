@@ -29,9 +29,9 @@ const allTags = [...new Set(notes.flatMap((n: Note) => n.data.tags))].sort();
 const allMaturities = [...new Set(notes.map((n: Note) => n.data.maturity))].sort();
 
 const maturityLabels: Record<string, string> = {
-  seedling: "🌱 Seedling",
-  budding: "🌿 Budding",
-  evergreen: "🌳 Evergreen",
+  seedling: "Seedling",
+  budding: "Budding",
+  evergreen: "Evergreen",
 };
 
 /* Apparatus proportional to content (DESIGN.md Article IV): the filter/sort

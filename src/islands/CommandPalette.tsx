@@ -25,8 +25,6 @@ interface Command {
   category: "page" | "action" | "content" | "external";
   /** Category display label */
   categoryLabel: string;
-  /** Optional icon (emoji or short string) */
-  icon: string;
   /** Search keywords (matched in addition to label) */
   keywords: string;
   /** Navigation URL or action ID */
@@ -39,22 +37,22 @@ interface Command {
 
 const STATIC_COMMANDS: Command[] = [
   // Navigation
-  { id: "nav-home", label: "Home", category: "page", categoryLabel: "Pages", icon: "🏠", keywords: "home index landing", href: "/" },
-  { id: "nav-publications", label: "Publications", category: "page", categoryLabel: "Pages", icon: "📄", keywords: "research papers articles journal", href: "/publications/" },
-  { id: "nav-projects", label: "Projects", category: "page", categoryLabel: "Pages", icon: "🔬", keywords: "research work portfolio", href: "/projects/" },
-  { id: "nav-blog", label: "Blog", category: "page", categoryLabel: "Pages", icon: "✍️", keywords: "writing articles posts", href: "/blog/" },
-  { id: "nav-notes", label: "Notes", category: "page", categoryLabel: "Pages", icon: "🌱", keywords: "garden digital wiki", href: "/notes/" },
-  { id: "nav-teaching", label: "Teaching", category: "page", categoryLabel: "Pages", icon: "🎓", keywords: "courses classes ta instructor", href: "/teaching/" },
-  { id: "nav-cv", label: "CV", category: "page", categoryLabel: "Pages", icon: "📋", keywords: "resume curriculum vitae", href: "/cv/" },
-  { id: "nav-about", label: "About", category: "page", categoryLabel: "Pages", icon: "👤", keywords: "bio biography info", href: "/about/" },
-  { id: "nav-contact", label: "Contact", category: "page", categoryLabel: "Pages", icon: "📧", keywords: "email message reach", href: "/contact/" },
-  { id: "nav-search", label: "Search", category: "page", categoryLabel: "Pages", icon: "🔍", keywords: "find query pagefind", href: "/search/" },
-  { id: "nav-graph", label: "Research Graph", category: "page", categoryLabel: "Pages", icon: "🕸️", keywords: "knowledge network visualization d3", href: "/graph/" },
+  { id: "nav-home", label: "Home", category: "page", categoryLabel: "Pages", keywords: "home index landing", href: "/" },
+  { id: "nav-publications", label: "Publications", category: "page", categoryLabel: "Pages", keywords: "research papers articles journal", href: "/publications/" },
+  { id: "nav-projects", label: "Projects", category: "page", categoryLabel: "Pages", keywords: "research work portfolio", href: "/projects/" },
+  { id: "nav-blog", label: "Blog", category: "page", categoryLabel: "Pages", keywords: "writing articles posts", href: "/blog/" },
+  { id: "nav-notes", label: "Notes", category: "page", categoryLabel: "Pages", keywords: "garden digital wiki", href: "/notes/" },
+  { id: "nav-teaching", label: "Teaching", category: "page", categoryLabel: "Pages", keywords: "courses classes ta instructor", href: "/teaching/" },
+  { id: "nav-cv", label: "CV", category: "page", categoryLabel: "Pages", keywords: "resume curriculum vitae", href: "/cv/" },
+  { id: "nav-about", label: "About", category: "page", categoryLabel: "Pages", keywords: "bio biography info", href: "/about/" },
+  { id: "nav-contact", label: "Contact", category: "page", categoryLabel: "Pages", keywords: "email message reach", href: "/contact/" },
+  { id: "nav-search", label: "Search", category: "page", categoryLabel: "Pages", keywords: "find query pagefind", href: "/search/" },
+  { id: "nav-graph", label: "Research Graph", category: "page", categoryLabel: "Pages", keywords: "knowledge network visualization d3", href: "/graph/" },
 
   // Actions
-  { id: "act-print", label: "Print Page", category: "action", categoryLabel: "Actions", icon: "🖨️", keywords: "print pdf paper", action: "print" },
-  { id: "act-top", label: "Scroll to Top", category: "action", categoryLabel: "Actions", icon: "⬆️", keywords: "top scroll up beginning", action: "scrollTop" },
-  { id: "act-copy-url", label: "Copy Page URL", category: "action", categoryLabel: "Actions", icon: "🔗", keywords: "link share clipboard copy url", action: "copyUrl" },
+  { id: "act-print", label: "Print Page", category: "action", categoryLabel: "Actions", keywords: "print pdf paper", action: "print" },
+  { id: "act-top", label: "Scroll to Top", category: "action", categoryLabel: "Actions", keywords: "top scroll up beginning", action: "scrollTop" },
+  { id: "act-copy-url", label: "Copy Page URL", category: "action", categoryLabel: "Actions", keywords: "link share clipboard copy url", action: "copyUrl" },
 ];
 
 /* ── Fuzzy match scoring ──────────────────────────────────────────────────── */
@@ -411,12 +409,6 @@ export default function CommandPalette() {
                       outline: "none",
                     }}
                   >
-                    <span
-                      style={{ fontSize: "16px", width: "22px", textAlign: "center", flexShrink: 0 }}
-                      aria-hidden="true"
-                    >
-                      {cmd.icon}
-                    </span>
                     <span style={{ flex: 1 }}>{cmd.label}</span>
                     {cmd.href && (
                       <span
