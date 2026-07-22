@@ -14,7 +14,7 @@ const DEFAULT_CURRENTLY =
   "finishing a laser safety calculator for tissue exposure limits, and reading about topology and differential geometry.";
 
 const DEFAULT_RESEARCH_INTERESTS =
-  "I'm increasingly focused on quantum optics and quantum networks: the physics of spin-based quantum nodes, photonic interconnects, and distributing entanglement between them, alongside many-body quantum systems and statistical physics. I also care about single-photon detection, nonlinear optics, and laser physics, which is where I started.";
+  "Right now my work centers on quantum photonics, neuromorphic computing, and photonic integrated circuits. Around that I'm drawn to quantum information and quantum networks, and to many-body and statistical physics. Single-photon detection, nonlinear optics, and laser physics are where I started, and I keep coming back to them.";
 
 /**
  * The nine valid CSS object-position / background-position keyword pairs.
