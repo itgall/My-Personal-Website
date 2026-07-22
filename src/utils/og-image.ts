@@ -143,6 +143,8 @@ export async function generateOgImage(
   const displayTags = tags.slice(0, 4);
 
   const svg = await satori(
+    // Satori accepts this element tree at runtime; the cast bridges its
+    // React-typed signature (no JSX here).
     {
       type: "div",
       props: {
@@ -360,7 +362,7 @@ export async function generateOgImage(
           },
         ],
       },
-    },
+    } as unknown as Parameters<typeof satori>[0],
     {
       width: 1200,
       height: 630,
