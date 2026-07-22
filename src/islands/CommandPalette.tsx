@@ -260,7 +260,7 @@ export default function CommandPalette() {
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-xl)",
-          boxShadow: "var(--shadow-glass)",
+          boxShadow: "var(--shadow-modal)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
