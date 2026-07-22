@@ -1,26 +1,26 @@
 {
-  "subtitle": "Tools, software, and equipment I use for research, development, and daily work.",
+  "subtitle": "The hardware and software I actually reach for, from the optics bench to this site.",
   "updated": "June 2026",
   "sections": [
     {
       "heading": "Research & lab",
-      "body": "**COMSOL Multiphysics** for computational optical modeling \u2014 finite element simulations of light propagation, waveguide design, and photoacoustic wave propagation. **Zemax OpticStudio** for optical system design, ray tracing, and tolerance analysis. **MATLAB** for inverse algorithm development, signal processing, spectral analysis, and Jones matrix polarization simulations. **SolidWorks** for mechanical design of optical assemblies and optomechanical components."
+      "body": "Optical modeling happens in **COMSOL Multiphysics** — finite-element simulations of light propagation, waveguides, and photoacoustic wave fields — and in **Zemax OpticStudio** when I need ray tracing and tolerancing across a whole system. Most of my inverse-problem, signal-processing, and Jones-matrix polarization code is still **MATLAB**. Optomechanical parts get drawn in **SolidWorks** before they ever hit the bench."
     },
     {
       "heading": "Computation & ML",
-      "body": "**Python** as the primary language for research computing, with **PyTorch** and **JAX** for physics-informed neural networks and differentiable forward models. **NumPy**, **SciPy**, and **scikit-learn** for numerical methods and data analysis. **Jupyter** for exploratory analysis and **LaTeX** for manuscripts and technical documentation."
+      "body": "**Python** does almost everything else. Differentiable forward models and physics-informed networks lean on **PyTorch** and **JAX**; the ordinary numerics fall to **NumPy**, **SciPy**, and **scikit-learn**. Exploratory work lives in **Jupyter**, and manuscripts in **LaTeX**."
     },
     {
       "heading": "Development",
-      "body": "**VS Code** as the primary editor, with Vim keybindings. **Git** and **GitHub** for version control. This site is built with **Astro 6**, **Tailwind CSS v4**, and **TypeScript**, hosted on **Netlify**. **Claude Code** for AI-assisted development. See the [colophon](/colophon/) for full site architecture details."
+      "body": "I write in **VS Code** with Vim keybindings and keep everything in **Git** and **GitHub**. This site runs on **Astro**, **Tailwind CSS**, and **TypeScript**, deployed to **Netlify** — the [colophon](/colophon/) has the full build. I use **Claude Code** as a pair-programmer on it."
     },
     {
-      "heading": "Productivity",
-      "body": "**Obsidian** for research notes, literature reviews, and the working notes that feed this site's notes section. **Superhuman** for email. **Reclaim.ai** for calendar management and time blocking. **Fathom** for meeting transcription and action items."
+      "heading": "Writing & notes",
+      "body": "**Obsidian** holds my reading notes and the rougher drafts that eventually turn into the [notes](/notes/) on this site."
     },
     {
       "heading": "Hardware",
-      "body": "Research workstation with NVIDIA GPU for COMSOL and ML training. Lab equipment includes swept-source lasers, fiber optic test benches, optical spectrum analyzers, and custom catheter assembly fixtures."
+      "body": "A workstation with an NVIDIA GPU for COMSOL runs and model training. In the lab that means swept-source lasers, fiber test benches, optical spectrum analyzers, and the optomechanics that go with them."
     }
   ]
 }
