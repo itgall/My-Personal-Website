@@ -27,7 +27,7 @@ const DEFAULT_SECTIONS: PageSection[] = [
   },
   {
     heading: "Podcast",
-    body: "Developing a science podcast exploring how fundamental physics innovation translates into technologies that solve grand challenges in health, energy, and information. Currently in pre-production: building the guest pipeline, production stack, and first episode scripts.",
+    body: "Working on a science podcast about how fundamental physics becomes real instruments and technology. Still early — putting together the guest list and the first few episodes.",
   },
   {
     heading: "Ventures",
