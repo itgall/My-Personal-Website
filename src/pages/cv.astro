@@ -114,7 +114,7 @@ const personJsonLd = {
   },
   worksFor: {
     "@type": "Organization",
-    name: cv.experience?.[0]?.organization ?? siteMetadata.affiliations[0]?.name ?? "Your Institution",
+    name: cv.experience?.[0]?.organization ?? siteMetadata.affiliations[0]?.name,
     parentOrganization: cv.experience?.[0]?.parent ? {
       "@type": "Organization",
       name: cv.experience[0].parent,

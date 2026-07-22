@@ -43,6 +43,25 @@ const types = [...new Set(publications.map((p) => p.type))].sort() as PubType[];
 
 const count = publications.length;
 
+/* Honest breakdown for the subtitle: don't count in-preparation manuscripts
+   and conference posters together as "N publications". */
+const inPrepCount = publications.filter((p) => p.status === "in-preparation").length;
+const presentationCount = publications.filter((p) => p.type === "misc").length;
+const publishedCount = count - inPrepCount - presentationCount;
+const summaryParts: string[] = [];
+if (publishedCount > 0)
+  summaryParts.push(`${publishedCount} publication${publishedCount === 1 ? "" : "s"}`);
+if (inPrepCount > 0)
+  summaryParts.push(`${inPrepCount} manuscript${inPrepCount === 1 ? "" : "s"} in preparation`);
+if (presentationCount > 0)
+  summaryParts.push(
+    `${presentationCount} conference presentation${presentationCount === 1 ? "" : "s"}`,
+  );
+const listSubtitle =
+  summaryParts.length > 0
+    ? summaryParts.join(" · ")
+    : "Research output, preprints, and presentations.";
+
 /* ── Build human-readable type labels for filter chips ─────────── */
 interface FilterOption {
   value: string;
@@ -59,9 +78,7 @@ const filterOptions: FilterOption[] = types.map((type) => ({
 
 <PageLayout
   title="Publications"
-  subtitle={count === 0
-    ? "Research output, preprints, and presentations."
-    : `${count} ${count === 1 ? "publication" : "publications"} — research output, preprints, and presentations.`}
+  subtitle={listSubtitle}
   activeNav="publications"
 >
   {/* ═══════ 1. SCOPE + EXTERNAL LINKS ═══════════════════════════ */}
