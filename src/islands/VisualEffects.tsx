@@ -81,14 +81,18 @@ export default function VisualEffects() {
   const frameRef = useRef<number>(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    /* The `!` makes the TYPE non-null so canvas/ctx stay non-null inside the
+       hoisted resize()/animate() closures (TS drops the guard-narrowing there).
+       The runtime guards below still protect against an actually-missing
+       ref/context — the assertion affects types only, not runtime. */
+    const canvas = canvasRef.current!;
     if (!canvas) return;
 
     /** Respect prefers-reduced-motion */
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motionQuery.matches) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d")!;
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
