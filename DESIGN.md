@@ -103,6 +103,17 @@ screens and settings toggles, currently dormant and already speaking the
 house voice. They activate on thresholds, because a thin section damages
 credibility more than an absent one.
 
+This dormant machinery is a deliberate, eyes-open trade. Alongside those
+sections it includes optional interactive islands (command palette, research
+graph, link previews, reading progress, ambient canvas, an assistant widget,
+a document-request flow) and a multi-preset accent switcher — all off by
+default, none rendered on the live site. The cost is that a reader of the
+*source* may read the unused breadth as scaffolding; the benefit is that
+future eras turn on by flipping a flag, not by a rebuild. The standing rule
+that keeps the trade honest: dormant code still obeys the house palette and
+voice (only the forest accent's variables are inlined per page; no violet
+ships), and nothing dormant is ever linked or rendered until it is real.
+
 **Now — pre-PhD researcher.** Nav: Research, Publications, Writing,
 About, Misc. Everything visible is real and current.
 
