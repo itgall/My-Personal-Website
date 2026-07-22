@@ -132,8 +132,8 @@ const filterOptions: FilterOption[] = types.map((type) => ({
       {featured.length > 0 ? "All publications" : "Publications"}
     </h2>
 
-    {/* ── Filter UI — CSS-only radio buttons ──────────────────────── */}
-    {count > 0 && types.length > 1 && (
+    {/* ── Filter UI — CSS-only radio buttons (only once the list needs it) ── */}
+    {count >= 6 && types.length > 1 && (
       <div class="pubs-filter">
         <fieldset class="pubs-filter-fieldset">
           <legend class="sr-only">Filter by publication type</legend>
