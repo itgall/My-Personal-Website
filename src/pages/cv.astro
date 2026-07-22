@@ -636,7 +636,9 @@ const personJsonLd = {
 
   .cv-contact-sep {
     margin: 0 0.5rem;
-    color: var(--color-border);
+    /* muted (4.8:1), not border (~1.4:1) — the separators are text and must
+       meet WCAG AA contrast (caught by the pa11y CI gate). */
+    color: var(--color-muted);
   }
 
   /* ─── Section heading ─────────────────────────────────────────── */
