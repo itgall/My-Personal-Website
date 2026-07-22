@@ -197,9 +197,10 @@ const canonicalUrl = new URL(Astro.url.pathname, siteMetadata.siteUrl).href;
     {/* Named slot for page-specific <head> content (e.g., ScholarMeta) */}
     <slot name="head" />
 
-    {/* Google Fonts — Inter (body + headings), JetBrains Mono (code) */}
-    {/* Fonts pair with the --font-* variables in tailwind.css: change both
-        together. Governed by DESIGN.md Article III. */}
+    {/* Google Fonts — Newsreader (display), Source Serif 4 (reading),
+        IBM Plex Sans (UI), IBM Plex Mono (data/code). These pair with the
+        --font-* variables in tailwind.css: change both together.
+        Governed by DESIGN.md Article III. */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

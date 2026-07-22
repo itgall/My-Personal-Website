@@ -23,7 +23,7 @@ import rawSettings from "./settings.json";
 export interface FeatureSettings {
   /** Block all content with a maintenance overlay (bypass with ?preview=true) */
   maintenanceMode: boolean;
-  /** Default accent color preset ID (mint, blue, violet, rose, amber, cyan, teal, orange) */
+  /** Default accent color preset ID (see src/data/accents.ts; default "forest") */
   defaultAccent: string;
   /** Compute and display bidirectional backlinks */
   backlinks: boolean;
