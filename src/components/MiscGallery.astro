@@ -42,11 +42,6 @@ const items = galleryTiles;
   .plate {
     display: block;
     text-decoration: none;
-    transition: transform 0.18s ease;
-  }
-
-  .plate:hover {
-    transform: translateY(-3px);
   }
 
   .plate-image {
@@ -80,15 +75,6 @@ const items = galleryTiles;
 
   .plate:hover .plate-label {
     color: var(--color-accent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .plate {
-      transition: none;
-    }
-    .plate:hover {
-      transform: none;
-    }
   }
 
   @media (max-width: 640px) {

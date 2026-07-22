@@ -62,7 +62,6 @@ const topic = highlightTag ?? (tags.length > 0 ? tags[0] : null);
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
   }
   .figure-placeholder {
     font-size: 0.625rem;
@@ -115,23 +114,10 @@ const topic = highlightTag ?? (tags.length > 0 ? tags[0] : null);
   .project-card:hover .card-title {
     color: var(--color-accent);
   }
-  .project-card:hover .card-figure img {
-    transform: scale(1.04);
-  }
   .card-description {
     font-size: 0.75rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
     margin-top: 0.375rem;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .project-card,
-    .card-title,
-    .card-figure img {
-      transition: none;
-    }
-    .project-card:hover .card-figure img {
-      transform: none;
-    }
   }
 </style>
