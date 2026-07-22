@@ -30,12 +30,13 @@ framework default. `#345130` on paper measures ~8:1 contrast (well past AA), and
 its dark-mode pair `#8FB07F` clears AA on the dark background. It reads as a
 mixed pigment, not a swatch.
 
-**Binding rule: forest green is the only accent that ever ships.** No violet,
-no indigo, no gradient-filled text, no second accent. Any surviving
-`#6B4C9A` / `#A587CC` (the old "405nm violet" that lingered in the social-image
-generator and the inlined theme presets) is removed on sight. The accent-preset
-switcher may exist in code as dormant machinery, but the built site renders one
-accent.
+**Binding rule: forest green is the only accent that ships.** No violet,
+no indigo, no gradient-filled text, no second accent renders on the built
+site. The old "405nm violet" (`#6B4C9A` / `#A587CC`) that had leaked into
+the social-image generator and the inlined per-page theme is gone from every
+shipped surface. The accent-preset switcher still carries other presets —
+including that violet — as dormant machinery in `accents.ts`, but it is off
+by default and the built site inlines only the forest accent's variables.
 
 ## Type
 
