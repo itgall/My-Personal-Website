@@ -30,9 +30,9 @@ of space. Sections carry no vertical padding of their own; the page
 composes them. The scale: 96px between sections on desktop, 64px on
 mobile; page tops are 64/48px for index pages and 48px for reading pages
 (deliberately tighter); the footer's own margin (96/64px) is the sole exit
-gap on every page — no container carries bottom padding. The About page's
-alternating color bands are the one licensed exception: their padding is
-internal to the bands, and the background shift carries the boundary.
+gap on every page — no container carries bottom padding. There are no
+exceptions: the About page once used alternating color bands, but they were
+removed so it composes on the same rhythm as everything else.
 
 ## III. Typography — two voices
 
@@ -114,11 +114,10 @@ that keeps the trade honest: dormant code still obeys the house palette and
 voice (only the forest accent's variables are inlined per page; no violet
 ships), and nothing dormant is ever linked or rendered until it is real.
 
-**Now — pre-PhD researcher.** Nav: Research, Publications, Writing,
-About, Misc. Everything visible is real and current.
-
-**PhD era.** Same structure. Research deepens; list controls self-activate
-as collections cross six items. Teaching enters the nav only if it becomes
+**Now — doctoral researcher.** Nav: Research, Publications, Writing,
+About, Misc. Everything visible is real and current. As the doctorate
+proceeds the research deepens and the list controls self-activate when a
+collection crosses six items. Teaching enters the nav only if it becomes
 substantial; otherwise it stays where it is.
 
 **Founder era.** Ventures activates at one venture with a real narrative
