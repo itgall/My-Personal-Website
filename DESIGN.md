@@ -1,15 +1,13 @@
-# Design constitution
+# Design notes
 
-This document is the standard against which every change to this site is
-judged. The rules below were not invented in the abstract; each one was
-earned during the 2026 redesign, usually by measuring a defect, fixing it,
-and proving the fix. They exist to prevent the slow decay every personal
-site suffers: genericness arriving one unexamined decision at a time.
+These are the rules the site holds itself to. Most were learned the hard
+way during the 2026 redesign — find a generic default, fix it, keep the fix
+as a rule. The point is to keep the site from drifting into genericness one
+small unexamined decision at a time.
 
-The test for the whole system is simple. A visitor — including an expert —
-should read this site as the sustained work of one person with a point of
-view. Nothing here should look like it shipped because a template, a
-framework, or a tool defaulted to it.
+One test covers most of it: the site should read as the work of one person
+who made deliberate choices, not as whatever a template, framework, or tool
+happened to default to.
 
 ## I. Photographs
 
@@ -81,18 +79,17 @@ not store. A fact should never need editing twice.
 ## VIII. Color
 
 Near-monochrome ink on paper, with one accent: the muted forest green,
-applied sparingly and with conviction — links, the active state, small
-moments of emphasis. The restraint is the identity; the green is a
-decision, not a tint.
+applied sparingly — links, the active state, small moments of emphasis.
+The restraint is the point, and the green is a deliberate choice, not a
+default tint.
 
 ## IX. Change discipline
 
-Visualize before implementing; measure before changing. Refactors must
-prove zero regression: page text, links, headings, and descriptions
-extracted and compared before and after. Deploys are transactional and
-hash-gated — they apply completely or not at all. Where a rule lives in
-code, a covenant comment marks it so the next editor cannot break it
-innocently.
+Visualize before implementing; measure before changing. Refactors have to
+prove zero regression: extract and compare page text, links, headings, and
+descriptions before and after. Deploys are transactional and hash-gated —
+they apply completely or not at all. Where a rule lives in code, a comment
+marks it so the next editor doesn't break it by accident.
 
 ## X. How this site grows
 
@@ -136,23 +133,20 @@ natural absorber. The nav states what matters now; it is not an archive.
 **Freshness.** The Now page is either current or honestly dated. Nothing
 dormant is linked; nothing linked is stale.
 
-## XI. The throughline
+## XI. What stays constant
 
-What stays constant across every era is the brand; everything else may
-change by amendment.
+A few things don't change from one era to the next. The name is the
+identity, and this domain is the name. The work is physics turned into
+instruments and pointed at real problems; the particular instruments
+change freely. The two voices — serif for reading, mono for data — stay
+put, and so does the restraint. The photographs and figures are always the
+owner's own, which is the strongest authenticity signal the site has.
 
-The name is the identity, and this domain is the name. The narrative arc
-is fixed — fundamental physics, made into instruments, aimed at problems
-that matter — while the particular instruments change freely. The two
-voices are fixed: the scholar's serif and the engineer's data. The
-restraint is fixed. The photographs and figures are the owner's own,
-always — the single strongest authenticity signal this site has.
+This site is the stable center of the owner's public identity: other
+profiles point here, and it doesn't follow another platform's redesign.
 
-This site is the stable center of a unified public identity. Other
-profiles point here. This place answers to no platform's redesign.
+## Changing these rules
 
-## Amendments
-
-These rules may change — deliberately. An amendment names the article,
-states the reason, and updates this document in the same commit as the
-change it licenses. What is not permitted is drift.
+The rules can change. When one does, say which rule and why, and update
+this file in the same commit as the change. The thing to avoid is silent
+drift.
