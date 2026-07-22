@@ -1,0 +1,39 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import { footerNote, sections, subtitle } from "@data/bookshelf";
+---
+
+<PageLayout title="Bookshelf" subtitle={subtitle} activeNav="">
+  <div class="space-y-10">
+    {
+      sections.map((section) => (
+        <section>
+          <h2 class="sc-label mb-4 text-[12px] text-[var(--color-muted)]">{section.label}</h2>
+          <div class="space-y-4">
+            {section.books.map((book) => (
+              <div class="border-b border-[var(--color-border-subtle)] pb-4 last:border-0 last:pb-0">
+                <p class="text-[15px] font-medium text-[var(--color-text)]">{book.title}</p>
+                {book.author && (
+                  <p class="mt-0.5 text-xs text-[var(--color-muted)]">{book.author}</p>
+                )}
+                {book.note && (
+                  <p class="mt-1.5 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                    {book.note}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  {
+    footerNote && (
+      <div class="mt-12 border-t border-[var(--color-border)] pt-8">
+        <p class="text-xs text-[var(--color-muted)]">{footerNote}</p>
+      </div>
+    )
+  }
+</PageLayout>

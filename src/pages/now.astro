@@ -1,0 +1,35 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import { sections, subtitle, updated } from "@data/now";
+import { renderMarkdown } from "@utils/markdown";
+---
+
+<PageLayout title="Now" subtitle={subtitle} activeNav="">
+  {
+    updated && (
+      <p class="mb-8 font-mono text-xs text-[var(--color-muted)]">Last updated: {updated}</p>
+    )
+  }
+
+  <div class="prose max-w-none">
+    {
+      sections.map((section) => (
+        <>
+          <h2>{section.heading}</h2>
+          <Fragment set:html={renderMarkdown(section.body)} />
+        </>
+      ))
+    }
+  </div>
+
+  <div class="mt-12 border-t border-[var(--color-border)] pt-8">
+    <p class="text-xs text-[var(--color-muted)]">
+      This page is inspired by <a
+        href="https://nownownow.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--color-link)] no-underline hover:underline">nownownow.com</a
+      >. It's a snapshot of what I'm focused on at this point in my life.
+    </p>
+  </div>
+</PageLayout>

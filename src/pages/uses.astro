@@ -1,0 +1,29 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import { sections, subtitle, updated } from "@data/uses";
+import { renderMarkdown } from "@utils/markdown";
+---
+
+<PageLayout title="Uses" subtitle={subtitle} activeNav="">
+  <div class="prose max-w-none">
+    {
+      sections.map((section) => (
+        <>
+          <h2>{section.heading}</h2>
+          <Fragment set:html={renderMarkdown(section.body)} />
+        </>
+      ))
+    }
+  </div>
+
+  <div class="mt-12 border-t border-[var(--color-border)] pt-8">
+    <p class="text-xs text-[var(--color-muted)]">
+      This page is inspired by <a
+        href="https://uses.tech"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--color-link)] no-underline hover:underline">uses.tech</a
+      >.{updated && ` Last updated ${updated}.`}
+    </p>
+  </div>
+</PageLayout>

@@ -1,0 +1,96 @@
+---
+/**
+ * podcast/subscribe.astro — Cross-platform podcast subscription page.
+ *
+ * The canonical link shared in every episode's show notes and social posts.
+ * Provides branded buttons for every distribution platform plus the raw RSS
+ * feed URL for manual subscription in any podcast app.
+ *
+ * Not in primary nav — linked from /podcast/ index page and episode pages.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+
+const platforms = [
+  {
+    name: "Apple Podcasts",
+    url: "",
+    description: "Subscribe on iPhone, iPad, and Mac.",
+  },
+  {
+    name: "Spotify",
+    url: "",
+    description: "Stream and download episodes.",
+  },
+  {
+    name: "YouTube",
+    url: "",
+    description: "Watch video episodes and clips.",
+  },
+  {
+    name: "RSS Feed",
+    url: "/rss.xml",
+    description: "Subscribe in any podcast app using the raw feed.",
+  },
+];
+
+const configuredPlatforms = platforms.filter((p) => p.url.length > 0);
+const unconfiguredPlatforms = platforms.filter((p) => p.url.length === 0);
+---
+
+<PageLayout
+  title="Subscribe"
+  subtitle="Never miss an episode. Choose your preferred platform."
+  activeNav="podcast"
+>
+  <Breadcrumbs items={[
+    { label: "Podcast", href: "/podcast/" },
+    { label: "Subscribe" }
+  ]} />
+
+  {configuredPlatforms.length > 0 ? (
+    <div class="grid gap-3 sm:grid-cols-2 mt-6">
+      {configuredPlatforms.map((platform) => (
+        <a
+          href={platform.url}
+          target={platform.url.startsWith("http") ? "_blank" : undefined}
+          rel={platform.url.startsWith("http") ? "noopener noreferrer" : undefined}
+          class="group block rounded-lg border border-[var(--color-border)] p-5 no-underline hover:border-[var(--color-accent-border)] transition-colors"
+        >
+          <span class="block text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
+            {platform.name}
+          </span>
+          <span class="block mt-1 text-xs text-[var(--color-muted)]">
+            {platform.description}
+          </span>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class="mt-6 rounded-lg border border-[var(--color-border)] p-6">
+      <p class="text-[15px] text-[var(--color-text-secondary)]">
+        Platform links will be available when the podcast launches. In the meantime,
+        you can subscribe via <a href="/rss.xml" class="text-[var(--color-link)] hover:underline">RSS</a>.
+      </p>
+    </div>
+  )}
+
+  {unconfiguredPlatforms.length > 0 && configuredPlatforms.length > 0 && (
+    <p class="mt-6 text-sm text-[var(--color-muted)]">
+      Additional platforms will be added as they become available.
+    </p>
+  )}
+
+  <section class="mt-12 pt-8 border-t border-[var(--color-border)]">
+    <h2 class="mb-3 text-base font-medium text-[var(--color-text)]">
+      Subscribe via RSS
+    </h2>
+    <p class="text-sm text-[var(--color-text-secondary)] mb-4">
+      Copy the RSS feed URL below and paste it into your preferred podcast app
+      (Overcast, Pocket Casts, Castro, or any standard podcast client).
+    </p>
+    <div class="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-off)] px-4 py-3 font-mono text-sm text-[var(--color-text-secondary)] break-all">
+      https://isaac-gallegos.com/rss.xml
+    </div>
+  </section>
+</PageLayout>

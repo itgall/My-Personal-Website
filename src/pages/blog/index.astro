@@ -1,0 +1,238 @@
+---
+/**
+ * blog/index.astro — Essays listing page (Refined C).
+ *
+ * Architecture:
+ *   - Plain text tab-style links for category filtering (All, Technical,
+ *     Build log, Essay). Active tab has an underline accent. No topic
+ *     filter on this page — topics are accessible via tag pages linked
+ *     from individual essay pages and from /tags/.
+ *   - Content constrained to 740px max-width within the wide-container
+ *     layout inherited from PageLayout. This prevents entries from
+ *     stretching to the full 960px wide-container width.
+ *   - PostCard rendered with showTags={false} — tag chips are removed
+ *     from the index view. Tags remain on individual essay pages and
+ *     on the tag archive pages at /blog/tags/[tag]/.
+ *   - Year-grouped chronological listing preserved.
+ *   - Sort dropdown preserved (newest first, oldest first, title A-Z).
+ *   - Client-side category filtering via data attributes and inline JS.
+ *     Progressive enhancement: without JS, all posts are visible and
+ *     the tab links degrade to plain text.
+ *
+ * This replaces the previous implementation which used two rows of
+ * filter chips (category + topic) with ~15 pill-shaped buttons that
+ * consumed significant vertical space, plus 3-5 tag chips per card
+ * that made each entry visually heavy.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import PostCard from "@components/PostCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Post = CollectionEntry<"posts">;
+
+const posts: Post[] = (await getCollection("posts", ({ data }: Post) => data.published))
+  .sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime());
+
+/** Collect unique categories for filter tabs */
+const allCategories = [...new Set(posts.map((p: Post) => p.data.category))].sort();
+
+const categoryLabels: Record<string, string> = {
+  technical: "Technical notes",
+  thesis: "Theses",
+  essay: "Essays",
+  dispatch: "Dispatches",
+  "build-log": "Build logs",
+};
+
+/** Group posts by year for section headers */
+const postsByYear = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.date.getFullYear();
+  if (!postsByYear.has(year)) postsByYear.set(year, []);
+  postsByYear.get(year)!.push(post);
+}
+---
+
+<PageLayout
+  title="Essays"
+  subtitle={`Technical notes, theses, essays, and build logs. ${posts.length} post${posts.length === 1 ? "" : "s"}.`}
+  activeNav="blog"
+>
+  <div class="blog-content">
+
+    {/* ── Category tabs ─────────────────────────────────────────── */}
+    {allCategories.length > 1 && (
+      <nav class="blog-tabs" aria-label="Filter by category">
+        <button
+          class="blog-tab active"
+          data-category="all"
+          type="button"
+        >
+          All
+        </button>
+        {allCategories.map((cat) => (
+          <button
+            class="blog-tab"
+            data-category={cat}
+            type="button"
+          >
+            {categoryLabels[cat] ?? cat}
+          </button>
+        ))}
+      </nav>
+    )}
+
+    {/* ── No results message (hidden by default) ────────────────── */}
+    <p id="blog-no-results" class="hidden text-sm text-[var(--color-muted)] py-8">
+      No posts match the selected category.
+    </p>
+
+    {/* ── Post listing grouped by year ──────────────────────────── */}
+    {posts.length === 0 ? (
+      <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+        Essays will appear here as they are published.
+        See <a href="/notes/" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">notes</a>
+        {" "}for shorter-form technical writing.
+      </p>
+    ) : (
+      <div id="blog-posts" class="blog-list">
+        {[...postsByYear.entries()].map(([year, yearPosts]) => (
+          <section data-year-group={year}>
+            <h2 class="blog-year">{year}</h2>
+            <div class="blog-year-entries">
+              {yearPosts.map((post) => (
+                <div
+                  class="blog-item"
+                  data-category={post.data.category}
+                  data-year={post.data.date.getFullYear()}
+                  data-date={post.data.date.toISOString()}
+                  data-title={post.data.title.toLowerCase()}
+                >
+                  <PostCard post={post} showTags={false} />
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    )}
+
+  </div>
+</PageLayout>
+
+<style>
+  /*
+   * ═══════════════════════════════════════════════════════════════
+   * BLOG INDEX — Refined C
+   *
+   * Content width constrained to 740px within PageLayout's
+   * wide-container (960px). Category filter is plain text tabs
+   * with an underline indicator — zero chip/pill overhead.
+   * ═══════════════════════════════════════════════════════════════
+   */
+
+  /* ─── Content width constraint ────────────────────────────── */
+  .blog-content {
+    max-width: 740px;
+  }
+
+  /* ─── Category tab navigation ─────────────────────────────── */
+  .blog-tabs {
+    display: flex;
+    gap: 1.25rem;
+    margin: 0 0 1.75rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-bottom: 0;
+  }
+
+  .blog-tab {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0 0 0.625rem;
+    margin-bottom: -1px;
+    font-size: 13px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .blog-tab:hover {
+    color: var(--color-text);
+  }
+
+  .blog-tab.active {
+    color: var(--color-text);
+    font-weight: 500;
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* ─── Post list ───────────────────────────────────────────── */
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .blog-year {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 0.75rem;
+  }
+
+  .blog-year-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* ─── Filtered-out state ──────────────────────────────────── */
+  .blog-item.filtered-out {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var tabs = document.querySelectorAll('.blog-tab');
+  var posts = document.getElementById('blog-posts');
+  var noResults = document.getElementById('blog-no-results');
+  if (!tabs.length || !posts) return;
+
+  var activeCategory = 'all';
+
+  function applyFilter() {
+    var items = posts.querySelectorAll('.blog-item');
+    var visible = 0;
+
+    items.forEach(function(item) {
+      var match = activeCategory === 'all' || item.dataset.category === activeCategory;
+      item.classList.toggle('filtered-out', !match);
+      if (match) visible++;
+    });
+
+    posts.querySelectorAll('[data-year-group]').forEach(function(section) {
+      var hasVisible = section.querySelector('.blog-item:not(.filtered-out)');
+      section.style.display = hasVisible ? '' : 'none';
+    });
+
+    if (noResults) {
+      noResults.classList.toggle('hidden', visible > 0);
+    }
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      activeCategory = tab.dataset.category;
+      tabs.forEach(function(t) {
+        t.classList.toggle('active', t.dataset.category === activeCategory);
+      });
+      applyFilter();
+    });
+  });
+})();
+</script>

@@ -1,0 +1,68 @@
+---
+/**
+ * podcast/transcripts/[...slug].astro — Full episode transcript page.
+ *
+ * Each transcript gets its own dedicated, SEO-friendly URL at
+ * /podcast/transcripts/{episode-slug}/. This is the single most
+ * effective podcast SEO strategy — each transcript becomes a searchable,
+ * citable, indexable page of keyword-rich content.
+ *
+ * Combined with Pagefind, this makes the entire podcast library
+ * full-text searchable from the site's search page.
+ *
+ * The transcript page links back to the episode detail page and
+ * includes structured data for search engines.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+type Transcript = CollectionEntry<"transcripts">;
+
+export async function getStaticPaths() {
+  const transcripts = await getCollection(
+    "transcripts",
+    ({ data }: Transcript) => data.published,
+  );
+  return transcripts.map((transcript) => ({
+    params: { slug: transcript.data.episodeSlug },
+    props: { transcript },
+  }));
+}
+
+const { transcript } = Astro.props;
+const { Content } = await render(transcript);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<PageLayout
+  title={transcript.data.title}
+  subtitle={`Full transcript · ${formatDate(transcript.data.date)}`}
+  activeNav="podcast"
+>
+  <Breadcrumbs items={[
+    { label: "Podcast", href: "/podcast/" },
+    { label: transcript.data.episodeSlug.replace(/-/g, " "), href: `/podcast/${transcript.data.episodeSlug}/` },
+    { label: "Transcript" }
+  ]} />
+
+  <div class="mb-6 flex items-center gap-3">
+    <a
+      href={`/podcast/${transcript.data.episodeSlug}/`}
+      class="inline-flex items-center font-mono text-[12px] text-[var(--color-link)] no-underline hover:underline"
+    >
+      ← Episode details & show notes
+    </a>
+  </div>
+
+  <div class="prose max-w-none" data-pagefind-body>
+    <Content />
+  </div>
+</PageLayout>

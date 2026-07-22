@@ -1,0 +1,26 @@
+{
+  "travel": {
+    "label": "Travel",
+    "caption": "Where I've been",
+    "image": "/images/uploads/IMG_8143.jpeg",
+    "focal": "center"
+  },
+  "caving": {
+    "label": "Climbing & Caving",
+    "caption": "My time climbing",
+    "image": "/images/uploads/IMG_5346_Original.jpeg",
+    "focal": "center"
+  },
+  "languages": {
+    "label": "Languages",
+    "caption": "studying Mandarin",
+    "image": "/images/uploads/chen-heng-mupBU0qhFoY-unsplash.jpg",
+    "focal": "center"
+  },
+  "reading": {
+    "label": "Reading",
+    "caption": "Mathematical Physics",
+    "image": "/images/uploads/IMG_2464.png",
+    "focal": "center"
+  }
+}

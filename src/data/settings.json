@@ -1,0 +1,52 @@
+{
+  "features": {
+    "maintenanceMode": false,
+    "sidenotes": true,
+    "defaultAccent": "forest",
+    "backlinks": true,
+    "tableOfContents": true,
+    "linkPreviews": false,
+    "searchPage": true,
+    "researchGraph": false,
+    "contentMaturityBadges": true,
+    "copyCodeButton": true,
+    "imageZoom": true,
+    "documentViewer": true,
+    "readingProgressBar": false,
+    "commandPalette": true,
+    "visualEffects": false,
+    "chatWidget": false,
+    "documentRequestModal": false
+  },
+  "sections": {
+    "publications": true,
+    "projects": true,
+    "blog": true,
+    "notes": true,
+    "teaching": true,
+    "cv": true,
+    "about": true,
+    "contact": true,
+    "ventures": false,
+    "speaking": false,
+    "podcast": false
+  },
+  "appearance": {
+    "defaultTheme": "light",
+    "loadingAnimation": "none",
+    "viewTransitions": true,
+    "scrollReveal": false,
+    "customCursor": false,
+    "siteStyle": "default"
+  },
+  "analytics": {
+    "enabled": false,
+    "domain": "",
+    "provider": "plausible"
+  },
+  "newsletter": {
+    "provider": "buttondown",
+    "buttondownUsername": "",
+    "enabled": false
+  }
+}

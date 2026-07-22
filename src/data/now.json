@@ -1,0 +1,22 @@
+{
+  "subtitle": "What I'm focused on right now.",
+  "updated": "July 2026 · Boulder, CO",
+  "sections": [
+    {
+      "heading": "Research",
+      "body": "Working as a graduate student at CU Boulder investigating quantum photonics, neuromorphic computing, and photonic integrated circuits."
+    },
+    {
+      "heading": "Podcast",
+      "body": "Developing a science podcast exploring how fundamental physics innovation translates into technologies that solve grand challenges in health, energy, and information. Currently in pre-production: building the guest list, production sequencing, and first episode scripts."
+    },
+    {
+      "heading": "Ventures",
+      "body": "Thinking about deep-tech companies in photonics, quantum sensing, and AI. Nothing to announce yet."
+    },
+    {
+      "heading": "Learning",
+      "body": "Quantum computing, machine and deep learning fundamentals, Lean 4, fiber optics, and the business mechanics of deep-tech company formation."
+    }
+  ]
+}

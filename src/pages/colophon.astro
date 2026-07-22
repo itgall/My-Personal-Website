@@ -1,0 +1,11 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import { body, subtitle } from "@data/colophon";
+import { renderMarkdown } from "@utils/markdown";
+---
+
+<PageLayout title="Colophon" subtitle={subtitle} activeNav="">
+  <div class="prose max-w-none">
+    <Fragment set:html={renderMarkdown(body)} />
+  </div>
+</PageLayout>

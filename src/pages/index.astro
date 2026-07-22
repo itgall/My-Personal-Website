@@ -1,0 +1,226 @@
+---
+/**
+ * index.astro -- Homepage (content-forward layout).
+ *
+ * VERTICAL RHYTHM -- one boundary, one gap:
+ *   Between any two neighboring page regions there is exactly ONE source of
+ *   space. The container owns it: pt-12/md:pt-16 at the page top,
+ *   space-y-16/md:space-y-24 between sections. Sections carry no vertical
+ *   padding of their own. The exit gap is the footer's own margin-top
+ *   (6rem desktop / 4rem mobile), which matches the same scale. Do not add
+ *   py/mt/mb to top-level sections here -- that reintroduces stacked
+ *   boundaries.
+ *
+ * Design philosophy: engineer-like restraint. Modeled after Geoffrey Litt,
+ * Andrej Karpathy, and Patrick Collison -- content is the feature, decoration
+ * is limited to horizontal rules and blue links.
+ *
+ * Structure:
+ *   1. Hero: headshot + name + subtitle + intro paragraph + links
+ *   2. Selected Work: project list with descriptions
+ *   3. Recent Writing: date-aligned list
+ *   4. Research Interests: prose paragraph
+ *
+ * Content-structure separation: this file contains ONLY rendering logic.
+ * All content lives in content collections (projects, posts, podcast)
+ * and data files (bibliography.bib, cv.yaml). A complete visual redesign
+ * of this page touches zero content files.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro";
+import MiscGallery from "@components/MiscGallery.astro";
+import { identity } from "@data/meta";
+import { profileImage, profileFocal, bio, currentlyText, researchInterests } from "@data/homepage";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Post = CollectionEntry<"posts">;
+type Project = CollectionEntry<"projects">;
+
+const recentPosts: Post[] = (await getCollection("posts", ({ data }: Post) => data.published))
+  .sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+
+const projects: Project[] = (
+  await getCollection("projects", ({ data }: Project) => data.published)
+).sort((a: Project, b: Project) => a.data.number.localeCompare(b.data.number));
+
+function formatShortDate(d: Date): string {
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+const categoryLabels: Record<string, string> = {
+  technical: "Technical note",
+  thesis: "Thesis",
+  essay: "Essay",
+  dispatch: "Dispatch",
+  "build-log": "Build log",
+};
+---
+
+<BaseLayout activeNav="home" pageType="home" ogImage="/og/index.png">
+  <div class="wide-container space-y-16 pt-12 md:space-y-24 md:pt-16">
+    {/* --- Hero --------------------------------------------------- */}
+    <section class="hero-section">
+      {/* Photo + intro */}
+      <div
+        class="flex flex-col items-center gap-7 text-center md:flex-row md:items-start md:gap-8 md:text-left"
+      >
+        <img
+          src={profileImage}
+          alt="Isaac Gallegos"
+          loading="eager"
+          decoding="async"
+          width="260"
+          height="325"
+          class="hero-photo shrink-0"
+          style={`object-position: ${profileFocal}`}
+        />
+        <div class="min-w-0">
+          <h1 class="vt-page-title text-3xl leading-tight font-semibold tracking-tight md:text-4xl">
+            {identity.name}
+          </h1>
+          <p class="sc-label mt-2 text-[12px] text-[var(--color-muted)]">
+            {identity.role} &middot; {identity.affiliation}
+          </p>
+
+          <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">
+            {bio}
+          </p>
+
+          {
+            currentlyText && (
+              <p class="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
+                Currently: {currentlyText}
+              </p>
+            )
+          }
+
+          <div
+            class="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm md:justify-start"
+          >
+            <a
+              href={identity.cvPath}
+              class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+              >Curriculum Vitae &rarr;</a
+            >
+            <a
+              href={`mailto:${identity.email}`}
+              class="text-[var(--color-link)] no-underline transition-colors hover:text-[var(--color-link-hover)]"
+              >{identity.email}</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .hero-photo {
+        width: 260px;
+        height: 325px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+      @media (max-width: 767px) {
+        .hero-photo {
+          width: 200px;
+          height: 250px;
+        }
+      }
+    </style>
+
+    {/* --- Selected Work ------------------------------------------ */}
+    <section>
+      <div class="mb-8 flex items-baseline justify-between">
+        <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
+        <a
+          href="/projects/"
+          class="sc-label text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
+          >All projects</a
+        >
+      </div>
+      {
+        projects.length > 0 ? (
+          <div class="space-y-6">
+            {projects.map((project) => (
+              <a href={`/projects/${project.id}/`} class="group block no-underline">
+                <span class="font-display text-[15px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
+                  {project.data.title}
+                </span>
+                <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                  {project.data.description}
+                </p>
+                <span class="mt-1 font-mono text-[11px] text-[var(--color-muted)]">
+                  {project.data.institution}
+                </span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="text-sm text-[var(--color-muted)] italic">No projects published yet.</p>
+        )
+      }
+    </section>
+
+    {/* --- Recent Writing ----------------------------------------- */}
+    {
+      recentPosts.length > 0 && (
+        <section>
+          <div class="mb-8 flex items-baseline justify-between">
+            <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
+            <a
+              href="/blog/"
+              class="sc-label text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
+            >
+              All writing
+            </a>
+          </div>
+          <div class="space-y-4">
+            {recentPosts.map((post) => {
+              const cat = categoryLabels[post.data.category] ?? post.data.category;
+              return (
+                <a href={`/blog/${post.id}/`} class="group flex items-baseline gap-4 no-underline">
+                  <span class="w-20 shrink-0 font-mono text-xs text-[var(--color-muted)]">
+                    {formatShortDate(post.data.date)}
+                  </span>
+                  <span class="font-display min-w-0 flex-1 text-[15px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
+                    {post.data.title}
+                  </span>
+                  <span class="hidden shrink-0 text-xs text-[var(--color-muted)] sm:inline">
+                    {cat}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )
+    }
+
+    {/* --- Research Interests ------------------------------------- */}
+    <section>
+      <div class="mx-auto max-w-2xl md:mx-0">
+        <h2 class="mb-4 text-xl font-semibold tracking-tight">Research interests</h2>
+        <p class="leading-relaxed text-[var(--color-text-secondary)]">
+          {researchInterests}
+        </p>
+        <a
+          href="/publications/"
+          class="sc-label mt-4 inline-block text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
+        >
+          View publications
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="mb-6 flex items-baseline justify-between">
+        <h2 class="text-xl font-semibold tracking-tight">Outside the lab</h2>
+        <a
+          href="/misc/"
+          class="[font-family:var(--font-serif)] text-[12px] tracking-[0.14em] text-[var(--color-muted)] uppercase no-underline transition-colors hover:text-[var(--color-accent)]"
+          >More</a
+        >
+      </div>
+      <MiscGallery />
+    </section>
+  </div>
+</BaseLayout>

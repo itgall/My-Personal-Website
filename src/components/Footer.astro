@@ -1,0 +1,71 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer" role="contentinfo" data-pagefind-ignore>
+  <div class="full-container">
+    <div class="footer-line">
+      <span class="footer-copy">&copy; {currentYear} Isaac Gallegos</span>
+      <span class="footer-links">
+        <a href="mailto:itgall@mit.edu">Email</a>
+        <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a>
+        <a href="/rss.xml">RSS</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    padding-bottom: 2rem;
+  }
+
+  .footer-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .footer-links a {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .site-footer {
+      margin-top: 4rem;
+    }
+
+    .footer-line {
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+  }
+
+  @media print {
+    .site-footer {
+      display: none !important;
+    }
+  }
+</style>

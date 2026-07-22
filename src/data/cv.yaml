@@ -1,0 +1,153 @@
+name: Isaac Gallegos
+title: Doctoral researcher
+affiliation: University of Colorado Boulder
+email: itgall@mit.edu
+website: https://isaac-gallegos.com
+orcid: 0009-0007-9290-6289
+research_interests:
+  - Quantum information
+  - Quantum networks, photonic interconnects, and entanglement distribution between spin-based quantum nodes
+  - Many-body quantum systems and statistical physics
+education:
+  - degree: B.S. Engineering Physics, summa cum laude
+    institution: Colorado School of Mines
+    location: Golden, CO
+    dates: Dec 2024
+    gpa: '3.99'
+    honors:
+      - 'Concentration: Quantum Science, Laser Physics and Engineering, Electrical Engineering'
+      - 'Senior Thesis: Emergent Holography from Information Geometry of Ising Models (Advisor: L. Haddad)'
+experience:
+  - title: Doctoral Researcher
+    organization: University of Colorado Boulder
+    parent: Department of Physics
+    location: Boulder, CO
+    dates: Aug 2026–Present
+    current: true
+    highlights:
+      - Physics PhD student working on quantum photonics, neuromorphic computing, and photonic integrated circuits
+  - title: Research Engineer
+    organization: Wellman Center for Photomedicine (Bouma Lab)
+    parent: Harvard Medical School / Massachusetts General Hospital
+    location: Boston, MA
+    dates: May 2025–Aug 2026
+    current: false
+    highlights:
+      - Led a polarization-resolved spectroscopic OCT project on a 1310 nm swept-source VCSEL system (100 nm bandwidth, 5 µm axial resolution), acquiring and spectrally post-processing data from 20+ fabricated biomaterial phantoms
+      - Wrote physics-constrained inverse models in Python to recover wavelength-dependent optical properties from depth-resolved spectra
+      - Built the first comprehensive open-source library and software tool for laser safety evaluation; first author on a manuscript targeting the Journal of Open Source Software
+    advisors: D. Veysset, N. Uribe-Patarroyo, B.E. Bouma
+  - title: Research Assistant
+    organization: Wellman Center for Photomedicine (Bouma Lab)
+    parent: Harvard Medical School / Massachusetts General Hospital
+    location: Boston, MA
+    dates: Feb 2025–May 2025
+    highlights:
+      - Built the first micro-LED-based OCT system prototype, replacing swept-source lasers with individually addressable narrowband LEDs, and wrote its hardware control and acquisition software
+      - Applied spectral unmixing to multi-spectral photoacoustic data from a custom all-fiber stimulated Raman scattering optical amplifier, determining per-pixel lipid and collagen concentrations from imaged samples
+    advisors: D. Veysset, B.E. Bouma
+  - title: Undergraduate Research Assistant
+    organization: Colorado School of Mines — Physics Department
+    location: Golden, CO
+    dates: Aug 2023–May 2024
+    highlights:
+      - Developed an information-geometry approach to emergent holography, reparameterizing the 1D Ising model through a Gaussian dressing whose Fisher metric yields an emergent AdS₂ metric
+      - Evaluated the partition function by transfer-matrix methods and worked out the dressing's two limiting regimes as dual descriptions of the lattice; first author on a manuscript in preparation for JHEP
+    advisors: L. Haddad
+  - title: Undergraduate Research Project Lead
+    organization: Colorado School of Mines — Ultrafast Laser Research Laboratory
+    location: Golden, CO
+    dates: Aug 2023–Dec 2023
+    highlights:
+      - Led a five-person undergraduate team designing micron-scale, supersonic gas-jet nozzles for high-harmonic generation experiments, designing 5+ converging-diverging geometries in SolidWorks and Mathematica toward an optimized configuration
+    advisors: C. Durfee
+skills:
+  - category: Quantum Optics
+    items:
+      - SPDC photon-pair generation
+      - Single-photon detection (silicon SPADs)
+      - Time-correlated coincidence counting
+      - Polarization-resolved interferometry
+      - Jones-matrix characterization
+      - Bell-state measurement
+      - Broadband and Raman spectroscopy
+  - category: Computation
+    items:
+      - Python (PyTorch, JAX, NumPy, SciPy)
+      - MATLAB
+      - C++
+      - Mathematica
+      - Differentiable physics modeling
+      - Physics-constrained inverse problems
+  - category: Photonic Simulation
+    items:
+      - COMSOL Multiphysics
+      - Zemax OpticStudio
+      - SolidWorks
+      - MEEP
+  - category: Lasers & Optics
+    items:
+      - Solid-state laser construction (Pr³⁺:LiYF₄)
+      - Free-space and fiber optics
+      - Optomechanical assembly
+      - Optical coherence tomography (swept-source, micro-LED, polarization-sensitive)
+  - category: Electronics
+    items:
+      - FPGA design and gateware (Altera Quartus Prime)
+      - Time-correlated single-photon counting
+      - PCB design and fabrication
+      - Analog and digital circuit design
+  - category: Cleanroom & Materials
+    items:
+      - Clean-room fabrication
+      - Thin-film deposition (sputtering, thermal evaporation)
+      - Vacuum systems
+      - Ellipsometry
+      - Scanning electron microscopy
+research:
+  - title: Polarization-Entangled Photon Pair Generation & Bell-Inequality Measurement
+    institution: Graduate Quantum Optics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Produced polarization-entangled 810 nm photon pairs from dual-crystal Type-I SPDC under a 405 nm diode pump, using a YVO₄ crystal to compensate birefringent walk-off. Measured a CHSH violation of S = 2.51 ± 0.04 with silicon SPADs and four-channel FPGA coincidence counting with nanosecond gating.
+  - title: Solid-State Laser Construction and Rate-Equation Modeling
+    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Designed, built, and characterized a CW diode-pumped Pr³⁺:LiYF₄ laser (640 nm, 35 mW, 18% slope efficiency). Checked four-level rate-equation models against the measured pulse trains, fluorescence spectra, and output power.
+  - title: Diode-Pumped Q-Switched Nd:YAG Laser
+    institution: Graduate Laser Physics Laboratory, Colorado School of Mines
+    dates: Aug 2024–Dec 2024
+    description: Demonstrated short-pulse generation by passively Q-switching an Nd:YAG laser (1064 nm, Cr:YAG saturable absorber, repetition rates to 3.5 kHz). Computationally modeled the Q-switching dynamics in Mathematica to verify the experimental results.
+teaching:
+  - role: Teaching Assistant
+    course: Electromagnetic Waves and Optical Physics
+    institution: Colorado School of Mines
+    dates: 2023–2024 (2 semesters)
+  - role: Teaching Assistant
+    course: Mathematical Physics
+    institution: Colorado School of Mines
+    dates: Fall 2023
+  - role: Teaching Assistant
+    course: Intermediate Electromagnetism
+    institution: Colorado School of Mines
+    dates: 2024
+awards:
+  - title: Dean's List
+    institution: Colorado School of Mines
+    dates: 2021–2024
+  - title: Presidential Scholarship
+    institution: Colorado School of Mines
+    dates: 2021–2024
+  - title: Coors Foundation Scholarship
+    dates: 2021–2024
+  - title: NSF GRFP, Hertz Foundation, and NDSEG Fellowships (applications in submission)
+    dates: 2027 cycle
+service:
+  - role: Member
+    organization: SPIE
+  - role: Member
+    organization: Optica
+  - role: Member
+    organization: IEEE Photonics Society
+  - role: Member
+    organization: Society of Hispanic Professional Engineers (SHPE)
+talks: []

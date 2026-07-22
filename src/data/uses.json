@@ -1,0 +1,26 @@
+{
+  "subtitle": "Tools, software, and equipment I use for research, development, and daily work.",
+  "updated": "June 2026",
+  "sections": [
+    {
+      "heading": "Research & lab",
+      "body": "**COMSOL Multiphysics** for computational optical modeling \u2014 finite element simulations of light propagation, waveguide design, and photoacoustic wave propagation. **Zemax OpticStudio** for optical system design, ray tracing, and tolerance analysis. **MATLAB** for inverse algorithm development, signal processing, spectral analysis, and Jones matrix polarization simulations. **SolidWorks** for mechanical design of optical assemblies and optomechanical components."
+    },
+    {
+      "heading": "Computation & ML",
+      "body": "**Python** as the primary language for research computing, with **PyTorch** and **JAX** for physics-informed neural networks and differentiable forward models. **NumPy**, **SciPy**, and **scikit-learn** for numerical methods and data analysis. **Jupyter** for exploratory analysis and **LaTeX** for manuscripts and technical documentation."
+    },
+    {
+      "heading": "Development",
+      "body": "**VS Code** as the primary editor, with Vim keybindings. **Git** and **GitHub** for version control. This site is built with **Astro 6**, **Tailwind CSS v4**, and **TypeScript**, hosted on **Netlify**. **Claude Code** for AI-assisted development. See the [colophon](/colophon/) for full site architecture details."
+    },
+    {
+      "heading": "Productivity",
+      "body": "**Obsidian** for research notes, literature reviews, and the working notes that feed this site's notes section. **Superhuman** for email. **Reclaim.ai** for calendar management and time blocking. **Fathom** for meeting transcription and action items."
+    },
+    {
+      "heading": "Hardware",
+      "body": "Research workstation with NVIDIA GPU for COMSOL and ML training. Lab equipment includes swept-source lasers, fiber optic test benches, optical spectrum analyzers, and custom catheter assembly fixtures."
+    }
+  ]
+}

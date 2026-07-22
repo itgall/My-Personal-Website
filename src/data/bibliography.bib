@@ -1,0 +1,116 @@
+%% ═══════════════════════════════════════════════════════════════════════════════
+%% bibliography.bib — Single source of truth for all publications.
+%%
+%% Add your publications here as standard BibTeX entries. Each entry generates:
+%%   1. A publication card on /publications/
+%%   2. An individual publication page at /publications/[citekey]/
+%%   3. Highwire Press meta tags for Google Scholar indexing
+%%   4. JSON-LD ScholarlyArticle structured data
+%%   5. A BibTeX download/copy button
+%%
+%% Standard BibTeX types supported:
+%%   @article          — Journal articles
+%%   @inproceedings    — Conference papers (peer-reviewed)
+%%   @incollection     — Book chapters
+%%   @book             — Books
+%%   @phdthesis        — PhD theses
+%%   @mastersthesis    — Master's theses
+%%   @techreport       — Technical reports
+%%   @misc             — Preprints, posters, talks (see `type` field below)
+%%
+%% Custom fields (non-standard BibTeX, parsed by the tooling):
+%%   status        = {published | under-review | preprint | accepted}
+%%   code          = {https://github.com/...}
+%%   slides        = {/files/slides.pdf}
+%%   poster        = {/files/poster.pdf}
+%%   pdf           = {/files/paper.pdf}
+%%
+%%   featured      = {true}    — Adds entry to "Selected works" section at top
+%%                               of /publications/ page. Otherwise, it only
+%%                               appears in the full chronological archive.
+%%   featurednote  = {...}     — 2–3 sentences of context for featured works.
+%%                               Only rendered if entry is featured = {true}.
+%%
+%% Conference presentations (posters, talks):
+%%   Use @misc with the `type` field to distinguish subtypes:
+%%     type = {poster}         — Rendered as "Poster" badge
+%%     type = {talk}           — Rendered as "Talk" badge
+%%     type = {invited-talk}   — Rendered as "Invited Talk" badge
+%%     type = {presentation}   — Rendered as "Presentation" badge
+%%   Use the `booktitle` field for the conference/venue name.
+%%   For peer-reviewed conference papers with published proceedings,
+%%   use @inproceedings instead.
+%%
+%% 
+%% ═══════════════════════════════════════════════════════════════════════════════
+
+%% ═══════════════════════════════════════════════════════════════════════════════
+%% PUBLICATIONS
+%% ═══════════════════════════════════════════════════════════════════════════════
+
+
+@article{gallegos2026mpe,
+  author       = {Gallegos, Isaac and McAuley, R. and Borges, N. and Bouma, Brett E. and Veysset, David},
+  title        = {Maximum Permissible Exposure Tool for Laser Safety Evaluation},
+  year         = {2026},
+  status       = {in-preparation},
+  featured     = {true},
+  featurednote = {An open-source tool that computes maximum permissible exposure
+                  limits for pulsed and continuous-wave lasers, with a graphical
+                  interface for everyday lab safety. First-author manuscript in
+                  preparation for the Journal of Open Source Software.},
+}
+
+@article{gallegos2026holography,
+  author       = {Gallegos, Isaac and Carmody, E. and Nguyen, D. and Haddad, Laith},
+  title        = {Emergent Holography from Information Geometry of Ising Models},
+  year         = {2026},
+  status       = {in-preparation},
+  featured     = {true},
+  featurednote = {Can the parameter space of a spin model look like a gravitational
+                  spacetime? We built the Fisher metric and found out where the
+                  analogy breaks down.},
+}
+
+%% ═══════════════════════════════════════════════════════════════════════════════
+%% CONFERENCE PRESENTATIONS
+%% ═══════════════════════════════════════════════════════════════════════════════
+
+@misc{gallegos2025nir2,
+  type         = {poster},
+  author       = {Gallegos, Isaac and Veysset, David and Bouma, Brett E.},
+  title        = {Multi-Spectral {NIR-II} Photoacoustic Microscopy Utilizing a Custom All-Fiber Amplifier},
+  booktitle    = {Celebration of Science, Massachusetts General Hospital},
+  year         = {2025},
+  featurednote = {Built a pulsed fiber amplifier at 1064nm from scratch for
+                  deep-tissue photoacoustic imaging. Poster at MGH Celebration
+                  of Science.},
+}
+
+@misc{gallegos2025soct,
+  type         = {poster},
+  author       = {Gallegos, Isaac and Ruiz-Lopera, S. and McAuley, R. and Bouma, Brett E. and Veysset, David and Uribe-Patarroyo, Nestor},
+  title        = {Quantitative Spectroscopic {OCT} for Compositional Characterization of Coronary Plaques},
+  booktitle    = {New England Society for Biomedical Optics (NESBO), MIT},
+  year         = {2025},
+  featurednote = {The goal: give cardiologists a real number for plaque
+                  composition using only the OCT catheter already in the artery.
+                  Poster at NESBO, MIT.},
+}
+
+@misc{deleonbarba2025microled,
+  type         = {poster},
+  author       = {De Le\'{o}n Barba, A. and Norman, N. and Sahasrabudhe, A. and Aboukhalil, K. and Gallegos, Isaac and Bouma, Brett E. and Kim, J. and Uribe-Patarroyo, Nestor and Veysset, David},
+  title        = {Spectroscopic {OCT} with Multichromatic micro-{LED} Illumination},
+  booktitle    = {New England Society for Biomedical Optics (NESBO), MIT},
+  year         = {2025},
+}
+
+@misc{aboukhalil2026spie,
+  type         = {poster},
+  author       = {Aboukhalil, K. and Sahasrabudhe, A. and Gallegos, Isaac and Bouma, Brett E. and Kim, J. and Uribe-Patarroyo, Nestor and Veysset, David},
+  title        = {Proof-of-Concept Visible-Light {OCT} Using micro-{LED} Arrays},
+  booktitle    = {SPIE OPTO},
+  year         = {2026},
+  address      = {San Francisco, CA},
+}

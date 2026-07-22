@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props { entry: CollectionEntry<"misc">; }
+const { entry } = Astro.props;
+const { title, location, summary, heroImage, heroCaption, heroFocal } = entry.data;
+const year = entry.data.date.getFullYear();
+const metaParts = [location, String(year)].filter(Boolean);
+---
+<a href={`/misc/${entry.id}/`} class="entry-card">
+  <div class="entry-thumb">
+    {heroImage ? (
+      <img src={heroImage} alt={heroCaption || title} loading="lazy" decoding="async" style={`object-position: ${heroFocal}`} />
+    ) : (
+      <span class="entry-placeholder font-mono">{title}</span>
+    )}
+  </div>
+  <div class="entry-body">
+    <h3 class="entry-title">{title}</h3>
+    {metaParts.length > 0 && <p class="entry-meta">{metaParts.join(" · ")}</p>}
+    {summary && <p class="entry-summary">{summary}</p>}
+  </div>
+</a>
+<style>
+  .entry-card { display: flex; flex-direction: column; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; text-decoration: none; background: var(--color-bg); }
+  .entry-thumb { aspect-ratio: 4 / 3; background: linear-gradient(135deg, var(--color-surface), var(--color-border)); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .entry-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .entry-placeholder { font-size: 0.6875rem; color: var(--color-muted); letter-spacing: 0.03em; padding: 0 0.75rem; text-align: center; }
+  .entry-body { padding: 0.75rem 0.875rem 0.9375rem; }
+  .entry-title { font-size: 0.9375rem; font-weight: 600; color: var(--color-ink); line-height: 1.3; transition: color 0.15s ease; }
+  .entry-card:hover .entry-title { color: var(--color-accent); }
+  .entry-meta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-muted); margin-top: 0.25rem; }
+  .entry-summary { font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.5; margin-top: 0.4375rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+</style>

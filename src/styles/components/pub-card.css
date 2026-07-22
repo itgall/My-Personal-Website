@@ -1,0 +1,44 @@
+/**
+ * pub-card.css — Publication entry styles for dense citation format.
+ *
+ * The PubCard component now renders as inline citation text rather than
+ * a contained card. This stylesheet provides:
+ *   1. Container query setup for responsive behavior
+ *   2. Minimal entry styling (hover background, print behavior)
+ *   3. Status badge styles (preprint, under-review)
+ *
+ * Old card-based styles (borders, shadows, padding, type badges, etc.)
+ * have been removed — the new PubCard uses Tailwind utilities directly.
+ */
+
+/* ── Container query setup (required for CSS filter system) ──────────────── */
+
+.pub-card-container {
+  container-type: inline-size;
+  container-name: pubcard;
+}
+
+/* ── Dense entry base ────────────────────────────────────────────────────── */
+
+.pub-entry {
+  break-inside: avoid; /* Print: keep entry intact */
+}
+
+/* ── Dark mode adjustments ───────────────────────────────────────────────── */
+
+[data-theme="dark"] .pub-entry:hover {
+  background-color: var(--color-surface);
+}
+
+/* ── Print styles ────────────────────────────────────────────────────────── */
+
+@media print {
+  .pub-entry {
+    padding: 0.25rem 0;
+    border-radius: 0;
+  }
+
+  .pub-entry:hover {
+    background: none;
+  }
+}
