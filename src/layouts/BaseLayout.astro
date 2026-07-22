@@ -203,10 +203,9 @@ const canonicalUrl = new URL(Astro.url.pathname, siteMetadata.siteUrl).href;
       rel="stylesheet"
     />
 
-    {/* Preconnect hints for external origins used across the site */}
+    {/* Preconnect hints for external origins linked across the site */}
     <link rel="preconnect" href="https://doi.org" />
     <link rel="preconnect" href="https://scholar.google.com" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 
     {/*
      * Blocking theme + accent script — MUST run before first paint to prevent FOUC.
