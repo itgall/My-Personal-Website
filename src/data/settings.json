@@ -35,14 +35,14 @@
     "defaultTheme": "light",
     "loadingAnimation": "none",
     "viewTransitions": true,
-    "scrollReveal": true,
+    "scrollReveal": false,
     "customCursor": false,
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   },
   "newsletter": {
     "provider": "buttondown",
