@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     slug: "index",
     title: "Isaac Gallegos",
     type: "page",
-    subtitle: "Research Engineer · Wellman Center for Photomedicine",
+    subtitle: "Doctoral Researcher · University of Colorado Boulder",
   });
 
   /* Blog posts */

@@ -19,15 +19,11 @@ interface RawPage {
 }
 
 const DEFAULT_SUBTITLE = "What I'm focused on right now.";
-const DEFAULT_UPDATED = "June 2026 \u00b7 Boston, MA";
+const DEFAULT_UPDATED = "July 2026 \u00b7 Boulder, CO";
 const DEFAULT_SECTIONS: PageSection[] = [
   {
     heading: "Research",
-    body: "Working at the [Wellman Center for Photomedicine](https://octresearch.org) (Harvard Medical School / MGH). Building interferometric imaging systems, writing inverse models, and prototyping a broadband micro-LED source.",
-  },
-  {
-    heading: "PhD applications",
-    body: "Preparing applications for Fall 2027. Looking at groups working on quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes.",
+    body: "Starting a physics PhD at the University of Colorado Boulder, working on quantum photonics, neuromorphic computing, and photonic integrated circuits.",
   },
   {
     heading: "Podcast",

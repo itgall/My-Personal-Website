@@ -8,7 +8,7 @@ const DEFAULT_PROFILE_IMAGE = "/images/profile-v2.jpg";
  * in homepage.json is missing.
  */
 const DEFAULT_BIO =
-  "I build interferometric optical systems and the physics-constrained inverse models that turn broadband measurements into physical quantities, at the Wellman Center for Photomedicine (Harvard Medical School). My work runs from solid-state lasers and entangled-photon experiments to spectroscopic OCT, and I'm increasingly focused on quantum optics and quantum networks \u2014 spin-based quantum nodes, photonic interconnects, and entanglement distribution. Applying to physics PhD programs for Fall 2027. Outside the lab, I travel when I can and go caving.";
+  "I'm a physics PhD student at the University of Colorado Boulder, working on quantum photonics, neuromorphic computing, and photonic integrated circuits. Before Boulder, from 2025 to 2026, I was a research engineer at the Wellman Center for Photomedicine (Harvard Medical School and MGH), building swept-source interferometric systems and the inverse models that turn broadband measurements into physical quantities. I got into optics at Colorado School of Mines, building solid-state lasers, measuring a Bell-inequality violation with entangled photons, and putting a photon-counting circuit on an FPGA. Outside the lab I travel, play neoclassical piano, learn languages, and climb.";
 
 const DEFAULT_CURRENTLY =
   "finishing a laser safety calculator for tissue exposure limits, and reading about topology and differential geometry.";

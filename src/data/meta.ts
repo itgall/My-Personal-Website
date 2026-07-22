@@ -92,8 +92,8 @@ interface RawIdentity {
  */
 const IDENTITY_FALLBACKS = {
   name: "Isaac Gallegos",
-  role: "Research Engineer",
-  affiliation: "Harvard Medical School",
+  role: "Doctoral Researcher",
+  affiliation: "University of Colorado Boulder",
   email: "itgall@mit.edu",
   linkedin: "https://linkedin.com/in/isaactgallegos",
   github: "https://github.com/itgall",
@@ -139,7 +139,7 @@ export const siteMetadata: SiteMetadata = {
   role: identity.role,
   subtitle: identity.affiliation,
   description:
-    "Isaac Gallegos \u2014 Research Engineer at the Wellman Center for Photomedicine, Harvard Medical School. Quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes.",
+    "Isaac Gallegos is a physics PhD student at the University of Colorado Boulder, working on quantum photonics, neuromorphic computing, and photonic integrated circuits. Previously a research engineer at the Wellman Center for Photomedicine, Harvard Medical School.",
   siteUrl: "https://isaac-gallegos.com",
   image: "/images/profile-v2.jpg",
   language: "en",
@@ -156,9 +156,8 @@ export const siteMetadata: SiteMetadata = {
 
   affiliations: [
     {
-      name: "Wellman Center for Photomedicine",
-      parent: "Massachusetts General Hospital / Harvard Medical School",
-      url: "https://wellman.massgeneral.org",
+      name: "University of Colorado Boulder",
+      url: "https://www.colorado.edu/physics/",
     },
   ],
 
@@ -172,24 +171,30 @@ export const siteMetadata: SiteMetadata = {
 
   experience: [
     {
+      title: "Doctoral Researcher",
+      org: "University of Colorado Boulder, Department of Physics",
+      dates: "2026\u2013Present",
+      current: true,
+    },
+    {
       title: "Research Engineer",
       org: "Wellman Center for Photomedicine, MGH / Harvard Medical School",
-      dates: "2025\u2013Present",
-      current: true,
+      dates: "2025\u20132026",
+      current: false,
     },
   ],
 
   knowsAbout: [
+    "Quantum Photonics",
+    "Neuromorphic Computing",
+    "Photonic Integrated Circuits",
     "Quantum Information",
     "Quantum Networks",
     "Photonic Interconnects",
-    "Entanglement Distribution",
-    "Spin-Photon Interfaces",
     "Many-Body Quantum Systems",
     "Optical Coherence Tomography",
     "Laser Physics",
     "Single-Photon Detection",
-    "Physics-Constrained Inverse Problems",
   ],
 
   footer: {
