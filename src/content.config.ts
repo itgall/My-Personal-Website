@@ -19,7 +19,7 @@
  *   - projects:   Research projects with structured or freeform content modes
  *   - teaching:   Courses taught or TA'd
  *   - notes:      Digital garden notes with maturity levels (seedling/budding/evergreen)
- *   - ventures:   Deep-tech ventures translating research into impact
+ *   - ventures:   Company ideas that grow out of the research
  *   - speaking:   Talks, panels, and media appearances
  *   - podcast:    Video-first podcast episodes with show notes and transcripts
  *
@@ -37,13 +37,10 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Shared Schema Fragments
+/* Shared schema fragments.
  *
- * Reusable field definitions that enforce consistency across all collections.
- * When you change a shared fragment, every collection using it updates
- * automatically — no drift between schemas.
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Reusable field definitions that keep the collections consistent. Change a
+ * fragment here and every collection using it updates. */
 
 /** ISO date string or Date object, coerced to Date at build time. */
 const dateField = z
@@ -71,17 +68,11 @@ const relatedNotesField = z.array(z.string()).default([]);
 /** URL field that accepts valid URLs or empty strings (for optional URLs). */
 const optionalUrlField = z.string().url().optional().or(z.literal(""));
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Posts Collection (Essays)
+/* Posts (essays).
  *
  * Blog articles — technical notes, theses, essays, dispatches, build logs.
- * Categories use a controlled vocabulary via Zod enum.
- *
- * Cross-references:
- *   → relatedProjects: research projects discussed in the essay
- *   → relatedPublications: papers cited or discussed
- *   → relatedEpisodes: podcast episodes on the same topic
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Categories use a Zod enum. Cross-references: relatedProjects (projects
+ * discussed), relatedPublications (papers cited), relatedEpisodes. */
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/posts" }),
@@ -105,17 +96,11 @@ const posts = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Projects Collection (Research)
+/* Projects (research).
  *
- * Research projects with structured or freeform content modes.
- *
- * Added in Phase 1 scaling:
- *   - status: active/completed/archived for filtering on listing page
- *   - endDate: when the project concluded (optional)
- *   - description: SEO description (was missing)
- *   - relatedPosts, relatedEpisodes: cross-referencing
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Research projects in structured or freeform content modes. status
+ * (active/completed/archived) drives listing-page filtering; endDate,
+ * description, and the relatedPosts/relatedEpisodes cross-refs are optional. */
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/projects" }),
@@ -161,12 +146,10 @@ const projects = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Teaching Collection
+/* Teaching.
  *
- * Courses taught or TA'd. Low cross-referencing priority — teaching
- * entries rarely need to link to other content types.
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Courses taught or TA'd. No cross-referencing — teaching entries rarely
+ * link to other content types. */
 
 const teaching = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/teaching" }),
@@ -184,19 +167,12 @@ const teaching = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Notes Collection (Digital Garden)
+/* Notes (digital garden).
  *
- * Digital garden notes with maturity levels. Notes connect to each other
- * through two mechanisms:
- *   1. relatedNotes: explicit, curated connections (frontmatter)
- *   2. backlinks: auto-discovered via [[wikilink]] parsing at build time
- *
- * Cross-references:
- *   → relatedNotes: curated connections to other notes
- *   → relatedProjects: research context for the note
- *   → relatedPublications: papers the note discusses
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Notes with maturity levels. They connect two ways: relatedNotes (curated
+ * in frontmatter) and backlinks (auto-discovered from [[wikilink]] parsing
+ * at build time). relatedProjects and relatedPublications add research
+ * context. */
 
 const notes = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/notes" }),
@@ -216,13 +192,10 @@ const notes = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Ventures Collection
+/* Ventures.
  *
- * Deep-tech ventures translating research into real-world impact.
- * Each venture links back to research projects, publications, essays,
- * and podcast episodes to demonstrate the science-to-startup pipeline.
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Company ideas that grow out of the research. Each can link back to the
+ * projects, publications, essays, and episodes it came from. */
 
 const ventures = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/ventures" }),
@@ -274,20 +247,12 @@ const speaking = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Podcast Collection
+/* Podcast.
  *
- * Video-first podcast episodes, individually indexed for SEO. Each episode
- * gets its own page with embedded video, show notes, chapter markers,
- * guest info, and full transcript.
- *
- * Added in Phase 1 scaling:
- *   - episodeType: controlled vocabulary for filtering (solo, interview, etc.)
- *   - chapters: timestamped chapter markers for within-episode navigation
- *   - relatedProjects, relatedPublications, relatedPosts: cross-referencing
- *
- * Schema.org PodcastEpisode structured data is generated from these fields.
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Video-first episodes, each with its own page: embedded video, show notes,
+ * chapter markers, guest info, and transcript. episodeType is a controlled
+ * vocabulary for filtering; chapters are timestamped markers. Schema.org
+ * PodcastEpisode structured data is generated from these fields. */
 
 const podcast = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/podcast" }),
@@ -332,13 +297,10 @@ const podcast = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Transcripts — Full podcast episode transcripts at dedicated URLs.
+/* Transcripts.
  *
- * Each transcript gets its own SEO-friendly page at /podcast/transcripts/{slug}/,
- * creating indexable keyword-rich content for podcast discoverability.
- * Linked from the episode detail page when hasTranscript is true.
- * ═══════════════════════════════════════════════════════════════════════════ */
+ * Full episode transcripts, each at /podcast/transcripts/{slug}/. Linked
+ * from the episode page when hasTranscript is true. */
 
 const transcripts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/transcripts" }),
@@ -351,11 +313,7 @@ const transcripts = defineCollection({
   }),
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
- * Export all collections
- *
- * Eight content collections + publications from BibTeX = nine content types.
- * ═══════════════════════════════════════════════════════════════════════════ */
+/* Misc, then the collection exports. */
 
 const misc = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/misc" }),

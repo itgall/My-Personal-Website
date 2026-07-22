@@ -1,9 +1,6 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# Netlify Configuration
-#
-# Alternative deployment target. Netlify auto-detects this file in the repo
-# root. Build command runs both Astro and Pagefind for full search support.
-# ═══════════════════════════════════════════════════════════════════════════════
+# Netlify configuration — this is where the site is hosted. Netlify picks up
+# this file from the repo root. The build command runs Astro and then
+# Pagefind so search is indexed.
 
 [build]
   command = "rm -rf .astro && npm run build"
@@ -13,8 +10,8 @@
   NODE_VERSION = "22"
   NODE_ENV = "production"
   NPM_FLAGS = "--legacy-peer-deps"
-  # Increase Node.js heap to 8GB for large content collection builds.
-  # Default is ~1.7GB which can cause OOM with thousands of content items.
+  # Give the build a larger Node heap; image optimization is the memory-heavy
+  # step. The default (~1.7 GB) is enough today but leaves little headroom.
   NODE_OPTIONS = "--max-old-space-size=8192"
 
 # ── Netlify cache plugin ──────────────────────────────────────────────────────

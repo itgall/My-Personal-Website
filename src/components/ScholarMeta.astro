@@ -2,12 +2,11 @@
 /**
  * ScholarMeta.astro — Highwire Press Meta Tags for Google Scholar.
  *
- * These meta tags are the PRIMARY mechanism for Google Scholar indexing.
- * Google Scholar preferentially reads Highwire Press tags over Dublin Core,
- * PRISM, or Eprints tags.
+ * These meta tags are the main mechanism for Google Scholar indexing; it
+ * reads Highwire Press tags in preference to Dublin Core, PRISM, or Eprints.
  *
- * CRITICAL: Only render tags for fields that exist. No empty content attributes.
- * Google Scholar penalizes pages with empty or malformed citation tags.
+ * Only render tags for fields that exist — no empty content attributes.
+ * Scholar penalizes pages with empty or malformed citation tags.
  *
  * Reference: https://scholar.google.com/intl/en/scholar/inclusion.html
  *

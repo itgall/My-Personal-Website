@@ -9,11 +9,8 @@
  * (file collection "Site Settings" → "Features & Appearance").
  * Changes are committed to git and take effect on the next build.
  *
- * Architecture:
- *   - Build-time only: settings are baked into static HTML
- *   - Safe defaults: if a key is missing, the feature defaults to a
- *     sensible value (generally "enabled" for existing features)
- *   - Type-safe: every setting has an explicit TypeScript type
+ * Settings are baked into static HTML at build time. A missing key falls
+ * back to a sensible default (generally "enabled" for existing features).
  */
 
 import rawSettings from "./settings.json";
@@ -43,13 +40,13 @@ export interface FeatureSettings {
   imageZoom: boolean;
   /** Inline document/PDF preview overlay */
   documentViewer: boolean;
-  /** Show reading progress bar on article pages (Phase 2) */
+  /** Show reading progress bar on article pages */
   readingProgressBar: boolean;
-  /** Enable ⌘K / Ctrl+K command palette (Phase 2) */
+  /** Enable ⌘K / Ctrl+K command palette */
   commandPalette: boolean;
-  /** Enable ambient canvas visual effects (Phase 3) */
+  /** Enable ambient canvas visual effects */
   visualEffects: boolean;
-  /** Enable AI chat widget (Phase 4) */
+  /** Enable AI chat widget */
   chatWidget: boolean;
   /** Enable CV/resume document request modal with gated access */
   documentRequestModal: boolean;

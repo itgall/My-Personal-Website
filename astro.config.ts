@@ -17,7 +17,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 /**
- * Astro 6 master configuration.
+ * Astro configuration.
  *
  * Tailwind CSS 4 integration: Uses @tailwindcss/vite plugin directly rather than
  * @astrojs/tailwind, which does not yet support Astro 6. The Vite plugin approach

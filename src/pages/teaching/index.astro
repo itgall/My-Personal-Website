@@ -1,12 +1,8 @@
 ---
 /**
- * teaching/index.astro — Teaching listing as vertical timeline.
- *
- * Visual identity: Chronological timeline with terracotta dots for most
- * recent entries and slate dots for earlier ones. Semester labels,
- * course titles, role, and institution metadata flow cleanly.
- *
- * Layout: Single-column timeline with vertical connector line.
+ * teaching/index.astro — Teaching listing as a single-column vertical
+ * timeline with a connector line. The most recent entry's dot uses the
+ * accent color; earlier dots use muted.
  */
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
@@ -38,7 +34,7 @@ const roleLabels: Record<string, string> = {
           href={`/teaching/${course.id}/`}
           class="teaching-entry group relative block pb-8 no-underline last:pb-0"
         >
-          {/* Timeline dot — terracotta for most recent, slate for rest */}
+          {/* Timeline dot — accent for most recent, muted for the rest */}
           <div
             class:list={[
               "absolute -left-6 top-[6px] h-[10px] w-[10px] rounded-full border-2 border-[var(--color-surface)] transition-colors",

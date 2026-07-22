@@ -1,15 +1,10 @@
 /**
- * ReadingProgress.tsx — Reading progress bar + back-to-top button Island.
+ * ReadingProgress.tsx — reading progress bar + back-to-top button (client:idle).
  *
- * Hydration: client:idle — visual enhancement, not critical for initial render.
- *
- * Architecture:
- *   - Thin accent-colored bar fixed to the top of the viewport
- *   - Width represents scroll percentage (0% at top → 100% at bottom)
- *   - Back-to-top button appears after scrolling past 400px
- *   - Uses passive scroll listener for zero jank
- *   - Respects prefers-reduced-motion (hides animations)
- *   - Uses CSS custom properties for accent color integration
+ * A thin accent bar fixed to the top; its width tracks scroll percentage. The
+ * back-to-top button appears after 400px. A passive scroll listener drives it,
+ * the accent comes from CSS custom properties, and prefers-reduced-motion
+ * hides the animation.
  */
 import { useState, useEffect, useCallback } from "react";
 

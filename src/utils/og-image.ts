@@ -7,13 +7,9 @@
  * (Inter here is a build-time font for the card text only — the site itself
  * uses Newsreader / Source Serif 4 / IBM Plex Sans.)
  *
- * Architecture:
- *   1. Satori converts a JSX-like object tree into an SVG string
- *   2. Sharp converts the SVG into an optimized PNG buffer
- *   3. The buffer is returned as the response body from a static endpoint
- *
- * Font loading: Reads .woff files from @fontsource packages at build time.
- * No network requests during build — fonts are bundled in node_modules.
+ * Satori turns a JSX-like object tree into an SVG string; Sharp converts that
+ * SVG into a PNG buffer, which a static endpoint returns as its body. Fonts
+ * are read from @fontsource .woff files at build time — no network requests.
  */
 
 import satori from "satori";
