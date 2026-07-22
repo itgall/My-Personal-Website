@@ -1,11 +1,10 @@
-# robots.txt — Academic site template
+# robots.txt for isaac-gallegos.com
 #
-# CRITICAL: Do NOT block Googlebot-Scholar.
-# Google Scholar uses its own crawler to index academic publications.
-# Blocking it prevents publications from appearing in Scholar search results.
+# Google Scholar's crawler must stay unblocked or publications drop out of
+# Scholar search results.
 
 User-agent: *
 Allow: /
+Disallow: /admin/
 
-# Sitemap location
 Sitemap: https://isaac-gallegos.com/sitemap-index.xml
