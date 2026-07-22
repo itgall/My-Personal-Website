@@ -2,16 +2,11 @@
 /**
  * ImageZoom.astro — Click-to-zoom for article images.
  *
- * NOT a React island — this uses event delegation on the document so it
- * works on all images inside .prose containers without per-element binding.
- *
- * Architecture:
- *   - Clicking an <img> inside .prose creates a full-viewport overlay
- *   - The image smoothly scales up with a dark backdrop
- *   - Click anywhere, press Escape, or scroll to dismiss
- *   - Keyboard accessible: Escape closes, focus managed
- *   - Respects prefers-reduced-motion (no scale transition)
- *   - Zero external dependencies (no medium-zoom library)
+ * Not a React island — it uses event delegation on the document so it works
+ * on every image inside .prose without per-element binding. Clicking an image
+ * opens a full-viewport overlay; click, Escape, or scroll dismisses it. Focus
+ * is managed for keyboard use, and prefers-reduced-motion drops the scale
+ * transition. No zoom library.
  */
 ---
 
@@ -73,7 +68,7 @@
     max-height: 90vh;
     object-fit: contain;
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-glass);
+    box-shadow: var(--shadow-modal);
     transform: scale(0.92);
     opacity: 0;
     transition: transform 0.25s ease, opacity 0.25s ease;

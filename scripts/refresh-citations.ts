@@ -68,7 +68,7 @@ async function fetchCitationCount(doi: string): Promise<number | null> {
     const response = await fetch(url, {
       headers: {
         Accept: "application/json",
-        "User-Agent": "astro-academic-site/1.0 (citation-refresh)",
+        "User-Agent": "isaac-gallegos-website/1.0 (citation-refresh)",
       },
     });
 

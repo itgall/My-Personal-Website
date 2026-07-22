@@ -18,7 +18,7 @@ const DEFAULT_META_DESCRIPTION =
   "Get in touch with Isaac Gallegos. Email, LinkedIn, GitHub, and ORCID.";
 const DEFAULT_INTRO = "The best way to reach me is by email.";
 const DEFAULT_ROLE_LINE =
-  "Research Engineer \u00b7 Wellman Center for Photomedicine \u00b7 Harvard Medical School";
+  "Doctoral Researcher \u00b7 University of Colorado Boulder";
 const DEFAULT_AVAILABILITY = "I'll do my best to get back to you quickly.";
 
 /** Keep a present-but-blank string (it hides the element); fall back otherwise. */

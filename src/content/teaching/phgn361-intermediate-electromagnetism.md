@@ -19,4 +19,4 @@ PHGN 361 covers static electric and magnetic fields in free space and in dielect
 
 ## My role
 
-I provided supplemental lectures, review sessions, and office hours, wrote original exam and problem-set material, and mentored more than fifty undergraduates.
+I was the teaching assistant for PHGN 361, running review sessions and office hours and writing original problem-set and exam material.

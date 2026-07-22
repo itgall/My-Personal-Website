@@ -1,14 +1,8 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * Astro Academic Site — Master Configuration
+ * Astro configuration for isaac-gallegos.com.
  *
- * Production-grade academic website template built on Astro 6.
- * Zero JS by default, BibTeX-driven publications, Pagefind search,
- * bidirectional backlinks, research graph.
- *
- * See ARCHITECTURE.md for full documentation of design decisions,
- * feature flags, content authoring guide, and deployment instructions.
- * ═══════════════════════════════════════════════════════════════════════════════
+ * Static output. Markdown/MDX content, KaTeX math, wiki-links, and
+ * autolinked headings; Pagefind builds the search index after the build.
  */
 
 import { defineConfig } from "astro/config";
@@ -23,15 +17,14 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 /**
- * Astro 6 master configuration.
+ * Astro configuration.
  *
  * Tailwind CSS 4 integration: Uses @tailwindcss/vite plugin directly rather than
  * @astrojs/tailwind, which does not yet support Astro 6. The Vite plugin approach
  * is the canonical method for Tailwind CSS 4's CSS-first configuration.
  *
- * Output: Pure static site generation (SSG). No server-side rendering.
- * Every page is pre-rendered at build time for maximum performance and
- * compatibility with Cloudflare Pages' free tier.
+ * Output: static site generation. Every page is pre-rendered at build time
+ * and served as static files from Netlify.
  */
 export default defineConfig({
   site: "https://isaac-gallegos.com",

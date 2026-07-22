@@ -62,17 +62,11 @@ for (const g of groups) {
     allTagsSet.add(tag);
   }
 }
-
-const totalUniqueTags = allTagsSet.size;
-const totalTagUsages = groups.reduce(
-  (sum, g) => sum + [...g.tags.values()].reduce((s, c) => s + c, 0),
-  0,
-);
 ---
 
 <PageLayout
   title="Tags"
-  subtitle={`${totalUniqueTags} unique tags across ${totalTagUsages} usages.`}
+  subtitle="Browse writing, notes, and research by topic."
   activeNav=""
 >
   {groups.length === 0 ? (

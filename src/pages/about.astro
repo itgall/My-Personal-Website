@@ -1,12 +1,9 @@
 ---
 /**
- * about.astro -- About page (Pattern 1: hero + chronological timeline).
+ * about.astro -- About page: hero, one-paragraph bio, chronological timeline.
  *
- * Architecture:
- *   Full-width alternating background sections with constrained content width.
- *   Each <section> spans the full viewport; the inner <.about-inner> constrains
- *   content to 760px. This eliminates the "narrow column floating in empty space"
- *   problem on wide screens while keeping reading line length optimal.
+ * One reading column held to 760px on the paper background; sections are
+ * separated by their own vertical rhythm (no alternating color bands).
  *
  * Structure:
  *   1. Hero -- fixed "About" label + editable tagline
@@ -42,7 +39,7 @@ import { renderInlineMarkdown } from "@utils/markdown";
   </section>
 
   {/* ======= BIO: one paragraph + identity links ======= */}
-  <section class="about-section about-section-alt">
+  <section class="about-section">
     <div class="about-inner">
       <p
         class="text-[16px] leading-[1.78] text-[var(--color-text-secondary)]"
@@ -113,7 +110,7 @@ import { renderInlineMarkdown } from "@utils/markdown";
   </section>
 
   {/* ======= LEARN MORE: compact link row ======= */}
-  <section class="about-section about-section-alt">
+  <section class="about-section">
     <div class="about-inner">
       <h2 class="sc-label mb-5 text-[12px] text-[var(--color-muted)]">Learn more</h2>
       <div class="flex flex-wrap gap-3">
@@ -148,22 +145,12 @@ import { renderInlineMarkdown } from "@utils/markdown";
 
 <style>
   /*
-   * ALTERNATING FULL-WIDTH SECTIONS (whitespace management)
-   *
-   * Each <section class="about-section"> spans the full viewport width.
-   * The background color alternates (default / off) to create visual rhythm
-   * between sections. Content is constrained to 760px inside each section
-   * via .about-inner. This technique -- the highest-impact whitespace solution
-   * identified in the research -- makes the narrow reading column feel
-   * intentional within a larger visual system rather than sparse.
+   * One reading column on paper. Sections are separated by their own vertical
+   * padding (no alternating background bands); content is held to 760px.
    */
   .about-section {
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     background: var(--color-bg);
-  }
-
-  .about-section-alt {
-    background: var(--color-bg-off);
   }
 
   .about-inner {
@@ -173,7 +160,7 @@ import { renderInlineMarkdown } from "@utils/markdown";
 
   @media (min-width: 640px) {
     .about-section {
-      padding: 4rem 2rem;
+      padding: 3rem 2rem;
     }
   }
 
