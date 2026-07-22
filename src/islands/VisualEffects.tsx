@@ -1,27 +1,14 @@
 /**
- * VisualEffects.tsx — Ambient canvas visual effects Island.
+ * VisualEffects.tsx — decorative full-viewport canvas island (client:idle).
  *
- * Hydration: client:idle — purely decorative, zero functional impact.
+ * The `mode` prop toggles two layered effects: "particles" (floating nodes
+ * with connection lines that thicken near the cursor) and "dust" (fine
+ * particles drifting across the viewport).
  *
- * Renders a full-viewport canvas behind all page content with two layered
- * effects that can be toggled independently via the `mode` prop:
- *
- *   1. **Living Particles** — Floating nodes with connection lines between
- *      nearby particles. Particles near the mouse cursor glow and form
- *      denser connections. Creates a subtle, living network visualization
- *      that evokes research/knowledge graphs.
- *
- *   2. **Ambient Dust** — Fine floating particles that drift slowly across
- *      the viewport, creating depth and atmosphere.
- *
- * Architecture:
- *   - Single requestAnimationFrame loop for all effects
- *   - Reads accent color from CSS custom properties (--color-accent)
- *   - Adapts opacity and colors for light vs dark mode
- *   - Reduces particle count on mobile (< 768px) for performance
- *   - Respects prefers-reduced-motion (disables entirely)
- *   - Fixed position, pointer-events: none, z-index: 0 (behind content)
- *   - Canvas resolution scales with devicePixelRatio for sharp rendering
+ * One requestAnimationFrame loop drives everything. It reads --color-accent
+ * from CSS, adapts opacity for light/dark, drops the particle count below
+ * 768px, scales the canvas by devicePixelRatio, and disables entirely under
+ * prefers-reduced-motion. Fixed, pointer-events: none, z-index 0.
  */
 import { useEffect, useRef } from "react";
 

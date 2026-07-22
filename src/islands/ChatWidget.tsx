@@ -1,17 +1,10 @@
 /**
- * ChatWidget.tsx — AI chat assistant Island.
+ * ChatWidget.tsx — AI chat assistant island (client:idle).
  *
- * Hydration: client:idle — chat is an enhancement, not critical path.
- *
- * Architecture:
- *   - Floating accent-colored button in the bottom-right corner
- *   - Expands into a chat panel with message history
- *   - Sends messages to /api/chat (serverless function)
- *   - The serverless function proxies to an LLM API with a system prompt
- *     containing site context (generated at build time)
- *   - Typing indicator while waiting for response
- *   - Keyboard accessible: Enter to send, Escape to close
- *   - Message history maintained in component state (not persisted)
+ * A floating button in the bottom-right expands into a chat panel. Messages
+ * post to /api/chat, which proxies to an LLM API with a build-time system
+ * prompt of site context. Enter sends, Escape closes; history lives in
+ * component state and is not persisted.
  */
 import { useState, useRef, useCallback, useEffect } from "react";
 

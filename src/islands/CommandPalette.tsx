@@ -1,16 +1,11 @@
 /**
- * CommandPalette.tsx — ⌘K / Ctrl+K command palette Island.
+ * CommandPalette.tsx — ⌘K / Ctrl+K command palette island (client:idle).
  *
- * Hydration: client:idle — command palette is an enhancement, not critical.
- *
- * Architecture:
- *   - Opens with ⌘K (Mac) or Ctrl+K (Windows/Linux)
- *   - Reads command manifest from #command-palette-data (JSON, build-time)
- *   - Fuzzy-matches input against command labels and keywords
- *   - Keyboard accessible: ↑↓ to navigate, Enter to select, Escape to close
- *   - Actions: navigate to pages, toggle theme, change accent, open search
- *   - Uses CSS custom properties from the design system for theming
- *   - Focus-trapped while open, scrolls selected item into view
+ * Opens with ⌘K (Mac) or Ctrl+K (Windows/Linux). It reads the command
+ * manifest from #command-palette-data (build-time JSON) and fuzzy-matches
+ * input against labels and keywords. Commands navigate to pages, toggle the
+ * theme, change accent, or open search. ↑↓ navigate, Enter selects, Escape
+ * closes; focus is trapped and the selected item scrolls into view.
  */
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 

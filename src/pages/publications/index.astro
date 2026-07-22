@@ -1,32 +1,17 @@
 ---
 /**
- * publications/index.astro — Publications index (Direction D: framed archive).
+ * publications/index.astro — Publications index.
  *
- * Architecture:
- *   1. Scope statement — brief framing of what this page contains,
- *      with prominent external links to Google Scholar, ORCID, and
- *      a BibTeX download of the full bibliography.
- *   2. Selected works — 2–4 publications marked `featured = {true}` in
- *      their BibTeX entry, rendered with richer context (FeaturedPubCard).
- *      Section is omitted entirely if no publications are marked featured.
- *   3. Full archive — complete chronological listing grouped by year,
- *      using the existing PubList/PubCard components.
- *   4. Type filter — CSS-only radio buttons that narrow the archive
- *      by publication type (Journal Article, Conference Paper, Preprint,
- *      Poster, Talk, etc.).
+ * Four parts: a scope statement with external links (Google Scholar, ORCID,
+ * BibTeX download); "Selected works" (entries marked `featured = {true}`,
+ * shown with richer context and omitted when none are flagged); the full
+ * archive grouped by year; and a CSS-only type filter over the archive.
  *
- * Data source:
- *   src/data/bibliography.bib is parsed at build time. Conference
- *   presentations use `@inproceedings` for papers and `@misc` with
- *   `type = {poster|talk|invited-talk}` for posters and talks.
- *   The Selected Works feature is controlled by `featured = {true}`
- *   on any BibTeX entry; optional `featurednote = {...}` provides
- *   2–3 sentences of context.
- *
- * Single source of truth: everything renders from the one .bib file.
- * Featured works are not duplicated — they are flagged within the
- * bibliography and filtered into the top section at build time while
- * remaining in the full archive below.
+ * Everything renders from src/data/bibliography.bib, parsed at build time.
+ * Conference presentations use `@inproceedings` for papers and `@misc` with
+ * `type = {poster|talk|invited-talk}`. Featured works aren't duplicated —
+ * they're flagged in the .bib and filtered into the top section while
+ * staying in the archive below. Optional `featurednote = {...}` adds context.
  */
 import PageLayout from "@layouts/PageLayout.astro";
 import PubList from "@components/PubList.astro";
@@ -81,7 +66,7 @@ const filterOptions: FilterOption[] = types.map((type) => ({
   subtitle={listSubtitle}
   activeNav="publications"
 >
-  {/* ═══════ 1. SCOPE + EXTERNAL LINKS ═══════════════════════════ */}
+  {/* 1. Scope + external links */}
   <section class="pubs-scope">
     <p class="pubs-scope-prose">
       Research I led or contributed to at the Wellman Center for
@@ -114,7 +99,7 @@ const filterOptions: FilterOption[] = types.map((type) => ({
     </div>
   </section>
 
-  {/* ═══════ 2. SELECTED WORKS (conditional) ═══════════════════════ */}
+  {/* 2. Selected works (conditional) */}
   {featured.length > 0 && (
     <section class="pubs-section">
       <h2 class="pubs-heading">Selected works</h2>
@@ -126,7 +111,7 @@ const filterOptions: FilterOption[] = types.map((type) => ({
     </section>
   )}
 
-  {/* ═══════ 3. FULL ARCHIVE WITH TYPE FILTER ═══════════════════════ */}
+  {/* 3. Full archive with type filter */}
   <section class="pubs-section">
     <h2 class="pubs-heading">
       {featured.length > 0 ? "All publications" : "Publications"}
@@ -188,20 +173,15 @@ const filterOptions: FilterOption[] = types.map((type) => ({
 
 <style>
   /*
-   * ═══════════════════════════════════════════════════════════════
-   * PUBLICATIONS INDEX PAGE
+   * Publications index.
+   *   .pubs-scope     — scope paragraph + external links row
+   *   .pubs-section   — section wrapper (Selected works, Archive)
+   *   .pubs-heading   — section heading (mono uppercase tracking)
+   *   .pubs-filter    — type filter chip row
+   *   .pubs-featured  — container for featured pub cards
    *
-   * Structure:
-   *   .pubs-scope       — Top scope paragraph + external links row
-   *   .pubs-section     — Section wrapper (Selected works, Archive)
-   *   .pubs-heading     — Section heading (mono uppercase tracking)
-   *   .pubs-filter      — Type filter chip row
-   *   .pubs-featured    — Container for featured pub cards
-   *
-   * The page inherits the wide-container layout from PageLayout but
-   * constrains content to a narrower column so the citation list
-   * stays scannable (long lines of bibliographic text are unreadable).
-   * ═══════════════════════════════════════════════════════════════
+   * Inherits PageLayout's wide container but holds content to a narrower
+   * column so long bibliographic lines stay scannable.
    */
 
   /* ─── Constrain content width for readability ─────────────────── */

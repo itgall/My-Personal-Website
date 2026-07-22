@@ -1,36 +1,21 @@
 ---
 /**
- * cv.astro — Curriculum Vitae (Pattern 1: hybrid academic).
+ * cv.astro — Curriculum vitae.
  *
- * Architecture:
- *   Two-column grid layout matching the essay pages (Option D):
- *     ┌──────────┬──────────────────────────────────────┐
- *     │  TOC     │  Header (name, title, contact)       │
- *     │  sidebar │  Research interests                  │
- *     │  (left)  │  Education                           │
- *     │  sticky  │  Experience                          │
- *     │          │  Research experience                 │
- *     │  + PDF   │  Publications → /publications/       │
- *     │  button  │  Teaching                            │
- *     │  + date  │  Technical skills                    │
- *     │          │  Awards, service, talks              │
- *     └──────────┴──────────────────────────────────────┘
+ * Two-column layout matching the essay pages: a sticky TOC (plus the PDF
+ * button and last-updated date) in the left sidebar, and the CV sections —
+ * research interests, education, experience, research, publications,
+ * teaching, skills, awards/service/talks — in the right column. Below 72rem
+ * it collapses to a single column with the PDF button and a compact TOC
+ * inline.
  *
- *   On narrow screens (<72rem):
- *     Single column. Download PDF button and compact TOC appear inline
- *     above the content. Sidebar collapses away.
+ * @media print rules hide the nav, footer, and sidebar, reset type to print
+ * sizes, control page breaks, strip link styling, and set US Letter margins,
+ * so the browser's "Save as PDF" produces the CV from this same HTML.
  *
- *   When printed (any media):
- *     Comprehensive @media print rules hide navigation, footer, and sidebar;
- *     reset typography to print-optimized sizes; enable proper page break
- *     control between sections; strip hyperlink styling; and apply US Letter
- *     page margins. This enables single-source PDF generation via the
- *     browser's "Save as PDF" function from the same HTML source.
- *
- * Data flow:
- *   src/data/cv.yaml is parsed at build time and rendered into structured
- *   HTML. Publications count comes from bibliography.bib. Empty sections
- *   (service, talks) are omitted from both the page and the TOC.
+ * src/data/cv.yaml is parsed at build time; the publication count comes from
+ * bibliography.bib. Empty sections (service, talks) drop from the page and
+ * the TOC.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { siteMetadata } from "@data/meta";
@@ -144,7 +129,7 @@ const personJsonLd = {
   <article class="cv-article" data-pagefind-body>
     <div class="cv-grid">
 
-      {/* ═══════ LEFT COLUMN: sticky TOC + PDF button ═══════════════ */}
+      {/* Left column: sticky TOC + PDF button */}
       <aside class="cv-sidebar" data-print-hidden>
         <nav aria-label="Curriculum vitae sections" class="cv-toc-nav">
           <h2 class="cv-toc-heading">Contents</h2>
@@ -188,7 +173,7 @@ const personJsonLd = {
         </div>
       </aside>
 
-      {/* ═══════ RIGHT COLUMN: CV content ═══════════════════════════ */}
+      {/* Right column: CV content */}
       <div class="cv-main">
 
         {/* ── Header ──────────────────────────────────────────── */}
@@ -405,11 +390,7 @@ const personJsonLd = {
 </BaseLayout>
 
 <style>
-  /*
-   * ═══════════════════════════════════════════════════════════════════
-   * CV PAGE LAYOUT — Pattern 1 (hybrid academic)
-   * ═══════════════════════════════════════════════════════════════════
-   */
+  /* CV page layout */
 
   .cv-article {
     padding-top: 3rem;
@@ -458,11 +439,7 @@ const personJsonLd = {
     max-width: 760px;
   }
 
-  /*
-   * ═══════════════════════════════════════════════════════════════════
-   * SIDEBAR: TABLE OF CONTENTS + ACTIONS
-   * ═══════════════════════════════════════════════════════════════════
-   */
+  /* Sidebar: table of contents + actions */
 
   .cv-toc-heading {
     font-family: var(--font-mono);
@@ -576,11 +553,7 @@ const personJsonLd = {
     }
   }
 
-  /*
-   * ═══════════════════════════════════════════════════════════════════
-   * MAIN CONTENT: HEADER AND SECTIONS
-   * ═══════════════════════════════════════════════════════════════════
-   */
+  /* Main content: header and sections */
 
   .cv-header {
     margin-bottom: 2.5rem;
@@ -761,9 +734,7 @@ const personJsonLd = {
   }
 
   /*
-   * ═══════════════════════════════════════════════════════════════════
-   * PRINT STYLES — Single-source PDF generation from HTML
-   * ═══════════════════════════════════════════════════════════════════
+   * Print styles — the CV PDF is generated from this HTML.
    *
    * When the user clicks "Save as PDF" (which calls window.print()), or
    * invokes the browser's print function directly, these rules produce

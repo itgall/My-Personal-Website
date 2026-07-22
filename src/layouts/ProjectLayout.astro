@@ -38,7 +38,7 @@ const linkedPubs = relatedPublications && relatedPublications.length > 0
     )
   : [];
 
-/* ── Resolve cross-references from Phase 1 schema ──────────────── */
+/* ── Resolve cross-references ──────────────── */
 const relPostSlugs = project.data.relatedPosts ?? [];
 const relEpisodeSlugs = project.data.relatedEpisodes ?? [];
 
@@ -112,7 +112,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
       </section>
     )}
 
-    {/* Cross-referenced posts from Phase 1 schema */}
+    {/* Cross-referenced posts */}
     {linkedPosts.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
         <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
@@ -128,7 +128,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
       </section>
     )}
 
-    {/* Cross-referenced episodes from Phase 1 schema */}
+    {/* Cross-referenced episodes */}
     {linkedEpisodes.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
         <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
