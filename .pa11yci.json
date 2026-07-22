@@ -1,0 +1,21 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 30000,
+    "wait": 500,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-dev-shm-usage"]
+    }
+  },
+  "urls": [
+    "http://localhost:8080/",
+    "http://localhost:8080/publications/",
+    "http://localhost:8080/blog/",
+    "http://localhost:8080/cv/",
+    "http://localhost:8080/search/",
+    "http://localhost:8080/notes/",
+    "http://localhost:8080/projects/",
+    "http://localhost:8080/about/",
+    "http://localhost:8080/contact/"
+  ]
+}

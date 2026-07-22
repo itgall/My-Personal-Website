@@ -109,20 +109,11 @@ jobs:
           SERVER_PID=$!
           sleep 3
 
-          # Run Pa11y against key pages. pa11y-ci defaults to the WCAG2AA
-          # standard; --standard is a pa11y (not pa11y-ci) flag and is invalid here.
-          pa11y-ci \
-            --threshold 0 \
-            http://localhost:8080/ \
-            http://localhost:8080/publications/ \
-            http://localhost:8080/blog/ \
-            http://localhost:8080/cv/ \
-            http://localhost:8080/search/ \
-            http://localhost:8080/notes/ \
-            http://localhost:8080/projects/ \
-            http://localhost:8080/about/ \
-            http://localhost:8080/contact/ \
-            || EXIT_CODE=$?
+          # Config-driven (.pa11yci.json): standard WCAG2AA, the page list, and
+          # the Chrome --no-sandbox flags the GitHub runner needs (puppeteer
+          # crashes with a sandbox SIGABRT otherwise). --standard is a pa11y,
+          # not pa11y-ci, CLI flag and can't be passed here.
+          pa11y-ci --threshold 0 || EXIT_CODE=$?
 
           kill $SERVER_PID 2>/dev/null || true
           exit ${EXIT_CODE:-0}
