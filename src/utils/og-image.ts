@@ -2,8 +2,10 @@
  * og-image.ts — Build-time OG image generation using Satori + Sharp.
  *
  * Generates 1200×630 PNG images for social sharing (Open Graph / Twitter Card).
- * Each content type gets a distinct visual treatment while sharing a consistent
- * layout structure rooted in the site's Slate & Terracotta design language.
+ * Cards share the site's near-monochrome, forest-green look: ink text on paper
+ * with the single green accent, no per-type color and no decorative glyphs.
+ * (Inter here is a build-time font for the card text only — the site itself
+ * uses Newsreader / Source Serif 4 / IBM Plex Sans.)
  *
  * Architecture:
  *   1. Satori converts a JSX-like object tree into an SVG string
@@ -60,28 +62,30 @@ const fonts = [
 /* ── Color tokens (matching tailwind.css) ────────────────────────────────── */
 
 const colors = {
-  bg: "#FDFCFB",
-  bgDark: "#1C1E22",
-  text: "#36454F",
-  muted: "#6B7885",
-  accent: "#6B4C9A",
-  accentLight: "rgba(107, 76, 154, 0.12)",
-  border: "#D5D0CB",
+  bg: "#FCFCFB",
+  bgDark: "#1B1A17",
+  text: "#211F1C",
+  muted: "#736D61",
+  accent: "#345130",
+  accentLight: "rgba(52, 81, 48, 0.10)",
+  border: "#DAD5CC",
 };
 
 /* ── Content type configuration ──────────────────────────────────────────── */
+/* One accent (forest green) across every type; the label carries the
+ * distinction, not a per-type color or glyph. */
 
 const typeConfig: Record<
   string,
   { label: string; color: string; icon: string }
 > = {
-  post: { label: "Essay", color: colors.accent, icon: "✦" },
-  project: { label: "Research", color: "#4A7C6F", icon: "◈" },
-  note: { label: "Note", color: "#5B7BA5", icon: "❋" },
-  podcast: { label: "Podcast", color: "#8B6CAF", icon: "◉" },
-  venture: { label: "Venture", color: "#C17F3E", icon: "△" },
-  publication: { label: "Publication", color: "#4A6FA5", icon: "◇" },
-  teaching: { label: "Teaching", color: "#6B8E6B", icon: "▣" },
+  post: { label: "Essay", color: colors.accent, icon: "" },
+  project: { label: "Research", color: colors.accent, icon: "" },
+  note: { label: "Note", color: colors.accent, icon: "" },
+  podcast: { label: "Podcast", color: colors.accent, icon: "" },
+  venture: { label: "Venture", color: colors.accent, icon: "" },
+  publication: { label: "Publication", color: colors.accent, icon: "" },
+  teaching: { label: "Teaching", color: colors.accent, icon: "" },
   page: { label: "", color: colors.accent, icon: "" },
 };
 
@@ -194,7 +198,7 @@ export async function generateOgImage(
                           borderRadius: "4px",
                           border: `1px solid ${config.color}33`,
                         },
-                        children: `${config.icon}  ${config.label}`,
+                        children: config.label,
                       },
                     },
                   ]
