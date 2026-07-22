@@ -3,12 +3,10 @@
  * CiteBlock.astro — Copy-pasteable citation block for blog posts.
  *
  * Renders a "Cite this" section at the bottom of every essay with
- * pre-formatted APA and BibTeX citations. Inspired by Lilian Weng's
- * lilianweng.github.io citation blocks — the gold standard for
- * academic blog citation.
+ * pre-formatted APA and BibTeX citations.
  *
- * The BibTeX key is generated from the author's last name and the
- * publication year (e.g., gallegos2026inverse).
+ * The BibTeX key is the author's last name, the year, and the first
+ * significant word of the title (e.g., lastname2026keyword).
  */
 import { siteMetadata } from "@data/meta";
 import CopyButton from "@islands/CopyButton.tsx";

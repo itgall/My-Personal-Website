@@ -5,15 +5,8 @@
  * (file collection "Navigation" → src/data/navigation.json).
  * Changes are committed to git and take effect on the next build.
  *
- * Footer navigation and social links are hardcoded here because they
- * change rarely and represent a complete sitemap rather than a curated
- * selection.
- *
- * Architecture:
  *   - primaryNav: top nav bar items (CMS-editable)
  *   - moreNav: overflow/mobile menu items (CMS-editable)
- *   - footerNav: complete site map in footer (hardcoded)
- *   - socialLinks: external profile links (hardcoded)
  */
 
 import rawNav from "./navigation.json";
@@ -29,13 +22,6 @@ export interface NavItem {
   activeMatch?: string;
   /** Optional: open in new tab */
   external?: boolean;
-}
-
-export interface SocialLink {
-  label: string;
-  href: string;
-  /** Icon identifier for the social link (rendered by Footer component) */
-  icon: "github" | "linkedin" | "orcid" | "scholar" | "email" | "rss";
 }
 
 interface NavigationData {
@@ -71,37 +57,3 @@ export const moreNav: NavItem[] =
   Array.isArray(raw.moreNav) && raw.moreNav.length > 0
     ? raw.moreNav
     : defaultMoreNav;
-
-/* ── Footer navigation (hardcoded — complete sitemap) ─────────────────── */
-
-export const footerNav: NavItem[] = [
-  { label: "Research", href: "/projects/" },
-  { label: "Publications", href: "/publications/" },
-  { label: "Podcast", href: "/podcast/" },
-  { label: "Ventures", href: "/ventures/" },
-  { label: "Essays", href: "/blog/" },
-  { label: "Speaking", href: "/speaking/" },
-  { label: "Notes", href: "/notes/" },
-  { label: "Teaching", href: "/teaching/" },
-  { label: "CV", href: "/documents/gallegos-cv.pdf" },
-  { label: "About", href: "/about/" },
-  { label: "Contact", href: "/contact/" },
-  { label: "Now", href: "/now/" },
-  { label: "Uses", href: "/uses/" },
-  { label: "Bookshelf", href: "/bookshelf/" },
-  { label: "Colophon", href: "/colophon/" },
-  { label: "Tags", href: "/tags/" },
-  { label: "Search", href: "/search/" },
-  { label: "Graph", href: "/graph/" },
-  { label: "RSS", href: "/rss.xml", external: true },
-];
-
-/* ── Social links (hardcoded — rarely change) ─────────────────────────── */
-
-export const socialLinks: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/itgall", icon: "github" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/isaactgallegos", icon: "linkedin" },
-  { label: "ORCID", href: "https://orcid.org/0009-0007-9290-6289", icon: "orcid" },
-  { label: "Email", href: "mailto:itgall@mit.edu", icon: "email" },
-  { label: "RSS Feed", href: "/rss.xml", icon: "rss" },
-];

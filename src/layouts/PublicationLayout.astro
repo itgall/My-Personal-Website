@@ -136,9 +136,8 @@ const jsonLd = {
       </div>
 
       {/*
-       * LARGE TITLE — Google Scholar requirement.
-       * Title must appear in a large font at the top of the page for Scholar
-       * to correctly identify it as the paper title.
+       * Title in a large font at the top of the page — Google Scholar uses
+       * that to identify it as the paper title.
        */}
       <h1
         class="vt-page-title text-2xl font-bold leading-tight tracking-tight md:text-3xl lg:text-[2rem]"
@@ -148,8 +147,8 @@ const jsonLd = {
       </h1>
 
       {/*
-       * AUTHOR LIST — on a separate line below title (Scholar requirement).
-       * Site owner visually highlighted with bold + accent color.
+       * Author list on its own line below the title (Scholar reads it there).
+       * The site owner is highlighted with bold + accent color.
        */}
       <p
         class="mt-4 text-[15px] leading-relaxed text-[var(--color-text-secondary)]"
@@ -171,10 +170,7 @@ const jsonLd = {
     </header>
 
     {/* ── Abstract ─────────────────────────────────────────────────────── */}
-    {/*
-     * ABSTRACT — must be visible on the page (Scholar requirement).
-     * Displayed prominently in its own section.
-     */}
+    {/* Abstract, visible in its own section — Scholar expects it on the page. */}
     {pub.abstract && (
       <section class="mb-8">
         <h2 class="text-base font-medium text-[var(--color-text)] mb-3">Abstract</h2>

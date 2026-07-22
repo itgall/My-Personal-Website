@@ -1,15 +1,15 @@
 /**
- * tailwind.css — Tailwind CSS 4 design system for astro-academic-site.
+ * tailwind.css — Tailwind CSS 4 design system for isaac-gallegos.com.
  *
  * CSS-first configuration replacing tailwind.config.js. This file defines
  * the complete visual language: semantic color tokens, typographic scale,
  * spacing system, and custom utilities.
  *
- * Design lineage:
- *   - Rayleigh Blue palette — cool neutral foundation with academic blue accent
- *   - Near-white background (#FCFCFB) for intentional warmth
- *   - Light-first design with warm dark mode adaptation
- *   - Inter (4 weights: 400/500/600/700) + JetBrains Mono type system
+ * Design lineage (see DESIGN-DIRECTION.md):
+ *   - Near-monochrome ink on warm paper (#FCFCFB), one accent: forest green
+ *   - Light-first design with a warm dark mode adaptation
+ *   - Two type voices: editorial serif (Newsreader / Source Serif 4) and
+ *     data mono (IBM Plex Mono); IBM Plex Sans for UI
  *   - Three-tier text color hierarchy: ink / body / muted
  *   - 1.25 modular scale with 1.5× display jump
  *   - Warm layered shadow system (hue ~30°)
@@ -32,14 +32,8 @@
 
 /* ── Theme tokens ─────────────────────────────────────────────────────────── */
 @theme {
-  /* ── Brand colors — Rayleigh Blue ── */
-  --color-primary: #2b6cb0;
-  --color-primary-dark: #1d4f85;
-  --color-primary-muted: rgba(43, 108, 176, 0.15);
-
   /* ── Light mode semantic palette ──
-   * Rayleigh Blue: cool neutral foundation with academic blue accent.
-   * Near-white background #FCFCFB creates clear contrast with card surfaces.
+   * Near-monochrome ink on warm paper (#FCFCFB), one accent (forest green).
    * Dark mode overrides below via [data-theme="dark"]. */
   --color-bg: #FCFCFB;
   --color-bg-off: #F6F5F2;
@@ -67,18 +61,12 @@
   /* ── Typography ──
    * Modular scale ratio 1.25 (Major Third) with 1.5× display jump.
    * Base: 16px (1rem). Each step: previous × 1.25.
-   * Headings: Inter at 600/700 with negative tracking
-   * Body: Inter at 400 (regular)
-   * Code/metadata: JetBrains Mono at 400/500
    *
-   * DM Serif Display was retired — its single 400 weight and hairline
-   * strokes at heading sizes made headings optically lighter than body
-   * text, inverting the visual hierarchy. A sans with real 600/700
-   * weights resolves this. */
-  /* Font system -- governed by DESIGN.md Article III. These variables are
-     declared here AND loaded via the Google Fonts link in
-     src/layouts/BaseLayout.astro: change both together, never one.
-     Press voice: Source Serif 4 + Newsreader. Lab voice: IBM Plex Sans + Mono. */
+   * Font system -- governed by DESIGN.md Article III. These variables are
+   * declared here AND loaded via the Google Fonts link in
+   * src/layouts/BaseLayout.astro: change both together, never one.
+   * Editorial voice: Source Serif 4 (reading) + Newsreader (display).
+   * Data voice: IBM Plex Mono. UI: IBM Plex Sans. */
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-display: "Newsreader", Georgia, "Times New Roman", serif;
@@ -109,7 +97,7 @@
   --shadow-sm: var(--shadow-low);
   --shadow-md: var(--shadow-medium);
   --shadow-lg: var(--shadow-high);
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.10);
 
   /* ── Border radius ── */
   --radius-sm: 4px;
@@ -150,7 +138,7 @@
     --shadow-sm: var(--shadow-low);
     --shadow-md: var(--shadow-medium);
     --shadow-lg: var(--shadow-high);
-    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.35);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -183,7 +171,7 @@
       --shadow-sm: var(--shadow-low);
       --shadow-md: var(--shadow-medium);
       --shadow-lg: var(--shadow-high);
-      --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+      --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.35);
     }
   }
 }
@@ -257,25 +245,6 @@
   html { scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; }
 }
 
-/* ── Custom utilities ─────────────────────────────────────────────────────── */
-
-@utility glass {
-  background: var(--color-nav-bg);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  @supports not (backdrop-filter: blur(12px)) {
-    background: var(--color-bg);
-  }
-}
-
-@utility glass-surface {
-  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  @supports not (backdrop-filter: blur(8px)) {
-    background: var(--color-surface);
-  }
-}
 
 @utility prose-container {
   max-width: var(--spacing-content);
@@ -396,13 +365,6 @@
     --color-border-subtle: #666666;
   }
 
-  .glass,
-  .glass-surface {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: var(--color-bg) !important;
-  }
-
   :focus-visible {
     outline-width: 3px;
   }
@@ -450,7 +412,7 @@
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
-  --shadow-glass: none;
+  --shadow-modal: none;
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
@@ -488,7 +450,7 @@
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
-  --shadow-glass: none;
+  --shadow-modal: none;
   --spacing-content: 820px;
   --spacing-wide: 1080px;
 }
@@ -521,7 +483,7 @@
     --shadow-sm: none;
     --shadow-md: none;
     --shadow-lg: none;
-    --shadow-glass: none;
+    --shadow-modal: none;
     --spacing-content: 820px;
     --spacing-wide: 1080px;
   }

@@ -26,6 +26,8 @@ interface OgEntry {
   type: string;
   subtitle?: string;
   tags?: string[];
+  /** Astro's getStaticPaths props require an index signature. */
+  [key: string]: unknown;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -36,11 +38,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     slug: "index",
     title: "Isaac Gallegos",
     type: "page",
-    subtitle: "Research Engineer · Wellman Center for Photomedicine",
+    subtitle: "Doctoral Researcher · University of Colorado Boulder",
   });
 
   /* Blog posts */
-  const posts = await getCollection("posts", ({ data }) => data.published);
+  const posts = await getCollection("posts", ({ data }: { data: { published: boolean } }) => data.published);
   for (const post of posts) {
     entries.push({
       slug: `blog/${post.id}`,
@@ -52,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Projects */
-  const projects = await getCollection("projects", ({ data }) => data.published);
+  const projects = await getCollection("projects", ({ data }: { data: { published: boolean } }) => data.published);
   for (const project of projects) {
     entries.push({
       slug: `projects/${project.id}`,
@@ -64,7 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Notes */
-  const notes = await getCollection("notes", ({ data }) => data.published);
+  const notes = await getCollection("notes", ({ data }: { data: { published: boolean } }) => data.published);
   for (const note of notes) {
     entries.push({
       slug: `notes/${note.id}`,
@@ -76,7 +78,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Podcast episodes */
-  const episodes = await getCollection("podcast", ({ data }) => data.published);
+  const episodes = await getCollection("podcast", ({ data }: { data: { published: boolean } }) => data.published);
   for (const ep of episodes) {
     const guestNames = ep.data.guests.map((g: { name: string }) => g.name);
     entries.push({
@@ -91,7 +93,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   /* Ventures */
-  const ventures = await getCollection("ventures", ({ data }) => data.published);
+  const ventures = await getCollection("ventures", ({ data }: { data: { published: boolean } }) => data.published);
   for (const venture of ventures) {
     entries.push({
       slug: `ventures/${venture.id}`,
@@ -118,7 +120,7 @@ export const GET: APIRoute = async ({ props }) => {
     tags,
   });
 
-  return new Response(png, {
+  return new Response(new Uint8Array(png), {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=31536000, immutable",

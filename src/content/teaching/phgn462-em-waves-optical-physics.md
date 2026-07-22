@@ -20,4 +20,4 @@ PHGN 462 develops the wave description of light from solutions of the electromag
 
 ## My role
 
- During the 2023-2024 academic year, I was the teaching-assistant for this course in the Mines Physics Department, I provided supplemental lectures, review sessions, and office hours, wrote original exam and problem-set material, and mentored more than fifty undergraduates. I supported Electromagnetic Waves and Optical Physics over two semesters.
+I was the teaching assistant for PHGN 462 over two semesters in 2023–2024, running supplemental lectures, review sessions, and office hours, and writing original exam and problem-set material.

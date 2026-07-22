@@ -1,28 +1,16 @@
 ---
 /**
- * blog/index.astro — Essays listing page (Refined C).
+ * blog/index.astro — Essays listing page.
  *
- * Architecture:
- *   - Plain text tab-style links for category filtering (All, Technical,
- *     Build log, Essay). Active tab has an underline accent. No topic
- *     filter on this page — topics are accessible via tag pages linked
- *     from individual essay pages and from /tags/.
- *   - Content constrained to 740px max-width within the wide-container
- *     layout inherited from PageLayout. This prevents entries from
- *     stretching to the full 960px wide-container width.
- *   - PostCard rendered with showTags={false} — tag chips are removed
- *     from the index view. Tags remain on individual essay pages and
- *     on the tag archive pages at /blog/tags/[tag]/.
- *   - Year-grouped chronological listing preserved.
- *   - Sort dropdown preserved (newest first, oldest first, title A-Z).
- *   - Client-side category filtering via data attributes and inline JS.
- *     Progressive enhancement: without JS, all posts are visible and
- *     the tab links degrade to plain text.
+ * Category filtering uses plain tab-style links (All, Technical, Build log,
+ * Essay); the active tab gets an underline. There's no topic filter here —
+ * topics live on the tag pages under /tags/. Content is held to 740px inside
+ * PageLayout's wide container, and PostCard renders without tag chips (tags
+ * stay on the individual essay and tag-archive pages). The listing is grouped
+ * by year with a sort dropdown (newest, oldest, title A–Z).
  *
- * This replaces the previous implementation which used two rows of
- * filter chips (category + topic) with ~15 pill-shaped buttons that
- * consumed significant vertical space, plus 3-5 tag chips per card
- * that made each entry visually heavy.
+ * Category filtering is client-side via data attributes and inline JS; with
+ * JS off, every post is visible and the tabs degrade to plain links.
  */
 import PageLayout from "@layouts/PageLayout.astro";
 import PostCard from "@components/PostCard.astro";
@@ -122,16 +110,12 @@ for (const post of posts) {
 
 <style>
   /*
-   * ═══════════════════════════════════════════════════════════════
-   * BLOG INDEX — Refined C
-   *
-   * Content width constrained to 740px within PageLayout's
-   * wide-container (960px). Category filter is plain text tabs
-   * with an underline indicator — zero chip/pill overhead.
-   * ═══════════════════════════════════════════════════════════════
+   * Blog index. Content is held to 740px inside PageLayout's 960px wide
+   * container. The category filter is plain text tabs with an underline
+   * indicator.
    */
 
-  /* ─── Content width constraint ────────────────────────────── */
+  /* Content width constraint */
   .blog-content {
     max-width: 740px;
   }

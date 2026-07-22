@@ -1,0 +1,26 @@
+# Dependabot — weekly dependency and action-pin updates.
+#
+# npm updates are grouped (minor+patch together) to keep PR noise down;
+# majors arrive individually so they get a real look. The github-actions
+# ecosystem keeps the SHA-pinned actions in the workflows current.
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5

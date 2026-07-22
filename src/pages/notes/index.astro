@@ -29,10 +29,15 @@ const allTags = [...new Set(notes.flatMap((n: Note) => n.data.tags))].sort();
 const allMaturities = [...new Set(notes.map((n: Note) => n.data.maturity))].sort();
 
 const maturityLabels: Record<string, string> = {
-  seedling: "🌱 Seedling",
-  budding: "🌿 Budding",
-  evergreen: "🌳 Evergreen",
+  seedling: "Seedling",
+  budding: "Budding",
+  evergreen: "Evergreen",
 };
+
+/* Apparatus proportional to content (DESIGN.md §IV): the filter/sort
+   controls only earn their place once the list is long enough to need them. */
+const SHOW_CONTROLS_AT = 6;
+const showControls = notes.length >= SHOW_CONTROLS_AT;
 ---
 
 <PageLayout
@@ -40,7 +45,8 @@ const maturityLabels: Record<string, string> = {
   subtitle="Short notes and working ideas. Some are polished, most aren't."
   activeNav="notes"
 >
-  {/* ── Filter bar ──────────────────────────────────────────────── */}
+  {/* ── Filter bar (only once the list needs it) ────────────────── */}
+  {showControls && (
   <div id="notes-filters" class="mb-8 space-y-3">
     {/* Maturity filter */}
     <div class="flex flex-wrap items-center gap-1.5">
@@ -76,6 +82,7 @@ const maturityLabels: Record<string, string> = {
       </select>
     </div>
   </div>
+  )}
 
   {/* ── No results message ──────────────────────────────────────── */}
   <p id="notes-no-results" class="hidden text-sm text-[var(--color-muted)] py-8 text-center">

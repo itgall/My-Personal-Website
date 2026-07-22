@@ -25,27 +25,27 @@ interface RawAbout {
 }
 
 const DEFAULT_META_DESCRIPTION =
-  "Isaac Gallegos builds interferometric imaging systems and spectral inverse models at the Wellman Center for Photomedicine. Applying to PhD programs for Fall 2027.";
+  "Isaac Gallegos is a physics PhD student at the University of Colorado Boulder, working on quantum photonics, neuromorphic computing, and photonic integrated circuits.";
 const DEFAULT_TAGLINE =
   "I build optical systems. Lately I've been learning to build quantum ones too.";
 const DEFAULT_BIO =
-  "I work at the Wellman Center for Photomedicine, where I build swept-source interferometric systems and write inverse models that try to figure out what a sample is made of from how it scatters light. I've also built spectral unmixing pipelines for photoacoustic data and prototyped a broadband imaging system that uses individually addressable micro-LEDs instead of a swept laser. Before coming to Harvard I spent three years at Colorado School of Mines studying engineering physics, where I got to build solid-state lasers from scratch, violate the Bell inequality with entangled photon pairs, and design photon-counting circuits on an FPGA. These days I'm reading a lot about quantum information, quantum networks and photonic interconnects, and entanglement distribution between spin-based quantum nodes, and I'm applying to physics PhD programs for Fall 2027.";
+  "I'm a physics PhD student at the University of Colorado Boulder, working on quantum photonics, neuromorphic computing, and photonic integrated circuits. Before Boulder, from 2025 to 2026, I was a research engineer at the Wellman Center for Photomedicine, where I built swept-source interferometric systems and wrote inverse models that figure out what a sample is made of from how it scatters light. I studied engineering physics at Colorado School of Mines, where I built solid-state lasers from scratch, measured a Bell-inequality violation with entangled photon pairs, and designed a photon-counting circuit on an FPGA. Outside the lab I travel, play neoclassical piano, learn languages, and climb.";
 const DEFAULT_TIMELINE: TimelineEntry[] = [
   {
-    period: "2027 (target)",
-    role: "PhD program",
-    institution: "Physics, Fall 2027 (applying)",
+    period: "2026 \u2014 present",
+    role: "Doctoral Researcher",
+    institution: "University of Colorado Boulder \u00b7 Department of Physics",
     description:
-      "Pursuing a physics PhD in quantum information and quantum networks: photonic interconnects and entanglement distribution between spin-based quantum nodes.",
-    current: false,
-    future: true,
+      "Physics PhD. Working on quantum photonics, neuromorphic computing, and photonic integrated circuits.",
+    current: true,
+    future: false,
   },
   {
-    period: "2025 \u2014 present",
+    period: "2025 \u2014 2026",
     role: "Research Engineer",
     institution: "Wellman Center for Photomedicine \u00b7 Harvard Medical School \u00b7 MGH",
     description:
-      "I build swept-source interferometric systems, write inverse models for spectral measurements, and prototype broadband micro-LED imaging hardware. First-author manuscript in preparation.",
+      "Built swept-source interferometric systems, wrote inverse models for spectral measurements, and prototyped broadband micro-LED imaging hardware. First-author manuscript in preparation.",
     current: false,
     future: false,
   },
