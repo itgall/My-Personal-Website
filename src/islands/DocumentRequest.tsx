@@ -138,7 +138,7 @@ export default function DocumentRequest() {
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-xl)",
-          boxShadow: "var(--shadow-glass)",
+          boxShadow: "var(--shadow-modal)",
           overflow: "hidden",
           zIndex: 99999,
         }}
