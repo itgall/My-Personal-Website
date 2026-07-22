@@ -102,6 +102,6 @@ export const socialLinks: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/itgall", icon: "github" },
   { label: "LinkedIn", href: "https://linkedin.com/in/isaactgallegos", icon: "linkedin" },
   { label: "ORCID", href: "https://orcid.org/0009-0007-9290-6289", icon: "orcid" },
-  { label: "Email", href: "mailto:itgall@mit.edu", icon: "email" },
+  { label: "Email", href: "mailto:Isaac.gallegos@colorado.edu", icon: "email" },
   { label: "RSS Feed", href: "/rss.xml", icon: "rss" },
 ];
