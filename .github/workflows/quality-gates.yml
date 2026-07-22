@@ -1,19 +1,27 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# Quality Gates — Pull Request Checks
+# Quality Gates — build, links, accessibility, and Lighthouse checks.
 #
-# Runs on PRs to main. Builds the site, then runs link checking (lychee),
-# accessibility testing (Pa11y CI), and performance assertions (Lighthouse CI)
-# in parallel using artifacts for the built site.
-# ═══════════════════════════════════════════════════════════════════════════════
+# Runs on PRs to main and on pushes to main. The build job produces a dist/
+# artifact that the three downstream jobs check in parallel.
+#
+# All actions are pinned to commit SHAs (tag comments alongside) and the
+# globally installed CLI tools are version-pinned, so a compromised or
+# breaking upstream release can't silently change what CI runs. Dependabot
+# (github-actions ecosystem) proposes pin bumps.
 
 name: Quality Gates
 
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
+
+concurrency:
+  group: quality-gates-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # ── Build job — produces dist/ artifact for downstream checks ────────────
@@ -22,16 +30,16 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
 
       - name: TypeScript check
         run: npm run check
@@ -45,7 +53,7 @@ jobs:
         run: npx pagefind --site dist
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: dist
           path: dist/
@@ -58,13 +66,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
           path: dist/
 
       - name: Check links with lychee
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           # --root-dir lets lychee resolve root-relative links (/teaching/,
           # /rss.xml, /favicon.svg) against the built site root.
@@ -86,28 +94,31 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout (for config files)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
           path: dist/
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
 
       - name: Install Pa11y CI and serve
-        run: npm install -g pa11y-ci serve
+        run: npm install -g pa11y-ci@4.1.1 serve@14.2.6
 
       - name: Run Pa11y CI
         run: |
-          # Start a local server in the background
+          # Serve the built site and wait until it actually answers.
           serve dist -l 8080 &
           SERVER_PID=$!
-          sleep 3
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080/ >/dev/null && break
+            sleep 1
+          done
 
           # Config-driven (.pa11yci.json): standard WCAG2AA, the page list, and
           # the Chrome --no-sandbox flags the GitHub runner needs (puppeteer
@@ -125,27 +136,30 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout (for config files)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
           path: dist/
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
 
       - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli serve
+        run: npm install -g @lhci/cli@0.15.1 serve@14.2.6
 
       - name: Run Lighthouse CI
         run: |
           serve dist -l 8080 &
           SERVER_PID=$!
-          sleep 3
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080/ >/dev/null && break
+            sleep 1
+          done
 
           # No preset: lighthouse:recommended re-asserts perf audits
           # (render-blocking-resources, uses-long-cache-ttl) that fail under a

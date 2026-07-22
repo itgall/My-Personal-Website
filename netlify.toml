@@ -9,7 +9,6 @@
 [build.environment]
   NODE_VERSION = "22"
   NODE_ENV = "production"
-  NPM_FLAGS = "--legacy-peer-deps"
   # Give the build a larger Node heap; image optimization is the memory-heavy
   # step. The default (~1.7 GB) is enough today but leaves little headroom.
   NODE_OPTIONS = "--max-old-space-size=8192"
