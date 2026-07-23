@@ -638,6 +638,39 @@ collections:
             hint: "Edit BibTeX entries directly. Each @article{...}, @inproceedings{...}, etc. generates a publication page with Highwire Press meta tags."
 
 
+  # -- News -----------------------------------------------------------------
+  # Schema: src/content.config.ts -> news collection
+  # Files: src/content/news/*.md — not rendered on the site yet; items
+  # accumulate here until there are enough to show.
+  - name: news
+    label: "📰 News"
+    label_singular: "Item"
+    folder: src/content/news
+    create: true
+    identifier_field: date
+    slug: "{{year}}-{{month}}-{{day}}"
+    sortable_fields: [date]
+    summary: "{{date}}"
+    fields:
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: Link
+        name: link
+        widget: string
+        required: false
+        hint: "Optional URL the item points to (paper, talk page, preprint)."
+
+      - label: Body
+        name: body
+        widget: markdown
+        hint: "One or two sentences. The item is the sentence."
+
+
   # -- Teaching ---------------------------------------------------------------
   # Schema: src/content.config.ts -> teaching collection
   # Files: src/content/teaching/*.md

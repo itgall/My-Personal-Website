@@ -16,6 +16,7 @@
  *
  * Content types:
  *   - writing:    Essays and digital-garden notes in one stream, split by `kind`
+ *   - news:       Dated one-or-two-sentence updates; the body is the content
  *   - projects:   Research projects with structured or freeform content modes
  *   - teaching:   Courses taught or TA'd
  *   - ventures:   Company ideas that grow out of the research
@@ -90,6 +91,20 @@ const writing = defineCollection({
     relatedProjects: relatedProjectsField,
     relatedPublications: relatedPublicationsField,
     relatedEpisodes: relatedEpisodesField,
+  }),
+});
+
+/* News (short updates).
+ *
+ * A date, an optional link, and a one-or-two-sentence body — cheap to add,
+ * which is the point. Nothing renders this collection yet; entries
+ * accumulate here until there are enough to show. */
+
+const news = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/news" }),
+  schema: z.object({
+    date: dateField,
+    link: optionalUrlField,
   }),
 });
 
@@ -318,6 +333,7 @@ const misc = defineCollection({
 
 export const collections = {
   writing,
+  news,
   projects,
   teaching,
   ventures,
