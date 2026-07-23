@@ -13,7 +13,7 @@ contentMode: freeform
 problem: ''
 impact: ''
 heroImage: /images/uploads/IMG_2458.jpeg
-heroCaption: ''
+heroCaption: 'Custom all-fiber stimulated Raman scattering amplifier: 1064 nm seed, cascaded Raman shifting to discrete NIR-II excitation lines.'
 videoUrl: ''
 interactiveUrl: ''
 interactiveHeight: 0
