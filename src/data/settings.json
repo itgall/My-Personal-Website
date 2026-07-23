@@ -1,6 +1,6 @@
 {
   "features": {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "sidenotes": true,
     "defaultAccent": "forest",
     "backlinks": true,
@@ -39,9 +39,9 @@
     "siteStyle": "default"
   },
   "analytics": {
-    "enabled": false,
+    "provider": "plausible",
     "domain": "",
-    "provider": "plausible"
+    "enabled": false
   },
   "newsletter": {
     "provider": "buttondown",
