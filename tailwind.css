@@ -32,6 +32,11 @@
 
 /* ── Theme tokens ─────────────────────────────────────────────────────────── */
 @theme {
+  /* One easing site-wide, chosen once (VISUAL-DIRECTION §Motion): fast-out,
+   * settled — replaces the stock Tailwind default so every transition shares
+   * the same decided curve. */
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+
   /* ── Light mode semantic palette ──
    * Near-monochrome ink on warm paper (#FCFCFB), one accent (forest green).
    * Dark mode overrides below via [data-theme="dark"]. */
