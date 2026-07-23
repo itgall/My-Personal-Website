@@ -86,22 +86,13 @@ const topic = highlightTag ?? (tags.length > 0 ? tags[0] : null);
     font-size: 0.625rem;
     color: var(--color-muted);
   }
+  /* Topic is metadata, not an accent event — the page's one green object is
+     the figure caption's link (VISUAL-DIRECTION §Color). */
   .card-topic {
     font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    color: var(--color-accent);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    font-size: 0.625rem;
+    color: var(--color-muted);
     white-space: nowrap;
-  }
-  .card-topic::before {
-    content: "";
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    flex-shrink: 0;
   }
   .card-title {
     font-size: 0.875rem;

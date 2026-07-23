@@ -38,6 +38,19 @@
     letter-spacing: 0.14em;
   }
 
+  /* Micro-typography (VISUAL-DIRECTION §Type): headings balance their rag,
+     prose avoids widows, and mono data aligns digit columns. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  .prose p, .prose li {
+    text-wrap: pretty;
+  }
+  code, kbd, samp,
+  .font-mono, .timeline-period {
+    font-variant-numeric: tabular-nums;
+  }
+
   .prose {
     max-width: var(--max-width-prose);
     color: var(--color-text-secondary);

@@ -25,7 +25,7 @@ const metaParts = [location, dateStr].filter(Boolean);
   <article class="wide-container pt-12 md:pt-16">
     <a href={`/misc/#${section}`} class="misc-back">&larr; {sectionLabel}</a>
     <header class="misc-detail-header">
-      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">{title}</h1>
+      <h1 class="vt-page-title font-display text-4xl font-semibold tracking-[-0.02em] md:text-[48px] leading-[1.1]">{title}</h1>
       {metaParts.length > 0 && (<p class="misc-detail-meta">{metaParts.join(" · ")}</p>)}
     </header>
     {heroImage && (
