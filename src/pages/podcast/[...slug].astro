@@ -302,11 +302,9 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
 
     {/* ─── Tags ────────────────────────────────────────────────────── */}
     {episode.data.tags.length > 0 && (
-      <div class="pt-6 border-t border-[var(--color-border)] flex flex-wrap gap-2">
+      <div class="pt-6 border-t border-[var(--color-border)] flex flex-wrap gap-x-3 gap-y-1">
         {episode.data.tags.map((tag) => (
-          <span class="rounded-full border border-[var(--color-border)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
-            {tag}
-          </span>
+          <span class="font-mono text-[11px] text-[var(--color-muted)]">{tag}</span>
         ))}
       </div>
     )}

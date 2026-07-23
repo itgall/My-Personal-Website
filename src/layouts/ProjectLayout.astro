@@ -146,11 +146,9 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
 
     {/* Tags */}
     {tags.length > 0 && (
-      <div class="mt-8 flex flex-wrap gap-2">
+      <div class="mt-8 flex flex-wrap gap-x-3 gap-y-1">
         {tags.map((tag) => (
-          <span class="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
-            {tag}
-          </span>
+          <span class="font-mono text-[11px] text-[var(--color-muted)]">{tag}</span>
         ))}
       </div>
     )}
