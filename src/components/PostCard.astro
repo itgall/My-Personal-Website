@@ -68,13 +68,13 @@ const isTechnical = ["technical", "thesis", "build-log"].includes(category);
     )}
   </a>
 
-  {/* Tag chips — only rendered when showTags is true */}
+  {/* Tags — plain mono text links, only rendered when showTags is true */}
   {showTags && tags.length > 0 && (
-    <div class="mt-2.5 flex flex-wrap gap-1.5">
+    <div class="mt-2.5 flex flex-wrap gap-x-3 gap-y-1">
       {tags.map((tag) => (
         <a
           href={`/blog/tags/${tag}/`}
-          class="rounded-full border border-[var(--color-border)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+          class="font-mono text-[11px] text-[var(--color-muted)] no-underline hover:text-[var(--color-accent)] transition-colors"
         >
           {tag}
         </a>

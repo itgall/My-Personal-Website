@@ -122,14 +122,14 @@ const jsonLd = {
 
     {/* ── Header ───────────────────────────────────────────────────────── */}
     <header class="mb-8 border-b border-[var(--color-border)] pb-8">
-      {/* Type badge */}
+      {/* Type line — plain mono data, no badge chrome */}
       <div class="mb-4 flex items-center gap-3">
-        <span class="inline-flex rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-bg)] px-3 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
           {pubTypeLabel(pub.type, pub.subtype)}
         </span>
         <span class="font-mono text-xs text-[var(--color-muted)]">{pub.year}</span>
         {pub.status && pub.status !== "published" && (
-          <span class="inline-flex rounded-full border border-[var(--color-border)] bg-[var(--color-bg-off)] px-3 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+          <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
             {pub.status}
           </span>
         )}
@@ -186,11 +186,9 @@ const jsonLd = {
     {pub.keywords && pub.keywords.length > 0 && (
       <section class="mb-8">
         <h2 class="text-base font-medium text-[var(--color-text)] mb-3">Keywords</h2>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-x-3 gap-y-1">
           {pub.keywords.map((kw) => (
-            <span class="inline-flex rounded-full border border-[var(--color-border)] px-3 py-1 font-mono text-[10px] tracking-wider text-[var(--color-muted)]">
-              {kw}
-            </span>
+            <span class="font-mono text-[11px] tracking-wider text-[var(--color-muted)]">{kw}</span>
           ))}
         </div>
       </section>
