@@ -2,31 +2,16 @@
 /**
  * PostLayout.astro — Essay / blog post layout.
  *
- * Option D architecture: left TOC sidebar, all content in the right column.
+ * Wide screens (≥72rem): a sticky TOC in a left sidebar, with the header,
+ * body, footnotes, citation block, and related content all in the right
+ * column. Narrow screens collapse to a single column with the TOC inline
+ * above the body.
  *
- * Layout structure:
- *   On wide screens (≥72rem):
- *     ┌──────────┬──────────────────────────────────────┐
- *     │  TOC     │  Header (title, date, tags)          │
- *     │  sidebar │  Body (prose with breakout)           │
- *     │  (left)  │  Footnotes                            │
- *     │  sticky  │  Citation block                       │
- *     │          │  Related content / backlinks           │
- *     └──────────┴──────────────────────────────────────┘
- *
- *   On narrow screens (<72rem):
- *     Single column. Mobile collapsible TOC appears inline
- *     above the article body. Sidebar TOC is hidden.
- *
- * Alignment guarantee: The header, body, footnotes, citation block,
- * and related content ALL live in the same grid column. They are
- * guaranteed to align perfectly because they share a single container.
- * There is no separate centering context that could fall out of sync.
- *
- * Content breakout: Inside the content column, per-element max-width
- * creates the visual breakout effect. Prose text is constrained to
- * var(--spacing-content) (720px), while code blocks expand to
- * min(var(--spacing-wide), 100%) (960px or the column width).
+ * Header, body, footnotes, citations, and related content share one grid
+ * column, so they align without a separate centering context. Breakout comes
+ * from per-element max-width inside that column: prose is held to
+ * var(--spacing-content) (720px) while code blocks expand to
+ * min(var(--spacing-wide), 100%).
  */
 import BaseLayout from "./BaseLayout.astro";
 import TOC from "@components/TOC.astro";
@@ -118,7 +103,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
             { label: "Essays", href: "/blog/" },
             { label: title }
           ]} />
-          <h1 class="text-3xl font-bold tracking-tight md:text-4xl leading-tight" data-pagefind-meta="title">
+          <h1 class="font-display text-4xl font-semibold tracking-[-0.02em] md:text-[48px] leading-[1.1]" data-pagefind-meta="title">
             {title}
           </h1>
           <data hidden data-pagefind-filter={`year:${date.getFullYear()}`} />
@@ -143,11 +128,11 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
             )}
           </div>
           {tags.length > 0 && (
-            <div class="mt-3 flex flex-wrap gap-2">
+            <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1">
               {tags.map((tag) => (
                 <a
                   href={`/blog/tags/${tag}/`}
-                  class="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)] hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+                  class="font-mono text-[11px] text-[var(--color-muted)] no-underline hover:text-[var(--color-accent)] transition-colors"
                   data-pagefind-filter={`tag:${tag}`}
                 >
                   {tag}
@@ -230,18 +215,14 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
 
 <style>
   /*
-   * OPTION D: LEFT TOC SIDEBAR
-   *
-   * Two-column grid: TOC on the left, all content on the right.
-   * Everything — header, body, footnotes, citation, backlinks —
-   * shares the right column, guaranteeing perfect alignment.
-   *
-   * On narrow screens (<72rem), the grid collapses to a single column.
-   * The sidebar TOC is hidden and replaced by a mobile collapsible TOC
-   * rendered inline above the article body.
+   * Two-column grid: TOC on the left, all content on the right. Header,
+   * body, footnotes, citation, and backlinks share the right column so they
+   * stay aligned. Below 72rem the grid collapses to a single column, the
+   * sidebar TOC is hidden, and a collapsible TOC renders inline above the
+   * body.
    */
 
-  /* ═══ WIDE SCREENS: two-column grid ═══════════════════════════ */
+  /* Wide screens: two-column grid */
   .essay-grid {
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
@@ -280,7 +261,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
     }
   }
 
-  /* ═══ NARROW SCREENS: single column ═══════════════════════════ */
+  /* Narrow screens: single column */
   @media (max-width: 71.999rem) {
     .essay-grid {
       grid-template-columns: 1fr;
@@ -290,14 +271,14 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
     }
   }
 
-  /* ═══ SOLO MODE (no TOC) ══════════════════════════════════════ */
+  /* Solo mode (no TOC) */
   .essay-solo {
     max-width: var(--spacing-wide);
     margin: 0 auto;
     padding: 0 1.5rem;
   }
 
-  /* ═══ RIGHT COLUMN: main content ══════════════════════════════ */
+  /* Right column: main content */
   .essay-main {
     min-width: 0;
   }
@@ -320,7 +301,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
     max-width: none;
   }
 
-  /* ═══ CONTENT BREAKOUT via per-element max-width ══════════════ */
+  /* Content breakout via per-element max-width */
 
   /* Default: all prose children constrained to content width */
   .essay-body > :global(*) {

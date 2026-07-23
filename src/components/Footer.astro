@@ -1,15 +1,16 @@
 ---
+import { identity } from "@data/meta";
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer" role="contentinfo" data-pagefind-ignore>
   <div class="full-container">
     <div class="footer-line">
-      <span class="footer-copy">&copy; {currentYear} Isaac Gallegos</span>
+      <span class="footer-copy">&copy; {currentYear} {identity.name}</span>
       <span class="footer-links">
-        <a href="mailto:itgall@mit.edu">Email</a>
-        <a href="https://github.com/itgall" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://scholar.google.com/citations?user=gr1ZNUAAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a>
+        <a href={`mailto:${identity.email}`}>Email</a>
+        <a href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href={identity.googleScholar} target="_blank" rel="noopener noreferrer">Scholar</a>
         <a href="/rss.xml">RSS</a>
       </span>
     </div>

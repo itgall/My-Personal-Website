@@ -31,7 +31,6 @@ const { tag, notes } = Astro.props;
 
 <PageLayout
   title={`Tag: ${tag}`}
-  subtitle={`${notes.length} note${notes.length === 1 ? "" : "s"} tagged "${tag}".`}
   activeNav="notes"
 >
   <div class="mb-4">

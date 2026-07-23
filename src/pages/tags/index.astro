@@ -62,17 +62,11 @@ for (const g of groups) {
     allTagsSet.add(tag);
   }
 }
-
-const totalUniqueTags = allTagsSet.size;
-const totalTagUsages = groups.reduce(
-  (sum, g) => sum + [...g.tags.values()].reduce((s, c) => s + c, 0),
-  0,
-);
 ---
 
 <PageLayout
   title="Tags"
-  subtitle={`${totalUniqueTags} unique tags across ${totalTagUsages} usages.`}
+  subtitle="Browse writing, notes, and research by topic."
   activeNav=""
 >
   {groups.length === 0 ? (
@@ -87,21 +81,21 @@ const totalTagUsages = groups.reduce(
               {group.tags.size} tag{group.tags.size === 1 ? "" : "s"}
             </span>
           </h2>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-x-4 gap-y-1.5">
             {[...group.tags.entries()].map(([tag, count]) => {
               const href = group.tagBaseUrl ? `${group.tagBaseUrl}/${tag}/` : null;
               return href ? (
                 <a
                   href={href}
-                  class="tag-chip inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:border-[var(--color-accent-border)] hover:text-[var(--color-accent)] transition-colors"
+                  class="inline-flex items-baseline gap-1 font-mono text-[11px] text-[var(--color-muted)] no-underline hover:text-[var(--color-accent)] transition-colors"
                 >
                   {tag}
-                  <span class="text-[9px] text-[var(--color-border)]">{count}</span>
+                  <span class="text-[10px]">{count}</span>
                 </a>
               ) : (
-                <span class="tag-chip inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)]">
+                <span class="inline-flex items-baseline gap-1 font-mono text-[11px] text-[var(--color-muted)]">
                   {tag}
-                  <span class="text-[9px] text-[var(--color-border)]">{count}</span>
+                  <span class="text-[10px]">{count}</span>
                 </span>
               );
             })}
@@ -127,15 +121,15 @@ const totalTagUsages = groups.reduce(
                 Tags appearing in multiple content types
               </span>
             </h2>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-x-4 gap-y-1.5">
               {crossType.map((tag) => {
                 const typeLabels = groups
                   .filter((g) => g.tags.has(tag))
                   .map((g) => g.label);
                 return (
-                  <span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-bg)] px-3 py-1 font-mono text-[11px] text-[var(--color-accent)]">
+                  <span class="inline-flex items-baseline gap-1 font-mono text-[11px] text-[var(--color-text-secondary)]">
                     {tag}
-                    <span class="text-[9px]">({typeLabels.join(", ")})</span>
+                    <span class="text-[10px] text-[var(--color-muted)]">({typeLabels.join(", ")})</span>
                   </span>
                 );
               })}

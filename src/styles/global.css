@@ -8,16 +8,17 @@
  *   4. Code block styling (Shiki integration)
  *   5. Print stylesheet import
  *
- * Font stack (mixed typography):
- *   UI chrome:  Inter — navigation, headings, cards, metadata, buttons
- *   Body text:  Source Serif 4 — essay and note body paragraphs (.prose)
- *   Code:       JetBrains Mono — inline code and code blocks
+ * Font stack (two voices — see DESIGN.md §III):
+ *   Display:  Newsreader — page/section headings
+ *   Reading:  Source Serif 4 — essay and note body paragraphs (.prose)
+ *   UI/sans:  IBM Plex Sans — chrome where a sans is warranted
+ *   Data:     IBM Plex Mono — dates, identifiers, code
  *
- * The serif body + sans headings pattern differentiates from the
- * Inter-everywhere template aesthetic while keeping the UI clean.
+ * An editorial serif for reading and display (rather than Inter everywhere)
+ * is the deliberate departure from the template aesthetic.
  *
- * Fonts are loaded via Google Fonts API in BaseLayout.astro with font-display: swap.
- * The system font fallback stack provides seamless reading if fonts haven't loaded yet.
+ * Fonts are loaded via Google Fonts in BaseLayout.astro with font-display: swap.
+ * The system fallback stack keeps text readable before they load.
  */
 
 @import "../../tailwind.css";
@@ -35,6 +36,19 @@
     font-family: var(--font-serif);
     text-transform: uppercase;
     letter-spacing: 0.14em;
+  }
+
+  /* Micro-typography (VISUAL-DIRECTION §Type): headings balance their rag,
+     prose avoids widows, and mono data aligns digit columns. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  .prose p, .prose li {
+    text-wrap: pretty;
+  }
+  code, kbd, samp,
+  .font-mono, .timeline-period {
+    font-variant-numeric: tabular-nums;
   }
 
   .prose {

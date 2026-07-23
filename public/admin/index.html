@@ -9,17 +9,28 @@
   <body>
     <!--
       Sveltia CMS — Git-backed content management for static sites.
-      
+
       This page loads the Sveltia CMS SPA, which authenticates via GitHub
       and reads/writes content files directly through the GitHub API.
       No server-side infrastructure required.
-      
+
       Authentication options (configure in config.yml backend):
         1. GitHub Personal Access Token (PAT) — simplest, zero backend
         2. GitHub OAuth via Sveltia CMS Authenticator — polished login flow
-      
+
+      The script is version-pinned with an SRI hash so a compromised or
+      hijacked package release can't run with the editor's GitHub
+      credentials. To upgrade: bump the version in the URL and recompute
+      the hash (npm pack @sveltia/cms@VERSION, then
+      openssl dgst -sha384 -binary package/dist/sveltia-cms.js | openssl base64 -A).
+
       See README.md for setup instructions.
     -->
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+    <script
+      src="https://unpkg.com/@sveltia/cms@0.172.4/dist/sveltia-cms.js"
+      integrity="sha384-Sj4Mfbg9OjjwG2ZE/YeUYu7xbZRTXGFg/wa/nszj3KzItKuRLEmGqSpV5C9YI2Ge"
+      crossorigin="anonymous"
+      type="module"
+    ></script>
   </body>
 </html>

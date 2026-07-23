@@ -30,19 +30,19 @@ function formatDate(date: Date): string {
 <BaseLayout title="Speaking & Media" activeNav="speaking">
   <div class="wide-container pt-12 md:pt-16">
     <header class="mb-12 border-b border-[var(--color-border)] pb-8">
-      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+      <h1 class="vt-page-title font-display text-4xl font-semibold tracking-[-0.02em] md:text-[52px] leading-[1.08]">
         Speaking & Media
       </h1>
-      <p class="mt-3 text-base text-[var(--color-muted)] leading-relaxed max-w-2xl">
-        Talks, panels, and media appearances on photonics, quantum systems, and deep-tech entrepreneurship.
+      <p class="mt-3 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+        Talks, panels, and media appearances.
       </p>
     </header>
 
     {allTalks.length === 0 ? (
       <div class="py-12">
         <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
-          Talks, panels, and invited presentations will appear here as they are scheduled.
-          For inquiries about speaking engagements, please <a href="/contact/" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">get in touch</a>.
+          Nothing here yet. Talks and media will appear as they happen. To ask about
+          a talk, <a href="/contact/" class="text-[var(--color-link)] hover:text-[var(--color-link-hover)] transition-colors no-underline">get in touch</a>.
         </p>
       </div>
     ) : (
@@ -53,7 +53,7 @@ function formatDate(date: Date): string {
             <h2 class="mb-6 text-base font-medium text-[var(--color-text)]">Featured</h2>
             <div class="space-y-6">
               {featured.map((talk) => (
-                <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+                <div class="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
                   {talk.data.videoUrl && (
                     <div class="mb-4 aspect-video rounded-md overflow-hidden bg-[var(--color-bg-off)]">
                       <iframe
@@ -110,16 +110,18 @@ function formatDate(date: Date): string {
       </div>
     )}
 
-    {/* Topics I speak about */}
-    <section class="mt-14 pt-8 border-t border-[var(--color-border)]">
-      <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">Topics I speak about</h2>
-      <div class="flex flex-wrap gap-2">
-        {["Spectroscopic OCT", "Photoacoustic Imaging", "Quantum Sensing", "Deep-Tech Entrepreneurship", "Physics-to-Product Translation", "Computational Inverse Problems"].map((topic) => (
-          <span class="rounded border border-[var(--color-border)] px-2.5 py-1 font-mono text-[10px] text-[var(--color-muted)]">
-            {topic}
-          </span>
-        ))}
-      </div>
-    </section>
+    {/* Topics I speak about — only once there is a speaking record to anchor it */}
+    {allTalks.length > 0 && (
+      <section class="mt-14 pt-8 border-t border-[var(--color-border)]">
+        <h2 class="mb-4 text-base font-medium text-[var(--color-text)]">Topics I speak about</h2>
+        <div class="flex flex-wrap gap-2">
+          {["Spectroscopic OCT", "Photoacoustic Imaging", "Quantum Sensing", "Computational Inverse Problems", "Laser Physics"].map((topic) => (
+            <span class="rounded border border-[var(--color-border)] px-2.5 py-1 font-mono text-[10px] text-[var(--color-muted)]">
+              {topic}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </BaseLayout>

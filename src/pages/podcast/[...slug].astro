@@ -125,7 +125,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
         <span class="text-[var(--color-border)]">·</span>
         <span class="font-mono text-[11px] text-[var(--color-muted)]">{formatDate(episode.data.date)}</span>
       </div>
-      <h1 class="vt-page-title text-3xl font-bold tracking-tight md:text-4xl leading-tight">
+      <h1 class="vt-page-title font-display text-4xl font-semibold tracking-[-0.02em] md:text-[48px] leading-[1.1]">
         {episode.data.title}
       </h1>
       {episode.data.guests.length > 0 && (
@@ -143,7 +143,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
 
     {/* ─── Video embed ─────────────────────────────────────────────── */}
     {episode.data.youtubeUrl && (
-      <div class="mb-8 aspect-video rounded-lg overflow-hidden bg-[var(--color-bg-off)] border border-[var(--color-border)]">
+      <div class="mb-8 aspect-video rounded-md overflow-hidden bg-[var(--color-bg-off)] border border-[var(--color-border)]">
         <iframe
           src={toEmbedUrl(episode.data.youtubeUrl)}
           class="w-full h-full"
@@ -213,7 +213,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
       <section class="mb-10">
         <a
           href={`/podcast/transcripts/${episode.id}/`}
-          class="flex items-center justify-between rounded-lg border border-[var(--color-border)] px-5 py-4 no-underline hover:border-[var(--color-accent-border)] transition-colors group"
+          class="flex items-center justify-between rounded-md border border-[var(--color-border)] px-5 py-4 no-underline hover:border-[var(--color-accent-border)] transition-colors group"
         >
           <div>
             <span class="block text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
@@ -302,11 +302,9 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
 
     {/* ─── Tags ────────────────────────────────────────────────────── */}
     {episode.data.tags.length > 0 && (
-      <div class="pt-6 border-t border-[var(--color-border)] flex flex-wrap gap-2">
+      <div class="pt-6 border-t border-[var(--color-border)] flex flex-wrap gap-x-3 gap-y-1">
         {episode.data.tags.map((tag) => (
-          <span class="rounded-full border border-[var(--color-border)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
-            {tag}
-          </span>
+          <span class="font-mono text-[11px] text-[var(--color-muted)]">{tag}</span>
         ))}
       </div>
     )}

@@ -1,14 +1,9 @@
 ---
 /**
- * NoteCard.astro — Digital garden note card (outlined compact).
+ * NoteCard.astro — digital-garden note entry (borderless; spacing separates).
  *
- * Visual identity: Thin 1px border, no shadow, compact padding.
- * Shows emoji growth-stage indicator, title, maturity label, and topic tags.
- * Matches the digital garden aesthetic from Maggie Appleton's garden.
- *
- * Card variant: Outlined (thin border, transparent background)
- * Layout: Used in 3-column compact grid on notes index.
- * Hover: Background shifts subtly.
+ * Title, a quiet maturity label (accent dot + word, no emoji), and topic tags.
+ * Hover shifts the title to the link color; nothing moves.
  */
 import type { CollectionEntry } from "astro:content";
 import { maturityConfig, type MaturityLevel } from "@utils/contentMaturity";
@@ -24,22 +19,17 @@ const config = maturityConfig[maturity as MaturityLevel];
 ---
 
 <article
-  class:list={[
-    "note-card rounded-lg border border-[var(--color-border)] px-4 py-3 transition-all duration-200",
-    config.hoverBorderColor,
-  ]}
+  class="note-card group py-3 transition-colors duration-200"
   data-pagefind-filter={`maturity:${maturity}`}
 >
   <a href={`/notes/${note.id}/`} class="block no-underline">
     {/* Title */}
-    <h3 class="text-sm font-medium leading-snug text-[var(--color-text)]">{title}</h3>
+    <h3 class="text-sm font-medium leading-snug text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">{title}</h3>
 
-    {/* Growth stage with emoji */}
+    {/* Maturity — accent dot + label, no emoji */}
     <div class="mt-1.5 flex items-center gap-1.5">
-      <span class="text-sm" title={config.description} aria-label={config.label}>
-        {config.emoji}
-      </span>
-      <span class:list={["font-mono text-[11px]", config.textColor]}>
+      <span aria-hidden="true" class="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"></span>
+      <span class="font-mono text-[11px] text-[var(--color-muted)]" title={config.description}>
         {config.label}
       </span>
     </div>

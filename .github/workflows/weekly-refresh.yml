@@ -1,22 +1,25 @@
-# ═══════════════════════════════════════════════════════════════════════════════
 # Weekly Citation Refresh
 #
-# Runs every Sunday at midnight UTC. Fetches updated citation counts from
-# Semantic Scholar API for all publications with DOIs. Commits changes
-# to src/data/citations.json if counts have changed.
+# Runs every Sunday at midnight UTC (plus manual workflow_dispatch). Fetches
+# updated citation counts from the Semantic Scholar API for all publications
+# with DOIs and commits src/data/citations.json when counts change.
 #
-# Manual trigger available via workflow_dispatch for ad-hoc refreshes.
-# ═══════════════════════════════════════════════════════════════════════════════
+# This workflow holds contents:write, so its actions are pinned to commit
+# SHAs — a hijacked upstream tag must not be able to commit to this repo.
 
 name: Weekly Citation Refresh
 
 on:
   schedule:
-    - cron: "0 0 * * 0"   # Sunday midnight UTC
+    - cron: "0 0 * * 0" # Sunday midnight UTC
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: weekly-refresh
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -25,22 +28,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
 
       - name: Refresh citation counts
         run: npx tsx scripts/refresh-citations.ts
 
       - name: Commit updated citations
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
         with:
           commit_message: "chore: refresh citation counts [skip ci]"
           file_pattern: "src/data/citations.json"
