@@ -1,9 +1,9 @@
 ---
 /**
- * NoteCard.astro — digital-garden note card (thin outline, compact).
+ * NoteCard.astro — digital-garden note entry (borderless; spacing separates).
  *
  * Title, a quiet maturity label (accent dot + word, no emoji), and topic tags.
- * Hover shifts the border to the accent; the card itself does not move.
+ * Hover shifts the title to the link color; nothing moves.
  */
 import type { CollectionEntry } from "astro:content";
 import { maturityConfig, type MaturityLevel } from "@utils/contentMaturity";
@@ -19,12 +19,12 @@ const config = maturityConfig[maturity as MaturityLevel];
 ---
 
 <article
-  class="note-card rounded-md border border-[var(--color-border)] px-4 py-3 transition-colors duration-200 hover:border-[var(--color-accent-border)]"
+  class="note-card group py-3 transition-colors duration-200"
   data-pagefind-filter={`maturity:${maturity}`}
 >
   <a href={`/notes/${note.id}/`} class="block no-underline">
     {/* Title */}
-    <h3 class="text-sm font-medium leading-snug text-[var(--color-text)]">{title}</h3>
+    <h3 class="text-sm font-medium leading-snug text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">{title}</h3>
 
     {/* Maturity — accent dot + label, no emoji */}
     <div class="mt-1.5 flex items-center gap-1.5">
