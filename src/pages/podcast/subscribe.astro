@@ -55,7 +55,7 @@ const unconfiguredPlatforms = platforms.filter((p) => p.url.length === 0);
           href={platform.url}
           target={platform.url.startsWith("http") ? "_blank" : undefined}
           rel={platform.url.startsWith("http") ? "noopener noreferrer" : undefined}
-          class="group block rounded-lg border border-[var(--color-border)] p-5 no-underline hover:border-[var(--color-accent-border)] transition-colors"
+          class="group block rounded-md border border-[var(--color-border)] p-5 no-underline hover:border-[var(--color-accent-border)] transition-colors"
         >
           <span class="block text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
             {platform.name}
@@ -67,7 +67,7 @@ const unconfiguredPlatforms = platforms.filter((p) => p.url.length === 0);
       ))}
     </div>
   ) : (
-    <div class="mt-6 rounded-lg border border-[var(--color-border)] p-6">
+    <div class="mt-6 rounded-md border border-[var(--color-border)] p-6">
       <p class="text-[15px] text-[var(--color-text-secondary)]">
         Platform links will be available when the podcast launches. In the meantime,
         you can subscribe via <a href="/rss.xml" class="text-[var(--color-link)] hover:underline">RSS</a>.

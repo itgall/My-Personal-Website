@@ -37,9 +37,9 @@ const topic = highlightTag ?? (tags.length > 0 ? tags[0] : null);
     position: relative;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: 12px;
     height: 100%;
-    overflow: visible;
+    overflow: hidden;
   }
   .card-link {
     display: flex;
@@ -50,7 +50,6 @@ const topic = highlightTag ?? (tags.length > 0 ? tags[0] : null);
   .card-figure {
     width: 100%;
     aspect-ratio: 16 / 10;
-    border-radius: 9px 9px 0 0;
     overflow: hidden;
     background: var(--color-surface);
     display: flex;

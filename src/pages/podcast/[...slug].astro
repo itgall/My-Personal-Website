@@ -143,7 +143,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
 
     {/* ─── Video embed ─────────────────────────────────────────────── */}
     {episode.data.youtubeUrl && (
-      <div class="mb-8 aspect-video rounded-lg overflow-hidden bg-[var(--color-bg-off)] border border-[var(--color-border)]">
+      <div class="mb-8 aspect-video rounded-md overflow-hidden bg-[var(--color-bg-off)] border border-[var(--color-border)]">
         <iframe
           src={toEmbedUrl(episode.data.youtubeUrl)}
           class="w-full h-full"
@@ -213,7 +213,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
       <section class="mb-10">
         <a
           href={`/podcast/transcripts/${episode.id}/`}
-          class="flex items-center justify-between rounded-lg border border-[var(--color-border)] px-5 py-4 no-underline hover:border-[var(--color-accent-border)] transition-colors group"
+          class="flex items-center justify-between rounded-md border border-[var(--color-border)] px-5 py-4 no-underline hover:border-[var(--color-accent-border)] transition-colors group"
         >
           <div>
             <span class="block text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-link)] transition-colors">
