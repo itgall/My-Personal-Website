@@ -12,8 +12,8 @@
     },
     {
       "label": "Writing",
-      "href": "/blog/",
-      "activeMatch": "/blog"
+      "href": "/writing/",
+      "activeMatch": "/writing"
     },
     {
       "label": "About",
@@ -31,11 +31,6 @@
       "label": "Podcast",
       "href": "/podcast/",
       "activeMatch": "/podcast"
-    },
-    {
-      "label": "Notes",
-      "href": "/notes/",
-      "activeMatch": "/notes"
     },
     {
       "label": "Speaking",

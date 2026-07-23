@@ -34,13 +34,12 @@ interface NavigationData {
 const defaultPrimaryNav: NavItem[] = [
   { label: "Research", href: "/projects/", activeMatch: "/projects|/publications" },
   { label: "Publications", href: "/publications/", activeMatch: "/publications" },
-  { label: "Writing", href: "/blog/", activeMatch: "/blog" },
+  { label: "Writing", href: "/writing/", activeMatch: "/writing" },
   { label: "About", href: "/about/", activeMatch: "/about" },
 ];
 
 const defaultMoreNav: NavItem[] = [
   { label: "Podcast", href: "/podcast/", activeMatch: "/podcast" },
-  { label: "Notes", href: "/notes/", activeMatch: "/notes" },
   { label: "Speaking", href: "/speaking/", activeMatch: "/speaking" },
 ];
 

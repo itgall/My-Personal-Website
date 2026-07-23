@@ -57,10 +57,8 @@ export interface SectionSettings {
   publications: boolean;
   /** Show Projects/Research section */
   projects: boolean;
-  /** Show Blog section */
-  blog: boolean;
-  /** Show Notes/digital garden section */
-  notes: boolean;
+  /** Show Writing section (essays and notes) */
+  writing: boolean;
   /** Show Teaching section */
   teaching: boolean;
   /** Show CV page */
@@ -140,8 +138,7 @@ const defaultFeatures: FeatureSettings = {
 const defaultSections: SectionSettings = {
   publications: true,
   projects: true,
-  blog: true,
-  notes: true,
+  writing: true,
   teaching: true,
   cv: true,
   about: true,

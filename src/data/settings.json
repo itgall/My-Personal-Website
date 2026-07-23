@@ -21,8 +21,7 @@
   "sections": {
     "publications": true,
     "projects": true,
-    "blog": true,
-    "notes": true,
+    "writing": true,
     "teaching": true,
     "cv": true,
     "about": true,
