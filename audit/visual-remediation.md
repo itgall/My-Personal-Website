@@ -56,10 +56,14 @@ plates) is deliberately deferred rather than half-shipped.
   consistent with the standing keep-dormant-plumbing decision. No fix needed.
 
 ### Phase 3 — composition (commit `cf37215`)
-- **V1 RESOLVED** — home Selected-work entries carry their real figures as
-  white plates with hairline frames and mono captions (680px). Blur-pass
-  criterion met: the section is now the page's focal region
-  (`after/blur-home.jpg`).
+- **V1 RESOLVED, then OVERRIDDEN BY OWNER** — home Selected-work entries
+  carried their real figures as captioned plates; the blur-pass criterion was
+  met (`after/blur-home.jpg`). After seeing it live, the owner preferred the
+  original quiet list and the plates were reverted. The audit's finding
+  stands as measured; the owner's taste supersedes it — which is itself an
+  authored decision, the thing this whole exercise optimizes for. The
+  whole-figure treatment (V2) remains on /projects/, so the figures still
+  appear un-truncated one click away.
 - **V2 RESOLVED** — `.card-figure` cover→contain on a padded white plate;
   zero mid-figure truncation (`after/screens/research__1440.png`). Captions
   added to both projects describing what is verifiably in each figure.
