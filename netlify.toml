@@ -26,24 +26,62 @@
       "node_modules/.astro",
     ]
 
-# ── 404 fallback ──────────────────────────────────────────────────────────────
+# ── URL redirects ─────────────────────────────────────────────────────────────
+# Essays and notes merged into /writing/; /research/ predates the Eleventy
+# migration. Rules are first-match top-down, so these sit before the 404
+# fallback (a 404 rule first would shadow every redirect below it).
 
 [[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
-
-# ── Legacy URL redirects (preserve SEO from Eleventy site) ────────────────────
+  from = "/blog/tags/*"
+  to = "/writing/tags/:splat"
+  status = 301
 
 [[redirects]]
-  from = "/writing/*"
-  to = "/blog/:splat"
+  from = "/notes/tags/*"
+  to = "/writing/tags/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/notes/"
+  to = "/writing/notes/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/"
+  to = "/writing/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/writing/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/notes/*"
+  to = "/writing/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/og/blog/*"
+  to = "/og/writing/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/og/notes/*"
+  to = "/og/writing/:splat"
   status = 301
 
 [[redirects]]
   from = "/research/*"
   to = "/publications/:splat"
   status = 301
+
+# ── 404 fallback ──────────────────────────────────────────────────────────────
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
 
 # ── Security headers ─────────────────────────────────────────────────────────
 

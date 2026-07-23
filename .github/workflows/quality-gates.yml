@@ -168,7 +168,7 @@ jobs:
           lhci autorun \
             --collect.url=http://localhost:8080/ \
             --collect.url=http://localhost:8080/publications/ \
-            --collect.url=http://localhost:8080/blog/ \
+            --collect.url=http://localhost:8080/writing/ \
             --collect.url=http://localhost:8080/cv/ \
             --assert.assertions.categories:accessibility="error; minScore=0.95" \
             --assert.assertions.categories:best-practices="error; minScore=0.95" \

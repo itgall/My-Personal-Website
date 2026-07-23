@@ -15,10 +15,9 @@
  *   5. Free-form tags with lowercase/trim/dedup enforcement
  *
  * Content types:
- *   - posts:      Blog articles (technical notes, theses, essays, dispatches, build logs)
+ *   - writing:    Essays and digital-garden notes in one stream, split by `kind`
  *   - projects:   Research projects with structured or freeform content modes
  *   - teaching:   Courses taught or TA'd
- *   - notes:      Digital garden notes with maturity levels (seedling/budding/evergreen)
  *   - ventures:   Company ideas that grow out of the research
  *   - speaking:   Talks, panels, and media appearances
  *   - podcast:    Video-first podcast episodes with show notes and transcripts
@@ -63,33 +62,31 @@ const relatedProjectsField = z.array(z.string()).default([]);
 const relatedPostsField = z.array(z.string()).default([]);
 const relatedEpisodesField = z.array(z.string()).default([]);
 const relatedPublicationsField = z.array(z.string()).default([]);
-const relatedNotesField = z.array(z.string()).default([]);
 
 /** URL field that accepts valid URLs or empty strings (for optional URLs). */
 const optionalUrlField = z.string().url().optional().or(z.literal(""));
 
-/* Posts (essays).
+/* Writing (essays + notes).
  *
- * Blog articles — technical notes, theses, essays, dispatches, build logs.
- * Categories use a Zod enum. Cross-references: relatedProjects (projects
- * discussed), relatedPublications (papers cited), relatedEpisodes. */
+ * One collection for all prose. `kind` is required and separates long-form
+ * essays from digital-garden notes: layout choice, listing labels, and OG
+ * images key off it. Notes keep their maturity level; essays keep
+ * readingTime. Nothing ships unless published is explicitly true. */
 
-const posts = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/posts" }),
+const writing = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/writing" }),
   schema: z.object({
-    title: z.string().min(1, "Post title is required"),
+    title: z.string().min(1, "Title is required"),
+    kind: z.enum(["essay", "note"]),
     date: dateField,
     updatedDate: dateField.optional(),
-    category: z
-      .enum(["technical", "thesis", "essay", "dispatch", "build-log"])
-      .default("technical"),
-    description: z.string().min(1, "Post description is required for SEO"),
+    description: z.string().min(1, "Description is required for SEO and listings"),
     tags: tagsField,
     published: z.boolean().default(false),
-    featured: z.boolean().default(false),
-    ogImage: z.string().optional(),
     readingTime: z.string().optional(),
+    maturity: z.enum(["seedling", "budding", "evergreen"]).default("seedling"),
     /* Cross-references */
+    relatedWriting: z.array(z.string()).default([]),
     relatedProjects: relatedProjectsField,
     relatedPublications: relatedPublicationsField,
     relatedEpisodes: relatedEpisodesField,
@@ -164,31 +161,6 @@ const teaching = defineCollection({
     tags: tagsField,
     syllabusUrl: optionalUrlField,
     published: z.boolean().default(true),
-  }),
-});
-
-/* Notes (digital garden).
- *
- * Notes with maturity levels. They connect two ways: relatedNotes (curated
- * in frontmatter) and backlinks (auto-discovered from [[wikilink]] parsing
- * at build time). relatedProjects and relatedPublications add research
- * context. */
-
-const notes = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/notes" }),
-  schema: z.object({
-    title: z.string().min(1, "Note title is required"),
-    date: dateField,
-    updatedDate: dateField.optional(),
-    maturity: z.enum(["seedling", "budding", "evergreen"]).default("seedling"),
-    description: z.string().default(""),
-    tags: tagsField,
-    backlinks: z.array(z.string()).default([]),
-    published: z.boolean().default(true),
-    /* Cross-references */
-    relatedNotes: relatedNotesField,
-    relatedProjects: relatedProjectsField,
-    relatedPublications: relatedPublicationsField,
   }),
 });
 
@@ -345,10 +317,9 @@ const misc = defineCollection({
 });
 
 export const collections = {
-  posts,
+  writing,
   projects,
   teaching,
-  notes,
   ventures,
   speaking,
   podcast,

@@ -10,10 +10,10 @@
   "urls": [
     "http://localhost:8080/",
     "http://localhost:8080/publications/",
-    "http://localhost:8080/blog/",
+    "http://localhost:8080/writing/",
     "http://localhost:8080/cv/",
     "http://localhost:8080/search/",
-    "http://localhost:8080/notes/",
+    "http://localhost:8080/writing/notes/",
     "http://localhost:8080/projects/",
     "http://localhost:8080/about/",
     "http://localhost:8080/contact/"

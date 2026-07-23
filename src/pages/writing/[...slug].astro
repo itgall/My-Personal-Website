@@ -1,0 +1,59 @@
+---
+/**
+ * writing/[...slug].astro — individual writing entry.
+ *
+ * Essays render in PostLayout (TOC, reading time); notes render in
+ * NoteLayout (maturity, backlinks). One collection, two reading
+ * experiences.
+ */
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import PostLayout from "@layouts/PostLayout.astro";
+import NoteLayout from "@layouts/NoteLayout.astro";
+import { calculateReadingTime } from "@utils/readingTime";
+
+type Writing = CollectionEntry<"writing">;
+
+export async function getStaticPaths() {
+  /* These ids would be shadowed by the sibling routes — fail the build
+     loudly instead of silently serving the wrong page. */
+  const reserved = ["essays", "notes", "tags"];
+  const entries: Writing[] = await getCollection(
+    "writing",
+    ({ data }: Writing) => data.published,
+  );
+  for (const entry of entries) {
+    if (reserved.includes(entry.id)) {
+      throw new Error(
+        `Writing slug "${entry.id}" collides with the /writing/${entry.id}/ route — rename the file.`,
+      );
+    }
+  }
+  return entries.map((entry: Writing) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: Writing };
+const { Content, headings } = await render(entry);
+
+/* Auto-calculate essay reading time when the front matter doesn't set it.
+   entry.body may not exist as a property in the Content Layer API. */
+if (entry.data.kind === "essay" && !entry.data.readingTime) {
+  entry.data.readingTime = calculateReadingTime(
+    (entry as unknown as { body?: string }).body ?? "",
+  );
+}
+---
+
+{
+  entry.data.kind === "essay" ? (
+    <PostLayout post={entry} headings={headings}>
+      <Content />
+    </PostLayout>
+  ) : (
+    <NoteLayout note={entry}>
+      <Content />
+    </NoteLayout>
+  )
+}

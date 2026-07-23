@@ -128,7 +128,7 @@ export default defineConfig({
    * Redirects: Handled by netlify.toml for the production deployment.
    * Netlify's edge-level redirects fire before static file serving,
    * avoiding the generation of unnecessary HTML redirect stub files.
-   * See netlify.toml [[redirects]] for /writing/ → /blog/ and
-   * /research/ → /publications/ mappings.
+   * See netlify.toml [[redirects]] for /blog/ and /notes/ → /writing/
+   * and /research/ → /publications/ mappings.
    */
 });

@@ -2,11 +2,11 @@
  * wikilinks.ts — Remark plugin for [[wiki-link]] resolution.
  *
  * Transforms [[Note Title]] syntax in Markdown into proper internal links
- * at build time. Resolves against the notes collection by matching titles
- * (case-insensitive) or slugs.
+ * at build time. Resolves against the writing collection (essays and notes
+ * alike) by matching titles (case-insensitive) or slugs.
  *
  * Resolution behavior:
- *   - Match found → <a href="/notes/{slug}/" class="wikilink">Note Title</a>
+ *   - Match found → <a href="/writing/{slug}/" class="wikilink">Note Title</a>
  *   - No match    → <span class="broken-link" title="Page not found">Note Title</span>
  *
  * Supports pipe syntax: [[Note Title|Display Text]]
@@ -26,26 +26,26 @@ import path from "node:path";
 const WIKILINK_RE = /\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g;
 
 /**
- * Build a lookup map from note titles/slugs to their URL paths.
- * Reads the notes directory at build time to discover available notes.
+ * Build a lookup map from writing titles/slugs to their URL paths.
+ * Reads the writing directory at build time to discover available entries.
  *
  * Indexes by both title (case-insensitive) and slug to support
  * both [[My Note Title]] and [[my-note-slug]] syntax.
  */
-function buildNoteLookup(): Map<string, { slug: string; title: string }> {
+function buildWritingLookup(): Map<string, { slug: string; title: string }> {
   const lookup = new Map<string, { slug: string; title: string }>();
-  const notesDir = path.resolve("src/content/notes");
+  const writingDir = path.resolve("src/content/writing");
 
-  if (!fs.existsSync(notesDir)) {
+  if (!fs.existsSync(writingDir)) {
     return lookup;
   }
 
-  const files = fs.readdirSync(notesDir).filter(
+  const files = fs.readdirSync(writingDir).filter(
     (f) => f.endsWith(".md") || f.endsWith(".mdx"),
   );
 
   for (const file of files) {
-    const content = fs.readFileSync(path.join(notesDir, file), "utf-8");
+    const content = fs.readFileSync(path.join(writingDir, file), "utf-8");
     const slug = file.replace(/\.(md|mdx)$/, "");
 
     /** Extract title from YAML frontmatter */
@@ -112,11 +112,11 @@ function escapeHtml(str: string): string {
  * remarkWikilinks — Remark plugin that resolves [[wiki-link]] syntax.
  *
  * Walks the Markdown AST looking for text nodes containing [[...]] patterns.
- * For each match, looks up the notes collection and replaces with either
+ * For each match, looks up the writing collection and replaces with either
  * a proper link node or a styled span for broken links.
  */
 const remarkWikilinks: Plugin<[], Root> = () => {
-  const lookup = buildNoteLookup();
+  const lookup = buildWritingLookup();
 
   return (tree: Root) => {
     walkText(tree, undefined, undefined, (node, index, parent) => {
@@ -142,14 +142,14 @@ const remarkWikilinks: Plugin<[], Root> = () => {
           });
         }
 
-        /* Resolve the wiki-link against the notes lookup */
+        /* Resolve the wiki-link against the writing lookup */
         const resolved = lookup.get(linkTarget.toLowerCase());
 
         if (resolved) {
           /* Found: render as proper internal link with wikilink class */
           children.push({
             type: "link",
-            url: `/notes/${resolved.slug}/`,
+            url: `/writing/${resolved.slug}/`,
             title: resolved.title,
             children: [{ type: "text", value: displayText }],
             data: {

@@ -20,7 +20,7 @@ import { getBacklinksForUrl } from "@utils/backlinks";
 import { features } from "@data/settings";
 
 interface Props {
-  note: CollectionEntry<"notes">;
+  note: CollectionEntry<"writing">;
 }
 
 const { note } = Astro.props;
@@ -28,15 +28,15 @@ const { title, date, maturity, updatedDate, description } = note.data;
 const tags: string[] = note.data.tags;
 
 /** Compute backlinks only if the feature is enabled */
-const pageUrl = `/notes/${note.id}/`;
+const pageUrl = `/writing/${note.id}/`;
 const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
 
 /* ── Resolve cross-references ──────────────── */
-const relNoteSlugs = note.data.relatedNotes ?? [];
+const relWritingSlugs = note.data.relatedWriting ?? [];
 const relProjectSlugs = note.data.relatedProjects ?? [];
 
-const linkedNotes = relNoteSlugs.length > 0
-  ? (await getCollection("notes")).filter((n) => relNoteSlugs.includes(n.id) && n.data.published)
+const linkedNotes = relWritingSlugs.length > 0
+  ? (await getCollection("writing")).filter((n) => relWritingSlugs.includes(n.id) && n.data.published)
   : [];
 
 const linkedProjects = relProjectSlugs.length > 0
@@ -46,7 +46,7 @@ const linkedProjects = relProjectSlugs.length > 0
 const hasRelated = linkedNotes.length > 0 || linkedProjects.length > 0;
 ---
 
-<BaseLayout title={title} description={description} activeNav="notes" ogImage={`/og/notes/${note.id}.png`}>
+<BaseLayout title={title} description={description} activeNav="writing" ogImage={`/og/writing/${note.id}.png`}>
   {/* JSON-LD Article schema for research notes */}
   <SEO
     slot="head"
@@ -62,7 +62,7 @@ const hasRelated = linkedNotes.length > 0 || linkedProjects.length > 0;
   <article class="prose-container pt-12" data-pagefind-body>
     <header class="mb-8">
       <Breadcrumbs items={[
-        { label: "Notes", href: "/notes/" },
+        { label: "Writing", href: "/writing/" },
         { label: title }
       ]} />
       <h1 class="text-2xl font-bold tracking-tight md:text-3xl" data-pagefind-meta="title">
@@ -103,10 +103,10 @@ const hasRelated = linkedNotes.length > 0 || linkedProjects.length > 0;
         <div class="space-y-6">
           {linkedNotes.length > 0 && (
             <div>
-              <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Related notes</h3>
+              <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Related writing</h3>
               <div class="space-y-2">
                 {linkedNotes.map((n) => (
-                  <a href={`/notes/${n.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                  <a href={`/writing/${n.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
                     {n.data.title}
                   </a>
                 ))}

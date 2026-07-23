@@ -573,7 +573,7 @@
 /* ── Blog post entries: stronger visual differentiation ── */
 
 /* Post titles: larger, heavier, clearly distinct from description */
-[data-style="minimal"] .post-card h3 {
+[data-style="minimal"] .writing-card h3 {
   font-size: 1rem !important;
   font-weight: 600 !important;
   font-family: var(--font-sans) !important;
@@ -583,14 +583,14 @@
 }
 
 /* Post descriptions: clearly subordinate to title */
-[data-style="minimal"] .post-card p {
+[data-style="minimal"] .writing-card p {
   font-size: 0.8125rem !important;
   color: var(--color-muted) !important;
   line-height: 1.5 !important;
 }
 
 /* Post cards: more visible separation between entries */
-[data-style="minimal"] .post-card {
+[data-style="minimal"] .writing-card {
   border: none !important;
   border-bottom: 1px solid var(--color-border) !important;
   border-left: none !important;
@@ -600,7 +600,7 @@
   box-shadow: none !important;
 }
 
-[data-style="minimal"] .post-card:hover {
+[data-style="minimal"] .writing-card:hover {
   background: transparent !important;
   border-color: var(--color-border) !important;
   transform: none !important;

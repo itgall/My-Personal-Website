@@ -1,0 +1,31 @@
+---
+/**
+ * writing/index.astro — all writing, newest first, grouped by year.
+ *
+ * Essays and notes are one stream; /writing/essays/ and /writing/notes/ are
+ * plain filtered routes linked from the tab row, which only appears once
+ * both kinds have something published.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import WritingList from "@components/WritingList.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Writing = CollectionEntry<"writing">;
+
+const entries: Writing[] = (
+  await getCollection("writing", ({ data }: Writing) => data.published)
+).sort((a: Writing, b: Writing) => b.data.date.getTime() - a.data.date.getTime());
+
+const showFilter =
+  entries.some((e: Writing) => e.data.kind === "essay") &&
+  entries.some((e: Writing) => e.data.kind === "note");
+---
+
+<PageLayout title="Writing" subtitle="Essays and working notes, newest first." activeNav="writing">
+  <WritingList
+    entries={entries}
+    active="all"
+    showFilter={showFilter}
+    emptyText="Nothing published yet."
+  />
+</PageLayout>

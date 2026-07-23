@@ -1,0 +1,131 @@
+---
+/**
+ * WritingList.astro — year-grouped listing of writing entries.
+ *
+ * Used by /writing/ and its kind views. The filter row is plain links —
+ * the active view is just the current route, so it works without JS.
+ */
+import WritingCard from "@components/WritingCard.astro";
+import type { CollectionEntry } from "astro:content";
+
+type Writing = CollectionEntry<"writing">;
+
+interface Props {
+  entries: Writing[];
+  /** Which view this list renders; drives the active filter link. */
+  active: "all" | "essay" | "note";
+  /** Render the filter row (only worth it once both kinds exist). */
+  showFilter: boolean;
+  /** Shown when entries is empty. */
+  emptyText: string;
+}
+
+const { entries, active, showFilter, emptyText } = Astro.props;
+
+const byYear = new Map<number, Writing[]>();
+for (const entry of entries) {
+  const year = entry.data.date.getFullYear();
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(entry);
+}
+
+const views = [
+  { key: "all", label: "All", href: "/writing/" },
+  { key: "essay", label: "Essays", href: "/writing/essays/" },
+  { key: "note", label: "Notes", href: "/writing/notes/" },
+];
+---
+
+<div class="writing-content">
+  {
+    showFilter && (
+      <nav class="writing-tabs" aria-label="Filter by kind">
+        {views.map((view) => (
+          <a
+            href={view.href}
+            class:list={["writing-tab", { active: view.key === active }]}
+            aria-current={view.key === active ? "page" : undefined}
+          >
+            {view.label}
+          </a>
+        ))}
+      </nav>
+    )
+  }
+
+  {
+    entries.length === 0 ? (
+      <p class="text-sm text-[var(--color-muted)]">{emptyText}</p>
+    ) : (
+      <div class="writing-list">
+        {[...byYear.entries()].map(([year, yearEntries]) => (
+          <section>
+            <h2 class="writing-year">{year}</h2>
+            <div class="writing-year-entries">
+              {yearEntries.map((entry) => (
+                <WritingCard entry={entry} showTags={false} />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  /* Content is held to 740px inside PageLayout's 960px wide container. */
+  .writing-content {
+    max-width: 740px;
+  }
+
+  .writing-tabs {
+    display: flex;
+    gap: 1.25rem;
+    margin: 0 0 1.75rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .writing-tab {
+    border-bottom: 2px solid transparent;
+    padding: 0 0 0.625rem;
+    margin-bottom: -1px;
+    font-size: 13px;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .writing-tab:hover {
+    color: var(--color-text);
+  }
+
+  .writing-tab.active {
+    color: var(--color-text);
+    font-weight: 500;
+    border-bottom-color: var(--color-accent);
+  }
+
+  .writing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .writing-year {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 0.75rem;
+  }
+
+  .writing-year-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+</style>

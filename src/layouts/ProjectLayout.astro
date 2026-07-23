@@ -43,7 +43,7 @@ const relPostSlugs = project.data.relatedPosts ?? [];
 const relEpisodeSlugs = project.data.relatedEpisodes ?? [];
 
 const linkedPosts = relPostSlugs.length > 0
-  ? (await getCollection("posts")).filter((p) => relPostSlugs.includes(p.id) && p.data.published)
+  ? (await getCollection("writing")).filter((p) => relPostSlugs.includes(p.id) && p.data.published)
   : [];
 
 const linkedEpisodes = relEpisodeSlugs.length > 0
@@ -120,7 +120,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
         </h2>
         <div class="space-y-2">
           {linkedPosts.map((post) => (
-            <a href={`/blog/${post.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+            <a href={`/writing/${post.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
               {post.data.title}
             </a>
           ))}

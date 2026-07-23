@@ -11,20 +11,10 @@
  *   py/mt/mb to top-level sections here -- that reintroduces stacked
  *   boundaries.
  *
- * Design philosophy: engineer-like restraint. Modeled after Geoffrey Litt,
- * Andrej Karpathy, and Patrick Collison -- content is the feature, decoration
- * is limited to horizontal rules and blue links.
- *
- * Structure:
- *   1. Hero: headshot + name + subtitle + intro paragraph + links
- *   2. Selected Work: project list with descriptions
- *   3. Recent Writing: date-aligned list
- *   4. Research Interests: prose paragraph
- *
  * Content-structure separation: this file contains ONLY rendering logic.
- * All content lives in content collections (projects, posts, podcast)
- * and data files (bibliography.bib, cv.yaml). A complete visual redesign
- * of this page touches zero content files.
+ * All content lives in content collections (projects, writing) and data
+ * files (bibliography.bib, homepage.json). A complete visual redesign of
+ * this page touches zero content files.
  */
 import BaseLayout from "@layouts/BaseLayout.astro";
 import MiscGallery from "@components/MiscGallery.astro";
@@ -32,11 +22,13 @@ import { identity } from "@data/meta";
 import { profileImage, profileFocal, bio, currentlyText, researchInterests } from "@data/homepage";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-type Post = CollectionEntry<"posts">;
+type Writing = CollectionEntry<"writing">;
 type Project = CollectionEntry<"projects">;
 
-const recentPosts: Post[] = (await getCollection("posts", ({ data }: Post) => data.published))
-  .sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime())
+const recentWriting: Writing[] = (
+  await getCollection("writing", ({ data }: Writing) => data.published)
+)
+  .sort((a: Writing, b: Writing) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 5);
 
 const projects: Project[] = (
@@ -47,20 +39,15 @@ function formatShortDate(d: Date): string {
   return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
-const categoryLabels: Record<string, string> = {
-  technical: "Technical note",
-  thesis: "Thesis",
+const kindLabels: Record<string, string> = {
   essay: "Essay",
-  dispatch: "Dispatch",
-  "build-log": "Build log",
+  note: "Note",
 };
 ---
 
 <BaseLayout activeNav="home" pageType="home" ogImage="/og/index.png">
   <div class="wide-container space-y-16 pt-12 md:space-y-24 md:pt-16">
-    {/* --- Hero --------------------------------------------------- */}
     <section class="hero-section">
-      {/* Photo + intro */}
       <div
         class="flex flex-col items-center gap-7 text-center md:flex-row md:items-start md:gap-8 md:text-left"
       >
@@ -127,7 +114,6 @@ const categoryLabels: Record<string, string> = {
       }
     </style>
 
-    {/* --- Selected Work ------------------------------------------ */}
     <section>
       <div class="mb-8 flex items-baseline justify-between">
         <h2 class="text-xl font-semibold tracking-tight">Selected work</h2>
@@ -160,42 +146,37 @@ const categoryLabels: Record<string, string> = {
       }
     </section>
 
-    {/* --- Recent Writing ----------------------------------------- */}
     {
-      recentPosts.length > 0 && (
+      recentWriting.length > 0 && (
         <section>
           <div class="mb-8 flex items-baseline justify-between">
             <h2 class="text-xl font-semibold tracking-tight">Recent writing</h2>
             <a
-              href="/blog/"
+              href="/writing/"
               class="sc-label text-[12px] text-[var(--color-muted)] no-underline transition-colors hover:text-[var(--color-accent)]"
             >
               All writing
             </a>
           </div>
           <div class="space-y-4">
-            {recentPosts.map((post) => {
-              const cat = categoryLabels[post.data.category] ?? post.data.category;
-              return (
-                <a href={`/blog/${post.id}/`} class="group flex items-baseline gap-4 no-underline">
-                  <span class="w-20 shrink-0 font-mono text-xs text-[var(--color-muted)]">
-                    {formatShortDate(post.data.date)}
-                  </span>
-                  <span class="font-display min-w-0 flex-1 text-[15px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
-                    {post.data.title}
-                  </span>
-                  <span class="hidden shrink-0 text-xs text-[var(--color-muted)] sm:inline">
-                    {cat}
-                  </span>
-                </a>
-              );
-            })}
+            {recentWriting.map((entry) => (
+              <a href={`/writing/${entry.id}/`} class="group flex items-baseline gap-4 no-underline">
+                <span class="w-20 shrink-0 font-mono text-xs text-[var(--color-muted)]">
+                  {formatShortDate(entry.data.date)}
+                </span>
+                <span class="font-display min-w-0 flex-1 text-[15px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
+                  {entry.data.title}
+                </span>
+                <span class="hidden shrink-0 text-xs text-[var(--color-muted)] sm:inline">
+                  {kindLabels[entry.data.kind]}
+                </span>
+              </a>
+            ))}
           </div>
         </section>
       )
     }
 
-    {/* --- Research Interests ------------------------------------- */}
     <section>
       <div class="mx-auto max-w-2xl md:mx-0">
         <h2 class="mb-4 text-xl font-semibold tracking-tight">Research interests</h2>

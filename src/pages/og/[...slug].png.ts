@@ -5,9 +5,8 @@
  * Images are served at /og/{slug}.png and referenced in <meta> tags.
  *
  * Coverage:
- *   - /og/blog/{id}.png        — blog posts
+ *   - /og/writing/{id}.png     — essays and notes
  *   - /og/projects/{id}.png    — research projects
- *   - /og/notes/{id}.png       — digital garden notes
  *   - /og/podcast/{id}.png     — podcast episodes
  *   - /og/ventures/{id}.png    — ventures
  *   - /og/index.png            — homepage
@@ -41,15 +40,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
     subtitle: "Doctoral Researcher · University of Colorado Boulder",
   });
 
-  /* Blog posts */
-  const posts = await getCollection("posts", ({ data }: { data: { published: boolean } }) => data.published);
-  for (const post of posts) {
+  /* Writing (essays + notes) */
+  const writing = await getCollection("writing", ({ data }: { data: { published: boolean } }) => data.published);
+  for (const entry of writing) {
     entries.push({
-      slug: `blog/${post.id}`,
-      title: post.data.title,
-      type: "post",
-      subtitle: `${formatDate(post.data.date)} · ${post.data.category}`,
-      tags: post.data.tags,
+      slug: `writing/${entry.id}`,
+      title: entry.data.title,
+      type: entry.data.kind === "essay" ? "post" : "note",
+      subtitle:
+        entry.data.kind === "essay"
+          ? `${formatDate(entry.data.date)} · essay`
+          : `${entry.data.maturity} · ${formatDate(entry.data.date)}`,
+      tags: entry.data.tags,
     });
   }
 
@@ -62,18 +64,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       type: "project",
       subtitle: project.data.institution,
       tags: project.data.tags,
-    });
-  }
-
-  /* Notes */
-  const notes = await getCollection("notes", ({ data }: { data: { published: boolean } }) => data.published);
-  for (const note of notes) {
-    entries.push({
-      slug: `notes/${note.id}`,
-      title: note.data.title,
-      type: "note",
-      subtitle: `${note.data.maturity} · ${formatDate(note.data.date)}`,
-      tags: note.data.tags,
     });
   }
 

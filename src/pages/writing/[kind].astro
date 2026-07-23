@@ -1,0 +1,52 @@
+---
+/**
+ * writing/[kind].astro — kind-filtered views of the writing stream.
+ *
+ * Both routes always build (they are stable link and redirect targets),
+ * even while a kind has nothing published.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import WritingList from "@components/WritingList.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Writing = CollectionEntry<"writing">;
+
+export function getStaticPaths() {
+  return [
+    { params: { kind: "essays" }, props: { kind: "essay" as const, title: "Essays" } },
+    { params: { kind: "notes" }, props: { kind: "note" as const, title: "Notes" } },
+  ];
+}
+
+const { kind, title } = Astro.props;
+
+const all: Writing[] = (
+  await getCollection("writing", ({ data }: Writing) => data.published)
+).sort((a: Writing, b: Writing) => b.data.date.getTime() - a.data.date.getTime());
+
+const entries = all.filter((e: Writing) => e.data.kind === kind);
+const showFilter =
+  all.some((e: Writing) => e.data.kind === "essay") &&
+  all.some((e: Writing) => e.data.kind === "note");
+---
+
+<PageLayout title={title} activeNav="writing">
+  {
+    !showFilter && (
+      <div class="mb-4">
+        <a
+          href="/writing/"
+          class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+        >
+          &larr; All writing
+        </a>
+      </div>
+    )
+  }
+  <WritingList
+    entries={entries}
+    active={kind}
+    showFilter={showFilter}
+    emptyText={`No ${kind === "essay" ? "essays" : "notes"} published yet.`}
+  />
+</PageLayout>

@@ -60,7 +60,7 @@ const accentVars = {
 
 /**
  * Build-time command palette manifest — generates searchable entries for
- * all content pages (blog posts, publications, notes, projects, teaching).
+ * all content pages (writing, publications, projects, podcast).
  * Only computed if the command palette feature is enabled.
  */
 let commandManifest: string = "[]";
@@ -71,15 +71,15 @@ if (features.commandPalette) {
   const entries: Array<{ id: string; label: string; category: string; categoryLabel: string; keywords: string; href: string }> = [];
 
   try {
-    const posts = await getCollection("posts", (p: { data: { published: boolean } }) => p.data.published);
-    for (const post of posts) {
+    const writing = await getCollection("writing", (e: { data: { published: boolean } }) => e.data.published);
+    for (const entry of writing) {
       entries.push({
-        id: `post-${post.id}`,
-        label: post.data.title,
+        id: `writing-${entry.id}`,
+        label: entry.data.title,
         category: "content",
-        categoryLabel: "Essays",
-        keywords: [post.data.category, ...post.data.tags].join(" "),
-        href: `/blog/${post.id}/`,
+        categoryLabel: "Writing",
+        keywords: [entry.data.kind, entry.data.maturity, ...entry.data.tags].join(" "),
+        href: `/writing/${entry.id}/`,
       });
     }
   } catch { /* Collection may not exist */ }
@@ -94,20 +94,6 @@ if (features.commandPalette) {
         categoryLabel: "Projects",
         keywords: project.data.tags.join(" "),
         href: `/projects/${project.id}/`,
-      });
-    }
-  } catch { /* Collection may not exist */ }
-
-  try {
-    const notes = await getCollection("notes", (n: { data: { published: boolean } }) => n.data.published);
-    for (const note of notes) {
-      entries.push({
-        id: `note-${note.id}`,
-        label: note.data.title,
-        category: "content",
-        categoryLabel: "Notes",
-        keywords: [note.data.maturity, ...note.data.tags].join(" "),
-        href: `/notes/${note.id}/`,
       });
     }
   } catch { /* Collection may not exist */ }

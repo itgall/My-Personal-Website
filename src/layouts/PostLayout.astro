@@ -33,15 +33,15 @@ interface Heading {
 }
 
 interface Props {
-  post: CollectionEntry<"posts">;
+  post: CollectionEntry<"writing">;
   headings?: Heading[];
 }
 
 const { post, headings = [] } = Astro.props;
-const { title, date, category, description, readingTime, updatedDate } = post.data;
+const { title, date, kind, description, readingTime, updatedDate } = post.data;
 const tags: string[] = post.data.tags;
 
-const pageUrl = `/blog/${post.id}/`;
+const pageUrl = `/writing/${post.id}/`;
 const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
 
 /* ── Cross-references ──────────────────────────────────────────── */
@@ -71,7 +71,7 @@ const tocHeadings = headings.filter(
 const hasToc = features.tableOfContents && tocHeadings.length > 0;
 ---
 
-<BaseLayout title={title} description={description} activeNav="blog" ogImage={`/og/blog/${post.id}.png`}>
+<BaseLayout title={title} description={description} activeNav="writing" ogImage={`/og/writing/${post.id}.png`}>
   <SEO
     slot="head"
     pageType="post"
@@ -81,7 +81,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
     datePublished={date.toISOString()}
     dateModified={updatedDate ? updatedDate.toISOString() : date.toISOString()}
     tags={tags}
-    category={category}
+    category={kind}
   />
 
   <article class="pt-12" data-pagefind-body>
@@ -100,14 +100,14 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
         {/* ── Header ──────────────────────────────────────────── */}
         <header class="mb-10">
           <Breadcrumbs items={[
-            { label: "Essays", href: "/blog/" },
+            { label: "Writing", href: "/writing/" },
             { label: title }
           ]} />
           <h1 class="font-display text-4xl font-semibold tracking-[-0.02em] md:text-[48px] leading-[1.1]" data-pagefind-meta="title">
             {title}
           </h1>
           <data hidden data-pagefind-filter={`year:${date.getFullYear()}`} />
-          <data hidden data-pagefind-filter={`type:${category}`} />
+          <data hidden data-pagefind-filter={`type:${kind}`} />
           <div class="mt-4 flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-muted)]">
             <time datetime={date.toISOString()}>{formatDate(date)}</time>
             {updatedDate && (
@@ -118,7 +118,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
             )}
             <span class="text-[var(--color-border)]">·</span>
             <span class="rounded-sm bg-[var(--color-accent-bg)] px-2 py-0.5 text-[var(--color-accent)]">
-              {category}
+              {kind}
             </span>
             {readingTime && (
               <>
@@ -131,7 +131,7 @@ const hasToc = features.tableOfContents && tocHeadings.length > 0;
             <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1">
               {tags.map((tag) => (
                 <a
-                  href={`/blog/tags/${tag}/`}
+                  href={`/writing/tags/${tag}/`}
                   class="font-mono text-[11px] text-[var(--color-muted)] no-underline hover:text-[var(--color-accent)] transition-colors"
                   data-pagefind-filter={`tag:${tag}`}
                 >

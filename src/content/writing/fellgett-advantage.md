@@ -1,5 +1,6 @@
 ---
 title: "Fellgett Advantage in Spectroscopy"
+kind: note
 date: 2026-01-05
 maturity: seedling
 description: "The multiplex advantage in Fourier transform spectroscopy and its implications for OCT sensitivity."

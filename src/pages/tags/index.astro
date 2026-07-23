@@ -2,11 +2,10 @@
 /**
  * tags/index.astro — Unified tag index across all content types.
  *
- * Aggregates every tag from posts, notes, projects, podcast episodes,
- * and ventures into a single page. Tags are grouped by content type
- * and displayed with occurrence counts. Each tag links to the
- * type-specific tag page where it exists, or serves as a discovery
- * entry point.
+ * Aggregates every tag from writing, projects, podcast episodes, and
+ * ventures into a single page. Tags are grouped by content type and
+ * displayed with occurrence counts. Each tag links to the type-specific
+ * tag page where it exists, or serves as a discovery entry point.
  *
  * Design: Content types as sections, tags as filter chips with counts,
  * matching the visual language of listing page filter bars.
@@ -14,16 +13,14 @@
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-type Post = CollectionEntry<"posts">;
-type Note = CollectionEntry<"notes">;
+type Writing = CollectionEntry<"writing">;
 type Project = CollectionEntry<"projects">;
 type Episode = CollectionEntry<"podcast">;
 type Venture = CollectionEntry<"ventures">;
 
 /* ── Collect tags from every content type ───────────────────────────────── */
 
-const posts = await getCollection("posts", ({ data }: Post) => data.published);
-const notes = await getCollection("notes", ({ data }: Note) => data.published);
+const writing = await getCollection("writing", ({ data }: Writing) => data.published);
 const projects = await getCollection("projects", ({ data }: Project) => data.published);
 const episodes = await getCollection("podcast", ({ data }: Episode) => data.published);
 const ventures = await getCollection("ventures", ({ data }: Venture) => data.published);
@@ -47,8 +44,7 @@ function countTags(items: { data: { tags: string[] } }[]): Map<string, number> {
 }
 
 const groups: TagGroup[] = [
-  { label: "Essays", tagBaseUrl: "/blog/tags", tags: countTags(posts) },
-  { label: "Notes", tagBaseUrl: "/notes/tags", tags: countTags(notes) },
+  { label: "Writing", tagBaseUrl: "/writing/tags", tags: countTags(writing) },
   { label: "Research", tagBaseUrl: null, tags: countTags(projects) },
   { label: "Podcast", tagBaseUrl: null, tags: countTags(episodes) },
   { label: "Ventures", tagBaseUrl: null, tags: countTags(ventures) },
@@ -66,7 +62,7 @@ for (const g of groups) {
 
 <PageLayout
   title="Tags"
-  subtitle="Browse writing, notes, and research by topic."
+  subtitle="Browse writing and research by topic."
   activeNav=""
 >
   {groups.length === 0 ? (

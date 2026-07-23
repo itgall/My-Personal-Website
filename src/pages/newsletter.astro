@@ -2,26 +2,24 @@
 /**
  * newsletter.astro -- The newsletter's permanent on-site home.
  *
- * Lists published dispatch-category posts (the canonical issues) and carries
- * the owned subscribe form. This is the hub; email delivery is a separate,
- * deliberately deferred concern. Until issues exist, a neutral empty state
- * is shown. Not yet linked from the primary nav by design.
+ * Carries the owned subscribe form and the issue archive. This is the hub;
+ * email delivery is a separate, deliberately deferred concern. Until issues
+ * exist, a neutral empty state is shown. Not yet linked from the primary
+ * nav by design.
  */
 import PageLayout from "@layouts/PageLayout.astro";
-import PostCard from "@components/PostCard.astro";
+import WritingCard from "@components/WritingCard.astro";
 import NewsletterSignup from "@components/NewsletterSignup.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-type Post = CollectionEntry<"posts">;
+type Writing = CollectionEntry<"writing">;
 
-const issues: Post[] = (
-  await getCollection(
-    "posts",
-    ({ data }: Post) => data.published && data.category === "dispatch",
-  )
-).sort((a: Post, b: Post) => b.data.date.getTime() - a.data.date.getTime());
+/* The dispatch post category retired with the posts/notes merge, and what a
+   newsletter issue is in the new taxonomy is an open decision — so the
+   archive is empty by construction until that's settled. */
+const issues: Writing[] = [];
 
-const issuesByYear = new Map<number, Post[]>();
+const issuesByYear = new Map<number, Writing[]>();
 for (const issue of issues) {
   const year = issue.data.date.getFullYear();
   if (!issuesByYear.has(year)) issuesByYear.set(year, []);
@@ -45,8 +43,8 @@ for (const issue of issues) {
       {issues.length === 0 ? (
         <p class="newsletter-empty">
           The first issue is on its way. Subscribe above and it will reach your inbox
-          when it is published &mdash; or read <a href="/blog/">essays</a> and
-          <a href="/notes/">notes</a> in the meantime.
+          when it is published &mdash; or read <a href="/writing/essays/">essays</a> and
+          <a href="/writing/notes/">notes</a> in the meantime.
         </p>
       ) : (
         <div class="newsletter-list">
@@ -55,7 +53,7 @@ for (const issue of issues) {
               <h3 class="newsletter-year">{year}</h3>
               <div class="newsletter-year-entries">
                 {yearIssues.map((issue) => (
-                  <PostCard post={issue} showTags={false} />
+                  <WritingCard entry={issue} showTags={false} />
                 ))}
               </div>
             </section>

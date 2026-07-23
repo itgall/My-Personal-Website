@@ -77,7 +77,7 @@ const linkedPubs = relPubKeys.length > 0
   : [];
 
 const linkedPosts = relPostSlugs.length > 0
-  ? (await getCollection("posts")).filter((p) => relPostSlugs.includes(p.id) && p.data.published)
+  ? (await getCollection("writing")).filter((p) => relPostSlugs.includes(p.id) && p.data.published)
   : [];
 
 const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedPosts.length > 0;
@@ -289,7 +289,7 @@ const hasRelated = linkedProjects.length > 0 || linkedPubs.length > 0 || linkedP
               <h3 class="mb-2 text-sm font-medium text-[var(--color-text)]">Essays</h3>
               <div class="space-y-2">
                 {linkedPosts.map((post) => (
-                  <a href={`/blog/${post.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
+                  <a href={`/writing/${post.id}/`} class="block text-sm text-[var(--color-link)] no-underline hover:underline">
                     {post.data.title}
                   </a>
                 ))}

@@ -1,0 +1,45 @@
+---
+/**
+ * writing/tags/[tag].astro — writing entries filtered by tag.
+ */
+import PageLayout from "@layouts/PageLayout.astro";
+import WritingCard from "@components/WritingCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Writing = CollectionEntry<"writing">;
+
+export async function getStaticPaths() {
+  const entries: Writing[] = await getCollection(
+    "writing",
+    ({ data }: Writing) => data.published,
+  );
+  const tags = [...new Set(entries.flatMap((e: Writing) => e.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      entries: entries
+        .filter((e: Writing) => e.data.tags.includes(tag))
+        .sort((a: Writing, b: Writing) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { tag, entries } = Astro.props;
+---
+
+<PageLayout title={`Tag: ${tag}`} activeNav="writing">
+  <div class="mb-4">
+    <a
+      href="/writing/"
+      class="font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+    >
+      &larr; All writing
+    </a>
+  </div>
+  <div class="space-y-2">
+    {entries.map((entry: Writing) => (
+      <WritingCard entry={entry} />
+    ))}
+  </div>
+</PageLayout>

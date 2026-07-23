@@ -1,5 +1,6 @@
 ---
 title: "Optical Coherence Tomography Fundamentals"
+kind: note
 date: 2025-06-15
 updatedDate: 2026-01-10
 maturity: evergreen

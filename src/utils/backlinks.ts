@@ -1,7 +1,7 @@
 /**
  * backlinks.ts — Build-time bidirectional backlink computation.
  *
- * Scans all content collections (posts, projects, notes, teaching) for
+ * Scans all content collections (writing, projects, teaching) for
  * internal links, builds a reverse map, and exports both a queryable
  * function for page templates and a JSON link graph for the research
  * graph visualization.
@@ -70,36 +70,36 @@ interface PageInfo {
   description: string;
 }
 
-/* ── Note title → slug index (mirrors wikilinks.ts resolution) ───────────── */
+/* ── Writing title → slug index (mirrors wikilinks.ts resolution) ────────── */
 
-let noteIndex: Map<string, string> | null = null;
+let writingIndex: Map<string, string> | null = null;
 
 /**
- * Build an index of note titles → URL slugs for wiki-link resolution.
- * Reads the notes content directory and parses frontmatter titles.
+ * Build an index of writing titles → URL slugs for wiki-link resolution.
+ * Reads the writing content directory and parses frontmatter titles.
  */
-function buildNoteIndex(): Map<string, string> {
-  if (noteIndex) return noteIndex;
-  noteIndex = new Map();
+function buildWritingIndex(): Map<string, string> {
+  if (writingIndex) return writingIndex;
+  writingIndex = new Map();
 
-  const notesDir = path.resolve("src/content/notes");
-  if (!fs.existsSync(notesDir)) return noteIndex;
+  const writingDir = path.resolve("src/content/writing");
+  if (!fs.existsSync(writingDir)) return writingIndex;
 
-  for (const file of fs.readdirSync(notesDir)) {
+  for (const file of fs.readdirSync(writingDir)) {
     if (!file.endsWith(".md") && !file.endsWith(".mdx")) continue;
     const slug = file.replace(/\.(md|mdx)$/, "");
-    const content = fs.readFileSync(path.join(notesDir, file), "utf-8");
+    const content = fs.readFileSync(path.join(writingDir, file), "utf-8");
 
     /* Extract title from frontmatter */
     const titleMatch = content.match(/^title:\s*["']?(.+?)["']?\s*$/m);
     if (titleMatch) {
       const title = titleMatch[1].trim();
-      noteIndex.set(title.toLowerCase(), slug);
-      noteIndex.set(slug.toLowerCase(), slug);
+      writingIndex.set(title.toLowerCase(), slug);
+      writingIndex.set(slug.toLowerCase(), slug);
     }
   }
 
-  return noteIndex;
+  return writingIndex;
 }
 
 /* ── Link extraction from Markdown body ──────────────────────────────────── */
@@ -118,7 +118,7 @@ const WIKILINK_RE = /\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g;
 
 /**
  * Extract all internal link URLs from a Markdown body.
- * Returns an array of normalized URL paths (e.g., "/blog/my-post/").
+ * Returns an array of normalized URL paths (e.g., "/writing/my-post/").
  */
 function extractLinks(body: string, _pageUrl: string): Array<{ url: string; context: string }> {
   const links: Array<{ url: string; context: string }> = [];
@@ -143,14 +143,14 @@ function extractLinks(body: string, _pageUrl: string): Array<{ url: string; cont
   }
 
   /* Wiki-links */
-  const noteIdx = buildNoteIndex();
+  const writingIdx = buildWritingIndex();
   WIKILINK_RE.lastIndex = 0;
   while ((match = WIKILINK_RE.exec(body)) !== null) {
     const title = match[1].trim();
-    const slug = noteIdx.get(title.toLowerCase());
+    const slug = writingIdx.get(title.toLowerCase());
     if (!slug) continue; /* Broken wiki-link — skip */
 
-    const normalizedUrl = `/notes/${slug}/`;
+    const normalizedUrl = `/writing/${slug}/`;
     if (!seen.has(normalizedUrl)) {
       seen.add(normalizedUrl);
       links.push({ url: normalizedUrl, context: extractContext(body, match.index) });
@@ -216,15 +216,15 @@ let cachedPageInfoMap: Map<string, PageInfo> | null = null;
 async function gatherAllPages(): Promise<PageInfo[]> {
   const pages: PageInfo[] = [];
 
-  /* Posts */
-  const posts = await getCollection("posts", (p: CollectionEntry<"posts">) => p.data.published !== false);
-  for (const post of posts) {
+  /* Writing (essays + notes) */
+  const writing = await getCollection("writing", (e: CollectionEntry<"writing">) => e.data.published !== false);
+  for (const entry of writing) {
     pages.push({
-      url: `/blog/${post.id}/`,
-      title: post.data.title,
-      type: "post",
-      body: post.body ?? "",
-      description: post.data.description ?? "",
+      url: `/writing/${entry.id}/`,
+      title: entry.data.title,
+      type: entry.data.kind === "essay" ? "post" : "note",
+      body: entry.body ?? "",
+      description: entry.data.description ?? "",
     });
   }
 
@@ -237,18 +237,6 @@ async function gatherAllPages(): Promise<PageInfo[]> {
       type: "project",
       body: project.body ?? "",
       description: project.data.description ?? "",
-    });
-  }
-
-  /* Notes */
-  const notes = await getCollection("notes", (n: CollectionEntry<"notes">) => n.data.published !== false);
-  for (const note of notes) {
-    pages.push({
-      url: `/notes/${note.id}/`,
-      title: note.data.title,
-      type: "note",
-      body: note.body ?? "",
-      description: note.data.description ?? "",
     });
   }
 
@@ -356,7 +344,7 @@ async function computeBacklinks(): Promise<void> {
  * Get all pages that link to the given URL.
  * Returns an empty array if no backlinks exist.
  *
- * @param url — The target page URL (e.g., "/notes/oct-fundamentals/")
+ * @param url — The target page URL (e.g., "/writing/oct-fundamentals/")
  */
 export async function getBacklinksForUrl(url: string): Promise<BacklinkEntry[]> {
   await computeBacklinks();
