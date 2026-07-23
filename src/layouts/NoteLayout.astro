@@ -31,7 +31,7 @@ const tags: string[] = note.data.tags;
 const pageUrl = `/notes/${note.id}/`;
 const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
 
-/* ── Resolve cross-references from Phase 1 schema ──────────────── */
+/* ── Resolve cross-references ──────────────── */
 const relNoteSlugs = note.data.relatedNotes ?? [];
 const relProjectSlugs = note.data.relatedProjects ?? [];
 
@@ -82,11 +82,9 @@ const hasRelated = linkedNotes.length > 0 || linkedProjects.length > 0;
         )}
       </div>
       {tags.length > 0 && (
-        <div class="mt-3 flex flex-wrap gap-2">
+        <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1">
           {tags.map((tag) => (
-            <span class="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
-              {tag}
-            </span>
+            <span class="font-mono text-[11px] text-[var(--color-muted)]">{tag}</span>
           ))}
         </div>
       )}
@@ -96,7 +94,7 @@ const hasRelated = linkedNotes.length > 0 || linkedProjects.length > 0;
       <slot />
     </div>
 
-    {/* ─── Related content (from Phase 1 cross-references) ──────── */}
+    {/* Related content */}
     {hasRelated && (
       <section class="mt-12 border-t border-[var(--color-border)] pt-8">
         <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">

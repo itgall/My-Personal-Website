@@ -1,12 +1,12 @@
 name: Isaac Gallegos
 title: Doctoral researcher
 affiliation: University of Colorado Boulder
-email: itgall@mit.edu
+email: Isaac.gallegos@colorado.edu
 website: https://isaac-gallegos.com
 orcid: 0009-0007-9290-6289
 research_interests:
-  - Quantum information
-  - Quantum networks, photonic interconnects, and entanglement distribution between spin-based quantum nodes
+  - Quantum photonics, neuromorphic computing, and photonic integrated circuits
+  - Quantum information and quantum networks
   - Many-body quantum systems and statistical physics
 education:
   - degree: B.S. Engineering Physics, summa cum laude
@@ -18,14 +18,22 @@ education:
       - 'Concentration: Quantum Science, Laser Physics and Engineering, Electrical Engineering'
       - 'Senior Thesis: Emergent Holography from Information Geometry of Ising Models (Advisor: L. Haddad)'
 experience:
+  - title: Doctoral Researcher
+    organization: University of Colorado Boulder
+    parent: Department of Physics
+    location: Boulder, CO
+    dates: Aug 2026–Present
+    current: true
+    highlights:
+      - Physics PhD student working on quantum photonics, neuromorphic computing, and photonic integrated circuits
   - title: Research Engineer
     organization: Wellman Center for Photomedicine (Bouma Lab)
     parent: Harvard Medical School / Massachusetts General Hospital
     location: Boston, MA
-    dates: May 2025–Present
-    current: true
+    dates: May 2025–Aug 2026
+    current: false
     highlights:
-      - Leading a polarization-resolved spectroscopic OCT project on a 1310 nm swept-source VCSEL system (100 nm bandwidth, 5 µm axial resolution), acquiring and spectrally post-processing data from 20+ fabricated biomaterial phantoms
+      - Led a polarization-resolved spectroscopic OCT project on a 1310 nm swept-source VCSEL system (100 nm bandwidth, 5 µm axial resolution), acquiring and spectrally post-processing data from 20+ fabricated biomaterial phantoms
       - Wrote physics-constrained inverse models in Python to recover wavelength-dependent optical properties from depth-resolved spectra
       - Built the first comprehensive open-source library and software tool for laser safety evaluation; first author on a manuscript targeting the Journal of Open Source Software
     advisors: D. Veysset, N. Uribe-Patarroyo, B.E. Bouma
@@ -113,15 +121,15 @@ teaching:
   - role: Teaching Assistant
     course: Electromagnetic Waves and Optical Physics
     institution: Colorado School of Mines
-    dates: Aug 2023–Dec 2024 (2 semesters)
+    dates: 2023–2024 (2 semesters)
   - role: Teaching Assistant
     course: Mathematical Physics
     institution: Colorado School of Mines
-    dates: 2023–2024
+    dates: Fall 2023
   - role: Teaching Assistant
     course: Intermediate Electromagnetism
     institution: Colorado School of Mines
-    dates: 2023–2024
+    dates: 2024
 awards:
   - title: Dean's List
     institution: Colorado School of Mines

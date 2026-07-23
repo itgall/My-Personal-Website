@@ -38,7 +38,7 @@ const linkedPubs = relatedPublications && relatedPublications.length > 0
     )
   : [];
 
-/* ── Resolve cross-references from Phase 1 schema ──────────────── */
+/* ── Resolve cross-references ──────────────── */
 const relPostSlugs = project.data.relatedPosts ?? [];
 const relEpisodeSlugs = project.data.relatedEpisodes ?? [];
 
@@ -112,7 +112,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
       </section>
     )}
 
-    {/* Cross-referenced posts from Phase 1 schema */}
+    {/* Cross-referenced posts */}
     {linkedPosts.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
         <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
@@ -128,7 +128,7 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
       </section>
     )}
 
-    {/* Cross-referenced episodes from Phase 1 schema */}
+    {/* Cross-referenced episodes */}
     {linkedEpisodes.length > 0 && (
       <section class="mt-8 border-t border-[var(--color-border)] pt-8">
         <h2 class="mb-4 sc-label text-[12px] text-[var(--color-muted)]">
@@ -146,11 +146,9 @@ const backlinks = features.backlinks ? await getBacklinksForUrl(pageUrl) : [];
 
     {/* Tags */}
     {tags.length > 0 && (
-      <div class="mt-8 flex flex-wrap gap-2">
+      <div class="mt-8 flex flex-wrap gap-x-3 gap-y-1">
         {tags.map((tag) => (
-          <span class="rounded-full border border-[var(--color-border)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--color-muted)]">
-            {tag}
-          </span>
+          <span class="font-mono text-[11px] text-[var(--color-muted)]">{tag}</span>
         ))}
       </div>
     )}

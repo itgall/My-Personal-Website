@@ -1,15 +1,10 @@
 /**
- * DocumentRequest.tsx — CV/Resume request modal Island.
+ * DocumentRequest.tsx — CV/resume request modal island (client:idle).
  *
- * Hydration: client:idle — enhancement for gated document access.
- *
- * Architecture:
- *   - Triggered by buttons with data-request-doc="resume|cv|both" attribute
- *   - Opens a modal with name, email, affiliation, and reason fields
- *   - Submits to /api/document-request (serverless function)
- *   - Shows success/error states within the modal
- *   - Uses event delegation so it works with any trigger button on any page
- *   - Keyboard accessible: Escape to close, Tab trapping within modal
+ * Buttons carrying data-request-doc="resume|cv|both" open a modal with name,
+ * email, affiliation, and reason fields that posts to /api/document-request
+ * and shows success/error states inline. Event delegation lets any trigger
+ * button on any page work. Escape closes; focus is trapped within the modal.
  */
 import { useState, useRef, useCallback, useEffect } from "react";
 
@@ -143,7 +138,7 @@ export default function DocumentRequest() {
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-xl)",
-          boxShadow: "var(--shadow-glass)",
+          boxShadow: "var(--shadow-modal)",
           overflow: "hidden",
           zIndex: 99999,
         }}

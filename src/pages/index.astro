@@ -139,15 +139,34 @@ const categoryLabels: Record<string, string> = {
       </div>
       {
         projects.length > 0 ? (
-          <div class="space-y-6">
+          <div class="space-y-10">
             {projects.map((project) => (
               <a href={`/projects/${project.id}/`} class="group block no-underline">
-                <span class="font-display text-[15px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
+                <span class="font-display text-[17px] font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-link)]">
                   {project.data.title}
                 </span>
                 <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">
                   {project.data.description}
                 </p>
+                {/* The real figure, shown whole on a white plate with a mono
+                    caption — the artifact IS the design (VISUAL-DIRECTION). */}
+                {project.data.heroImage && (
+                  <figure class="mt-4 mb-1 max-w-[680px] rounded-md border border-[var(--color-border)] bg-white p-3.5">
+                    <img
+                      src={project.data.heroImage}
+                      alt={project.data.heroCaption || project.data.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="block h-auto w-full"
+                      style="object-fit: contain;"
+                    />
+                    {project.data.heroCaption && (
+                      <figcaption class="mt-2.5 font-mono text-[11px] leading-relaxed text-[var(--color-muted)]">
+                        {project.data.heroCaption}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
                 <span class="mt-1 font-mono text-[11px] text-[var(--color-muted)]">
                   {project.data.institution}
                 </span>

@@ -13,7 +13,7 @@ contentMode: freeform
 problem: ''
 impact: ''
 heroImage: /images/uploads/IMG_2457.jpeg
-heroCaption: ''
+heroCaption: 'Full spectroscopic OCT workflow: raw spectral interferogram through spectral binning to depth-resolved absorption and scattering coefficient maps.'
 videoUrl: ''
 interactiveUrl: ''
 interactiveHeight: 0

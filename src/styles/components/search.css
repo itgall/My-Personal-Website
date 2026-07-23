@@ -34,7 +34,7 @@
 .search-error {
   padding: 1.5rem;
   border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background: var(--color-bg-off);
   color: var(--color-muted);
   font-size: 0.875rem;
@@ -63,7 +63,7 @@
   padding: 0.75rem 1rem;
   font-size: 1rem;
   font-family: var(--font-sans);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   border: 1px solid var(--color-border);
   background: var(--color-bg-off);
   color: var(--color-text);
@@ -88,7 +88,7 @@
   margin-bottom: 1.5rem;
   padding: 1rem;
   border: 1px solid var(--color-border-subtle);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background: var(--color-bg-off);
 }
 
@@ -167,7 +167,7 @@
 .search-result-item {
   padding: 1rem 1.25rem;
   border: 1px solid var(--color-border-subtle);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background: var(--color-surface);
   transition: border-color 0.15s ease;
 }

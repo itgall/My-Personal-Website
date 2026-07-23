@@ -19,4 +19,4 @@ PHGN 311 introduces the mathematical toolkit that recurs throughout physics, sho
 
 ## My role
 
-I provided supplemental lectures, review sessions, and office hours, wrote original exam and problem-set material, and mentored more than fifty undergraduates.
+I was the teaching assistant for PHGN 311 in Fall 2023, running review sessions and office hours and writing original exam and problem-set material.
