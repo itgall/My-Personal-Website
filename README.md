@@ -30,7 +30,7 @@ Other scripts:
 
 ```
 src/
-├── content/     # Markdown: posts, projects, teaching, notes, misc
+├── content/     # Markdown: writing (essays + notes), news, projects, teaching, misc
 ├── data/        # identity, CV (cv.yaml), bibliography (.bib), page copy, settings
 ├── layouts/     # page shells
 ├── components/  # Astro components (mostly zero-JS)
@@ -39,16 +39,20 @@ src/
 └── styles/      # global + component CSS
 ```
 
-Design rules I hold the site to are written down in
-[`DESIGN.md`](./DESIGN.md) and [`DESIGN-DIRECTION.md`](./DESIGN-DIRECTION.md).
+Design rules I hold the site to are written down in [`DESIGN.md`](./DESIGN.md).
 
 ## Editing content
 
-Most things are plain Markdown with YAML frontmatter under `src/content/`, or
-small JSON/YAML files under `src/data/` (identity, CV, page copy, feature
-toggles). Publications live in `src/data/bibliography.bib`. There's also a
-browser-based editor at `/admin/` (Sveltia CMS) that commits straight to this
-repo via the GitHub API — see `public/admin/config.yml` for how it's wired.
+Most things are plain Markdown with YAML frontmatter under `src/content/`.
+All the prose — essays and shorter notes — lives in one `writing` collection
+(`src/content/writing/`); each file declares `kind: essay` or `kind: note`
+and only appears on the site once `published: true`. Short updates go in
+`src/content/news/` — a date, an optional link, and a sentence or two; they
+aren't rendered anywhere yet. Identity, CV, page copy, and feature toggles
+are small JSON/YAML files under `src/data/`, and publications live in
+`src/data/bibliography.bib`. There's also a browser-based editor at `/admin/`
+(Sveltia CMS) that commits straight to this repo via the GitHub API — see
+`public/admin/config.yml` for how it's wired.
 
 ## Stack
 

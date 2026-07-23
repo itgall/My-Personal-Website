@@ -1,30 +1,30 @@
 /**
- * new-post.ts — Scaffold a new blog post with front matter template.
+ * new-post.ts — Scaffold a new essay with front matter template.
  *
  * Usage: npm run new:post
- * Prompts for title, category, and creates a new .md file in src/content/posts/
+ * Creates a new .md file in src/content/writing/ with kind: essay.
  */
 
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import slugify from "slugify";
 
-const title = process.argv[2] || "Untitled Post";
+const title = process.argv[2] || "Untitled Essay";
 const slug = slugify(title, { lower: true, strict: true });
 const date = new Date().toISOString().split("T")[0];
-const filePath = join(process.cwd(), "src", "content", "posts", `${slug}.md`);
+const filePath = join(process.cwd(), "src", "content", "writing", `${slug}.md`);
 
 const frontMatter = `---
 title: "${title}"
+kind: essay
 date: ${date}
-category: technical
 description: ""
 tags: []
 published: false
 ---
 
-Write your post here.
+Write your essay here.
 `;
 
 writeFileSync(filePath, frontMatter, "utf-8");
-console.log(`Created: src/content/posts/${slug}.md`);
+console.log(`Created: src/content/writing/${slug}.md`);
