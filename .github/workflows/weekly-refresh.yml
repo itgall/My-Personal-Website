@@ -43,7 +43,7 @@ jobs:
         run: npx tsx scripts/refresh-citations.ts
 
       - name: Commit updated citations
-        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
         with:
           commit_message: "chore: refresh citation counts [skip ci]"
           file_pattern: "src/data/citations.json"
